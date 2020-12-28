@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "trial_rg" {
   }
 }
 
-## service plan
+## Service plan
 resource "azurerm_app_service_plan" "apps_service_plan" {
   name                = "trial-${var.trial_name}-appserviceplan"
   location            = azurerm_resource_group.trial_rg.location
@@ -20,6 +20,7 @@ resource "azurerm_app_service_plan" "apps_service_plan" {
   }
 }
 
+# Site service
 module "trial_app_service_site" {
   source           = "./modules/appservice"
   app_name         = "site"
@@ -32,6 +33,7 @@ module "trial_app_service_site" {
   docker_image_tag = "latest"
 }
 
+# Practitioner service
 module "trial_app_service_practitioner" {
   source           = "./modules/appservice"
   app_name         = "practitioner"
@@ -44,6 +46,7 @@ module "trial_app_service_practitioner" {
   docker_image_tag = "latest"
 }
 
+# Key vault
 module "trial_keyvault" {
   source      = "./modules/kv"
   trial_name  = var.trial_name
@@ -52,4 +55,9 @@ module "trial_keyvault" {
   tenant_id   = "99804659-431f-48fa-84c1-65c9609de05b"
 }
 
-## add keyvault, fhir, etc
+# Audit storage
+module "trial_audit" {
+  source      = "./modules/audit"
+  trial_name  = var.trial_name
+  rg_name     = azurerm_resource_group.trial_rg.name
+}

@@ -19,9 +19,9 @@ jobs:
       - name: Check changed files
         id: calc_files_diff
         run: |
-          git fetch origin main:main
+          git fetch origin main:localmain
 
-          export FILES=$(git diff --name-only main | grep .json)
+          export FILES=$(git diff --name-only localmain | grep .json)
 
           echo "Files changed since last commit..."
           echo "$FILES"
