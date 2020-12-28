@@ -22,28 +22,28 @@ resource "azurerm_app_service_plan" "apps_service_plan" {
 
 # Site service
 module "trial_app_service_site" {
-  source           = "./modules/appservice"
-  app_name         = "site"
-  rg_name          = azurerm_resource_group.trial_rg.name
-  plan_id          = azurerm_app_service_plan.apps_service_plan.id
-  tenant_id        = "99804659-431f-48fa-84c1-65c9609de05b"
-  trial_name       = var.trial_name
-  environment      = var.environment
-  docker_image     = "someimage"
-  docker_image_tag = "latest"
+  source              = "./modules/appservice"
+  app_name            = "site"
+  rg_name             = azurerm_resource_group.trial_rg.name
+  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  tenant_id           = "99804659-431f-48fa-84c1-65c9609de05b"
+  trial_name          = var.trial_name
+  environment         = var.environment
+  docker_image        = "someimage"
+  docker_image_tag    = "latest"
 }
 
 # Practitioner service
 module "trial_app_service_practitioner" {
-  source           = "./modules/appservice"
-  app_name         = "practitioner"
-  rg_name          = azurerm_resource_group.trial_rg.name
-  tenant_id        = "99804659-431f-48fa-84c1-65c9609de05b"
-  plan_id          = azurerm_app_service_plan.apps_service_plan.id
-  trial_name       = var.trial_name
-  environment      = var.environment
-  docker_image     = "someimage"
-  docker_image_tag = "latest"
+  source              = "./modules/appservice"
+  app_name            = "practitioner"
+  rg_name             = azurerm_resource_group.trial_rg.name
+  tenant_id           = "99804659-431f-48fa-84c1-65c9609de05b"
+  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  trial_name          = var.trial_name
+  environment         = var.environment
+  docker_image        = "someimage"
+  docker_image_tag    = "latest"
 }
 
 # Key vault
@@ -64,8 +64,8 @@ module "trial_audit" {
 
 # Fhir server
 module "fhir_server" {
-  source           = "./modules/fhir"
-  trial_name       = var.trial_name
-  rg_name          = azurerm_resource_group.trial_rg.name
-  app_service_plan = azurerm_app_service_plan.apps_service_plan.id
+  source              = "./modules/fhir"
+  trial_name          = var.trial_name
+  rg_name             = azurerm_resource_group.trial_rg.name
+  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
 }

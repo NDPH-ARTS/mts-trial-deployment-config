@@ -3,7 +3,7 @@ variable "rg_name" {
   description = "The Resource group where this appservice will be deployed"
 }
 
-variable "plan_id" {
+variable "app_service_plan_id" {
   type        = string
   description = "service plan id to be connected to this appservice"
 }

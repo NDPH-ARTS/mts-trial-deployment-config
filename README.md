@@ -5,7 +5,7 @@ This repository holds MTS resources definitions (shared and per trial) and CONTR
 ## Using this repository
 
 ### Creating a new trial
-Copy the sample_trial directory into a new directory with a meaningful name. (e.g. trial987drugX).
+Copy the sample_trial directory into a new directory with a meaningful name. (e.g. trial987drugX) (Name cannot be longer than 19 characters).
 Modify the definition file (.json), this will control the actual trial and initial settings. Make sure to provide correct values, such as the right docker image and correct first practitioner.
 Note: you must choose a UNIQUE id for this trial, so it won't conflict with another trial
 
