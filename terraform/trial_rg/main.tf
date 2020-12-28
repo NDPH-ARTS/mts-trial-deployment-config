@@ -57,7 +57,15 @@ module "trial_keyvault" {
 
 # Audit storage
 module "trial_audit" {
-  source      = "./modules/audit"
-  trial_name  = var.trial_name
-  rg_name     = azurerm_resource_group.trial_rg.name
+  source     = "./modules/audit"
+  trial_name = var.trial_name
+  rg_name    = azurerm_resource_group.trial_rg.name
+}
+
+# Fhir server
+module "fhir_server" {
+  source           = "./modules/fhir"
+  trial_name       = var.trial_name
+  rg_name          = azurerm_resource_group.trial_rg.name
+  app_service_plan = azurerm_app_service_plan.apps_service_plan.id
 }
