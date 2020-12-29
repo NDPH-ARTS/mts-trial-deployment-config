@@ -28,7 +28,6 @@ module "trial_app_service_site" {
   app_name            = "site"
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
-  tenant_id           = "99804659-431f-48fa-84c1-65c9609de05b"
   trial_name          = var.trial_name
   environment         = var.environment
   docker_image        = var.site_image_name
@@ -40,7 +39,6 @@ module "trial_app_service_practitioner" {
   source              = "./modules/appservice"
   app_name            = "practitioner"
   rg_name             = azurerm_resource_group.trial_rg.name
-  tenant_id           = "99804659-431f-48fa-84c1-65c9609de05b"
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
@@ -78,7 +76,6 @@ module "trial_app_service_config" {
   source              = "./modules/appservice"
   app_name            = "config"
   rg_name             = azurerm_resource_group.trial_rg.name
-  tenant_id           = "99804659-431f-48fa-84c1-65c9609de05b"
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment

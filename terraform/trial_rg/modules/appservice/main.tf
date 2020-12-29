@@ -1,5 +1,5 @@
 
-# App service (web app)
+# Service application generic module that loads a docker image
 
 resource "azurerm_app_service" "trial_app_service" {
   name                = "trial-${var.trial_name}-app-service-${var.app_name}"

@@ -18,3 +18,15 @@ variable "app_service_plan_id" {
   type        = string
   description = "The app service plan id."
 }
+
+variable "fhir_image_name" {
+  type        = string
+  description = "Fhir image name (fqdn)."
+  default     = "mcr.microsoft.com/healthcareapis/r4-fhir-server"
+}
+
+variable "fhir_image_tag" {
+  type        = string
+  description = "Fhir image tag."
+  default     = "latest"
+}

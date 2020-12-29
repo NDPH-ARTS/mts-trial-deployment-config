@@ -8,11 +8,6 @@ variable "app_service_plan_id" {
   description = "service plan id to be connected to this appservice"
 }
 
-variable "tenant_id" {
-  type        = string
-  description = "The Tenant id"
-}
-
 variable "trial_name" {
   type        = string
   description = "Trial name. Use only lowercase letters and numbers"
