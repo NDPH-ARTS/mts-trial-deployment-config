@@ -34,7 +34,7 @@ variable "fhir_image_tag" {
 variable "fhirsqluser" {
   type        = string
   description = "Fhir sql server user."
-  default     = "sa"
+  default     = "myfhiruser"
 }
 
 variable "fhirsqlpassword" {
