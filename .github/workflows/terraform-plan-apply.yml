@@ -45,8 +45,16 @@ jobs:
             trialId=`echo $(jq -r '.id' ./$path)`
             siteImage=`echo $(jq -r '.site_image' ./$path)`
             siteImageTag=`echo $(jq -r '.site_image_tag' ./$path)`
+            practitionerImage=`echo $(jq -r '.practitioner_image' ./$path)`
+            practitionerImageTag=`echo $(jq -r '.practitioner_image_tag' ./$path)`
+            configServerImage=`echo $(jq -r '.config_server_image' ./$path)`
+            configServerImageTag=`echo $(jq -r '.config_server_image_tag' ./$path)`
 
-            JSONline="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\",\"site_image\": \"$siteImage\",\"site_image_tag\": \"$siteImageTag\"},"
+            JSONline="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\","
+            JSONline="$JSONline \"site_image_name\": \"$siteImage\",\"site_image_tag\": \"$siteImageTag\","
+            JSONline="$JSONline \"practitioner_image_name\": \"$practitionerImage\",\"practitioner_image_tag\": \"$practitionerImageTag\","
+            JSONline="$JSONline \"config_server_image_name\": \"$configServerImage\",\"config_server_image_tag\": \"$configServerImageTag\","
+            JSONline="$JSONline },"
             JSON="$JSON$JSONline"
           done <<< "$FILES"
 
@@ -93,11 +101,11 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
-          terraform plan -var="trial_name=${{ matrix.trial_name }}"
+          terraform plan -var="trial_name=${{ matrix.trial_name }}" -var="site_image_name=${{ matrix.site_image_name }}" -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" -var="config_server_image_name=${{ matrix.config_server_image_name }}"
 
       # Apply, only on merge to main
       - name: Apply TF for "${{ matrix.trial_name }}"
-        if: github.ref == 'refs/heads/main'
+        # if: github.ref == 'refs/heads/main'
         run: |
           echo "Merged to main. applying trial's RG"
-          terraform apply -var="trial_name=${{ matrix.trial_name }}" -auto-approve
+          terraform apply -var="trial_name=${{ matrix.trial_name }}" -var="site_image_name=${{ matrix.site_image_name }}" -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" -var="config_server_image_name=${{ matrix.config_server_image_name }}" -auto-approve

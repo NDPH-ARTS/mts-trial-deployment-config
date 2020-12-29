@@ -6,5 +6,7 @@
     "site_image": "nginx",
     "site_image_tag": "latest",
     "practitioner_image": "nginx",
-    "practitioner_image_tag": "latest"
+    "practitioner_image_tag": "latest",
+    "config_server_image": "ghcr.io/ndph-arts/global-trial-config-mock",
+    "config_server_image_tag": "latest"
 }

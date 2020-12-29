@@ -19,7 +19,7 @@ Go to the directory of the wanted trial and change any paramater except the id.
 
 commit the changes, push and create a PR. Once approved the trial will be updated.
 
-### Deleting trial
+### Deleting a trial
 
 Go to the directory of the wanted trial.
 

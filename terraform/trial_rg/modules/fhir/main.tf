@@ -1,5 +1,5 @@
-resource "azurerm_app_service" "example" {
-  name                = "example-app-service"
+resource "azurerm_app_service" "fhir_server" {
+  name                = "fhir-app-service"
   location            = var.location
   resource_group_name = var.rg_name
   app_service_plan_id = var.app_service_plan_id
