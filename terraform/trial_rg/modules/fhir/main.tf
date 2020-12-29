@@ -11,7 +11,7 @@ resource "azurerm_app_service" "fhir_server" {
   app_settings = {
     always_on                                         = "true"
     FHIRServer__Security__Enabled                     = "false"
-    SqlServer__ConnectionString                       = "Server=tcp:sql,1433;Initial Catalog=FHIR;Persist Security Info=False;User ID=${fhirsqluser};Password=${fhirsqlpassword};MultipleActiveResultSets=False;Connection Timeout=30;"
+    SqlServer__ConnectionString                       = "Server=tcp:sql,1433;Initial Catalog=FHIR;Persist Security Info=False;User ID=${var.fhirsqluser};Password=${var.fhirsqlpassword};MultipleActiveResultSets=False;Connection Timeout=30;"
     SqlServer__AllowDatabaseCreation                  = "true"
     SqlServer__Initialize                             = "true"
     SqlServer__SchemaOptions__AutomaticUpdatesEnabled = "true"
@@ -25,6 +25,6 @@ resource "azurerm_sql_server" "fhir_sql_server" {
   location                     = var.location
   resource_group_name          = var.rg_name
   version                      = "12.0"
-  administrator_login          = "sa" # var.fhirsqluser
-  administrator_login_password = "temppassword123!" # var.fhirsqlpassword
+  administrator_login          = var.fhirsqluser
+  administrator_login_password = var.fhirsqlpassword
 }
