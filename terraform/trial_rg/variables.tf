@@ -1,6 +1,11 @@
 variable "trial_name" {
   type        = string
   description = "Trial name. Use only lowercase letters and numbers"
+
+  validation {
+    condition     = length(var.trial_name) > 3 && length(var.trial_name) < 12 && can(regex("[a-z,0-9]", var.trial_name))
+    error_message = "The trial_name must consist of lowercase letters and numbers only."
+  }
 }
 
 variable "environment" {
