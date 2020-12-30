@@ -38,13 +38,13 @@ variable "practitioner_image_tag" {
   default     = "latest"
 }
 
-variable "config_server_image_name" {
+variable "trial_config_service_image_name" {
   type        = string
-  description = "configuration server image name (fqdn)."
+  description = "trial configuration service image name (fqdn)."
 }
 
-variable "config_server_image_tag" {
+variable "trial_config_service_image_tag" {
   type        = string
-  description = "configuration server image tag."
+  description = "trial configuration service image tag."
   default     = "latest"
 }

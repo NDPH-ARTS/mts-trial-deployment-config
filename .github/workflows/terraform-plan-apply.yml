@@ -56,7 +56,7 @@ jobs:
             MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\","
             MatrixItem="$MatrixItem \"site_image_name\": \"$siteImage\",\"site_image_tag\": \"$siteImageTag\","
             MatrixItem="$MatrixItem \"practitioner_image_name\": \"$practitionerImage\",\"practitioner_image_tag\": \"$practitionerImageTag\","
-            MatrixItem="$MatrixItem \"config_server_image_name\": \"$configServerImage\",\"config_server_image_tag\": \"$configServerImageTag\","
+            MatrixItem="$MatrixItem \"trial_config_service_image_name\": \"$configServerImage\",\"trial_config_service_image_tag\": \"$configServerImageTag\","
             MatrixItem="$MatrixItem },"
             JSON="$JSON$MatrixItem"
           done <<< "$FILES"
@@ -104,11 +104,11 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
-          terraform plan -var="trial_name=${{ matrix.trial_name }}" -var="site_image_name=${{ matrix.site_image_name }}" -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" -var="config_server_image_name=${{ matrix.config_server_image_name }}"
+          terraform plan -var="trial_name=${{ matrix.trial_name }}" -var="site_image_name=${{ matrix.site_image_name }}" -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}"
 
       # Apply, only on merge to main
       - name: Apply TF for "${{ matrix.trial_name }}"
         # if: github.ref == 'refs/heads/main'
         run: |
           echo "Merged to main. applying trial's RG"
-          terraform apply -var="trial_name=${{ matrix.trial_name }}" -var="site_image_name=${{ matrix.site_image_name }}" -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" -var="config_server_image_name=${{ matrix.config_server_image_name }}" -auto-approve
+          terraform apply -var="trial_name=${{ matrix.trial_name }}" -var="site_image_name=${{ matrix.site_image_name }}" -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" -auto-approve

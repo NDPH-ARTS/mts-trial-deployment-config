@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "trial_rg" {
 
 ## Service plan
 resource "azurerm_app_service_plan" "apps_service_plan" {
-  name                = "trial-${var.trial_name}-appserviceplan"
+  name                = "trial-${var.trial_name}-genericserviceplan"
   location            = azurerm_resource_group.trial_rg.location
   resource_group_name = azurerm_resource_group.trial_rg.name
   kind                = "Linux"
@@ -24,7 +24,7 @@ resource "azurerm_app_service_plan" "apps_service_plan" {
 
 # Site service
 module "trial_app_service_site" {
-  source              = "./modules/appservice"
+  source              = "./modules/genericservice"
   app_name            = "site"
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
@@ -36,7 +36,7 @@ module "trial_app_service_site" {
 
 # Practitioner service
 module "trial_app_service_practitioner" {
-  source              = "./modules/appservice"
+  source              = "./modules/genericservice"
   app_name            = "practitioner"
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
@@ -73,12 +73,12 @@ module "fhir_server" {
 
 # config server service
 module "trial_app_service_config" {
-  source              = "./modules/appservice"
+  source              = "./modules/genericservice"
   app_name            = "config"
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
-  docker_image        = var.config_server_image_name
-  docker_image_tag    = var.config_server_image_tag
+  docker_image        = var.trial_config_service_image_name
+  docker_image_tag    = var.trial_config_service_image_tag
 }
