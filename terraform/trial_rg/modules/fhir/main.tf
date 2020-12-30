@@ -8,6 +8,33 @@ resource "azurerm_sql_server" "fhir_sql_server" {
   administrator_login_password = var.fhirsqlpassword
 }
 
+# We open this sql server to accept connections from other Azure resources ('Allow access to Azure services').
+# Done by setting the start/end ips to 0.0.0.0.
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_firewall_rule
+resource "azurerm_sql_firewall_rule" "firewall_rule_allow_azure_connections" {
+  name                = "${var.trial_name}-srvr-allow-azure-conn"
+  resource_group_name = var.rg_name
+  server_name         = azurerm_sql_server.fhir_sql_server.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+
+  depends_on = [
+    azurerm_sql_server.fhir_sql_server,
+  ]
+}
+
+# FHIR DB
+resource "azurerm_sql_database" "fhirdb" {
+  name                = "FHIR"
+  resource_group_name = var.rg_name
+  location            = var.location
+  server_name         = azurerm_sql_server.fhir_sql_server.name
+
+  depends_on = [
+    azurerm_sql_server.fhir_sql_server,
+  ]
+}
+
 # Fhir server
 resource "azurerm_app_service" "fhir_server" {
   name                = "trial-${var.trial_name}-fhir"
@@ -29,23 +56,10 @@ resource "azurerm_app_service" "fhir_server" {
     DataStore                                         = "SqlServer"
     WEBSITES_PORT                                     = 8080
   }
-}
 
-# We open this sql server to accept connections from other Azure resources ('Allow access to Azure services').
-# Done by setting the start/end ips to 0.0.0.0.
-# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_firewall_rule
-resource "azurerm_sql_firewall_rule" "firewall_rule_allow_azure_connections" {
-  name                = "${var.trial_name}-srvr-allow-azure-conn"
-  resource_group_name = var.rg_name
-  server_name         = azurerm_sql_server.fhir_sql_server.name
-  start_ip_address    = "0.0.0.0"
-  end_ip_address      = "0.0.0.0"
-}
-
-# FHIR DB
-resource "azurerm_sql_database" "fhirdb" {
-  name                = "FHIR"
-  resource_group_name = var.rg_name
-  location            = var.location
-  server_name         = azurerm_sql_server.fhir_sql_server.name
+  depends_on = [
+    azurerm_sql_server.fhir_sql_server,
+    azurerm_sql_database.fhirdb,
+    azurerm_sql_firewall_rule.firewall_rule_allow_azure_connections
+  ]
 }
