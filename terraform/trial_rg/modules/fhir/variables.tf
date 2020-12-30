@@ -36,9 +36,3 @@ variable "fhirsqluser" {
   description = "Fhir sql server user."
   default     = "myfhiruser"
 }
-
-variable "fhirsqlpassword" {
-  type        = string
-  description = "Fhir sql server password."
-  default     = "temppassword123!"
-}
