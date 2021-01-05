@@ -48,3 +48,36 @@ variable "trial_config_service_image_tag" {
   description = "trial configuration service image tag."
   default     = "latest"
 }
+
+variable "trial_sc_gateway_image_name" {
+  type        = string
+  description = "SC gateway image name."
+}
+
+variable "trial_sc_gateway_image_tag" {
+  type        = string
+  description = "SC gateway image tag."
+  default     = "latest"
+}
+
+variable "trial_sc_discovery_image_name" {
+  type        = string
+  description = "SC discovery image name."
+}
+
+variable "trial_sc_discovery_image_tag" {
+  type        = string
+  description = "SC discovery image tag."
+  default     = "latest"
+}
+
+variable "trial_sc_config_image_name" {
+  type        = string
+  description = "SC config image name."
+}
+
+variable "trial_sc_config_image_tag" {
+  type        = string
+  description = "SC config image tag."
+  default     = "latest"
+}

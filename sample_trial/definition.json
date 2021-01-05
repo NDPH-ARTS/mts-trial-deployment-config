@@ -14,5 +14,19 @@
     "config_server_service": {
         "image_name": "ghcr.io/ndph-arts/global-trial-config-mock",
         "image_tag": "latest"
+    },
+    "sc": {
+        "gateway_service": {
+            "image_name": "nginx",
+            "image_tag": "latest"
+        },
+        "discovery_service": {
+            "image_name": "nginx",
+            "image_tag": "latest"
+        },
+        "config_service": {
+            "image_name": "nginx",
+            "image_tag": "latest"
+        }
     }
 }
