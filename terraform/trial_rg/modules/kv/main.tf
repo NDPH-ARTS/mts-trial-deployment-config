@@ -15,3 +15,19 @@ resource "azurerm_key_vault" "trial_keyvault" {
     virtual_network_subnet_ids = [ var.subnet_id ]
   }
 }
+
+# Connect KV to a new private endpoint
+# module "private_endpoint" {
+#   source                   = "../privateendpoint"
+#   trial_name               = var.trial_name
+#   rg_name                  = var.rg_name
+#   sql_server_resource_name = azurerm_mssql_server.fhir_sql_server.name
+#   sql_server_resource_id   = azurerm_mssql_server.fhir_sql_server.id
+#   main_private_dns_name    = "trials.oxford"
+#   vnet_id                  = var.vnet_id
+#   subnet_id                = var.subnet_id
+#
+#   depends_on = [
+#     azurerm_app_service.fhir_server,
+#   ]
+# }

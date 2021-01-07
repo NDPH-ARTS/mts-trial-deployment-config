@@ -15,7 +15,7 @@
         "image_name": "ghcr.io/ndph-arts/global-trial-config-mock",
         "image_tag": "latest"
     },
-    "sc": {
+    "spring_cloud": {
         "gateway_service": {
             "image_name": "nginx",
             "image_tag": "latest"

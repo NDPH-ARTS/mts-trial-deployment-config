@@ -1,4 +1,4 @@
-# a vnet and a single sibnet
+# Creating a virtual network and several subnets
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet-${var.trial_name}"
   location            = var.location
@@ -6,12 +6,12 @@ resource "azurerm_virtual_network" "vnet" {
   address_space       = ["10.0.0.0/16"]
 }
 
-resource "azurerm_subnet" "integrationsubnet" {
-  name                 = "main-subnet-${var.trial_name}"
+# First subnet, for the web apps
+resource "azurerm_subnet" "web_apps_subnet" {
+  name                 = "webapps-subnet-${var.trial_name}"
   resource_group_name  = var.rg_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.1.0/24"]
-  service_endpoints    = [ "Microsoft.KeyVault", "Microsoft.Sql" ]
 
   delegation {
     name = "delegation"
@@ -19,4 +19,39 @@ resource "azurerm_subnet" "integrationsubnet" {
       name = "Microsoft.Web/serverFarms"
     }
   }
+}
+
+# Second subnet, for the sql servers
+resource "azurerm_subnet" "sql_subnet" {
+  name                 = "sql-subnet-${var.trial_name}"
+  resource_group_name  = var.rg_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.0.2.0/24"]
+
+  # must for private link
+  enforce_private_link_endpoint_network_policies = true
+}
+
+# Third subnet, for the KVs
+resource "azurerm_subnet" "kv_subnet" {
+  name                 = "kv-subnet-${var.trial_name}"
+  resource_group_name  = var.rg_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.0.3.0/24"]
+
+  service_endpoints    = [ "Microsoft.KeyVault" ]
+}
+
+# Create a Private DNS Zone
+resource "azurerm_private_dns_zone" "main_private_dns" {
+  name                = "oxford.trials"
+  resource_group_name = var.rg_name
+}
+
+# Link the Main Private DNS Zone with the VNET
+resource "azurerm_private_dns_zone_virtual_network_link" "private-dns-link" {
+  name                  = "${var.trial_name}-vnet-link"
+  resource_group_name   = var.rg_name
+  private_dns_zone_name = azurerm_private_dns_zone.main_private_dns.name
+  virtual_network_id    = azurerm_virtual_network.vnet.id
 }
