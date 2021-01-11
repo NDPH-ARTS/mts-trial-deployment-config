@@ -1,6 +1,6 @@
 
 resource "azurerm_key_vault" "trial_keyvault" {
-  name                        = "kv-${var.trial_name}"
+  name                        = "kv-${var.trial_name}${var.environment}${var.location}"
   location                    = var.location
   resource_group_name         = var.rg_name
   enabled_for_disk_encryption = true

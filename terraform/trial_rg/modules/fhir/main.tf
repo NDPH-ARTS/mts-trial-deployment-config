@@ -19,7 +19,7 @@ module "fhir_sql_server" {
 
 # Fhir server
 resource "azurerm_app_service" "fhir_server" {
-  name                = "as-${var.trial_name}-fhir"
+  name                = "as-${var.trial_name}-fhir-${var.environment}-${var.location}"
   location            = var.location
   resource_group_name = var.rg_name
   app_service_plan_id = var.app_service_plan_id
