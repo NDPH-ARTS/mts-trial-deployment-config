@@ -137,6 +137,12 @@ jobs:
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
                          -var="trial_sc_discovery_image_name=${{ matrix.trial_sc_discovery_image_name }}" \
                          -var="trial_sc_config_image_name=${{ matrix.trial_sc_config_image_name }}" \
+                         -var="site_image_tag=${{ matrix.site_image_tag }}" \
+                         -var="practitioner_image_tag=${{ matrix.practitioner_image_tag }}" \
+                         -var="trial_config_service_image_tag=${{ matrix.trial_config_service_image_tag }}" \
+                         -var="trial_sc_gateway_image_tag=${{ matrix.trial_sc_gateway_image_tag }}" \
+                         -var="trial_sc_discovery_image_tag=${{ matrix.trial_sc_discovery_image_tag }}" \
+                         -var="trial_sc_config_image_tag=${{ matrix.trial_sc_config_image_tag }}" \
 
       # Apply, only on merge to main
       - name: Apply TF for "${{ matrix.trial_name }}"
@@ -150,4 +156,10 @@ jobs:
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
                           -var="trial_sc_discovery_image_name=${{ matrix.trial_sc_discovery_image_name }}" \
                           -var="trial_sc_config_image_name=${{ matrix.trial_sc_config_image_name }}" \
+                          -var="site_image_tag=${{ matrix.site_image_tag }}" \
+                          -var="practitioner_image_tag=${{ matrix.practitioner_image_tag }}" \
+                          -var="trial_config_service_image_tag=${{ matrix.trial_config_service_image_tag }}" \
+                          -var="trial_sc_gateway_image_tag=${{ matrix.trial_sc_gateway_image_tag }}" \
+                          -var="trial_sc_discovery_image_tag=${{ matrix.trial_sc_discovery_image_tag }}" \
+                          -var="trial_sc_config_image_tag=${{ matrix.trial_sc_config_image_tag }}" \
                           -auto-approve
