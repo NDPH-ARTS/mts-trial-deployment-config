@@ -31,6 +31,11 @@ variable "location" {
   default     = "UK south"
 }
 
+variable "vnet_id" {
+  type        = string
+  description = "The vnet to be integrated into."
+}
+
 variable "subnet_id" {
   type        = string
   description = "The subnet to be integrated into."

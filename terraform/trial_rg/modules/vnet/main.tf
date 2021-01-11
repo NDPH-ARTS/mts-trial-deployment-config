@@ -39,7 +39,8 @@ resource "azurerm_subnet" "kv_subnet" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.3.0/24"]
 
-  service_endpoints    = [ "Microsoft.KeyVault" ]
+  # must for private link
+  enforce_private_link_endpoint_network_policies = true
 }
 
 # Create a Private DNS Zone

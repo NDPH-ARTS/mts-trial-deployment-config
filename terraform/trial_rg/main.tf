@@ -72,6 +72,7 @@ module "trial_keyvault" {
   environment = var.environment
   rg_name     = azurerm_resource_group.trial_rg.name
   tenant_id   = "99804659-431f-48fa-84c1-65c9609de05b"
+  vnet_id     = module.trial_vnet.id
   subnet_id   = module.trial_vnet.kv_subnet_id
 
   depends_on = [
