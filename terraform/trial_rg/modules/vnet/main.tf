@@ -1,6 +1,6 @@
 # Creating a virtual network and several subnets
 resource "azurerm_virtual_network" "vnet" {
-  name                = "vnet-${var.trial_name}-${var.environment}-${var.location}"
+  name                = "vnet-${var.trial_name}-${var.environment}"
   location            = var.location
   resource_group_name = var.rg_name
   address_space       = ["10.0.0.0/16"]
@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "vnet" {
 
 # First subnet, for the web apps
 resource "azurerm_subnet" "web_apps_subnet" {
-  name                 = "subnet-wa-${var.trial_name}-${var.environment}-${var.location}"
+  name                 = "subnet-wa-${var.trial_name}-${var.environment}"
   resource_group_name  = var.rg_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.1.0/24"]
@@ -23,7 +23,7 @@ resource "azurerm_subnet" "web_apps_subnet" {
 
 # Second subnet, for the sql servers
 resource "azurerm_subnet" "sql_subnet" {
-  name                 = "subnet-sql-${var.trial_name}-${var.environment}-${var.location}"
+  name                 = "subnet-sql-${var.trial_name}-${var.environment}"
   resource_group_name  = var.rg_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.2.0/24"]
@@ -34,7 +34,7 @@ resource "azurerm_subnet" "sql_subnet" {
 
 # Third subnet, for the KVs
 resource "azurerm_subnet" "kv_subnet" {
-  name                 = "subnet-kv-${var.trial_name}-${var.environment}-${var.location}"
+  name                 = "subnet-kv-${var.trial_name}-${var.environment}"
   resource_group_name  = var.rg_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.3.0/24"]
@@ -51,7 +51,7 @@ resource "azurerm_private_dns_zone" "main_private_dns" {
 
 # Link the Main Private DNS Zone with the VNET
 resource "azurerm_private_dns_zone_virtual_network_link" "private-dns-link" {
-  name                  = "vnet-link-${var.trial_name}-${var.environment}-${var.location}"
+  name                  = "vnet-link-${var.trial_name}-${var.environment}"
   resource_group_name   = var.rg_name
   private_dns_zone_name = azurerm_private_dns_zone.main_private_dns.name
   virtual_network_id    = azurerm_virtual_network.vnet.id

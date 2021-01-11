@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "trial_rg" {
 
 ## Service plan
 resource "azurerm_app_service_plan" "apps_service_plan" {
-  name                = "asp-${var.trial_name}-${var.environment}-${var.location}"
+  name                = "asp-${var.trial_name}-${var.environment}"
   location            = azurerm_resource_group.trial_rg.location
   resource_group_name = azurerm_resource_group.trial_rg.name
   kind                = "Linux"
