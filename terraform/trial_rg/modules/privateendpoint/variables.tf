@@ -69,3 +69,8 @@ variable "sql" {
   description = "is related to sql."
   default     = false
 }
+
+variable "application" {
+  type        = string
+  description = "The application this endpoints relates to (workload)."
+}

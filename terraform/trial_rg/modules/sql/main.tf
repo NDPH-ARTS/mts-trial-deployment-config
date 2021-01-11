@@ -32,4 +32,5 @@ module "private_endpoint" {
   vnet_id       = var.vnet_id
   subnet_id     = var.subnet_id
   sql           = true
+  application   = var.application
 }

@@ -116,13 +116,14 @@ resource "random_password" "roles_sql_password" {
 # Create a roles and permissions SQL
 # Deploy a sql server and db for fhir before we create the web app
 module "fhir_sql_server" {
-  source     = "./modules/sql"
-  trial_name = var.trial_name
-  rg_name    = azurerm_resource_group.trial_rg.name
-  vnet_id    = module.trial_vnet.id
-  subnet_id  = module.trial_vnet.sql_subnet_id
-  db_name    = "ROLES"
-  app_name   = "roles"
-  sql_user   = "rolesuser"
-  sql_pass   = random_password.roles_sql_password.result
+  source      = "./modules/sql"
+  trial_name  = var.trial_name
+  rg_name     = azurerm_resource_group.trial_rg.name
+  vnet_id     = module.trial_vnet.id
+  subnet_id   = module.trial_vnet.sql_subnet_id
+  db_name     = "ROLES"
+  app_name    = "roles"
+  sql_user    = "rolesuser"
+  sql_pass    = random_password.roles_sql_password.result
+  application = "sql-roles"
 }

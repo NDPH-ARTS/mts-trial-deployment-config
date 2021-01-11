@@ -15,6 +15,7 @@ module "fhir_sql_server" {
   app_name   = "fhir"
   sql_user   = var.fhir_sqluser
   sql_pass   = random_password.fhir_sql_password.result
+  application = "sql-fhir"
 }
 
 # Fhir server

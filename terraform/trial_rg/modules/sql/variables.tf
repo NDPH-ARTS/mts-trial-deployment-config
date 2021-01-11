@@ -55,3 +55,8 @@ variable "sql_pass" {
   type        = string
   description = "The SQL pass."
 }
+
+variable "application" {
+  type        = string
+  description = "The application this endpoints relates to (workload)."
+}

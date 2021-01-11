@@ -26,6 +26,7 @@ module "private_endpoint" {
   vnet_id               = var.vnet_id
   subnet_id             = var.subnet_id
   kv                    = true
+  application           = "kv"
 
   depends_on = [
     azurerm_key_vault.trial_keyvault,
