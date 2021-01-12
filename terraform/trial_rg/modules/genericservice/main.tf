@@ -9,9 +9,17 @@ resource "azurerm_app_service" "generic_service" {
 
   site_config {
     linux_fx_version = "DOCKER|${var.docker_image}:${var.docker_image_tag}"
+    always_on        = true
   }
 
-  app_settings = {
-    always_on = "true"
+  logs {
+    http_logs {
+      file_system {
+        retention_in_mb   = 30     # in Megabytes
+        retention_in_days = 30     # in days
+      }
+    }
   }
+
+  app_settings = var.settings
 }
