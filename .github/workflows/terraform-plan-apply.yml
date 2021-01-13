@@ -2,7 +2,8 @@ name: Terraform Plan and Apply for Trials
 
 on:
   push:
-    branches: [ main, feature/** ]
+    # Adding the option using a testing/ branch to allow deployments to individual envs
+    branches: [ main, feature/**, testing/**]
     paths-ignore:
     - 'terraform/shared_rg/**'
 
@@ -39,6 +40,15 @@ jobs:
 
           # Iterate diff files and add each for the run matrix
           while read path; do
+            # check definition file name for env setting
+            if [[ $JSON =~ "-" ]]
+            then
+              env=$(echo $JSON | cut -d- -f2 | cut -d. -f1)
+            else
+              env="dev"
+            fi
+
+            echo "definition env is - $env"
 
             # if no file was changed. all values are empty, and the matrix should be empty
             if [ -z "$path" ]
@@ -132,7 +142,7 @@ jobs:
         run: |
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                         -var="environment=qa" \
+                         -var="environment=$env" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -152,7 +162,7 @@ jobs:
           echo "Merged to main. applying trial's RG"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=qa" \
+                          -var="environment=$env" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
