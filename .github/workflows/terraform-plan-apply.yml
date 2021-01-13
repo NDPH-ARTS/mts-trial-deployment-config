@@ -39,6 +39,8 @@ jobs:
           JSON="{\"include\":["
 
           # Iterate diff files and add each for the run matrix
+          echo "$JSON"
+
           while read path; do
             # check definition file name for env setting
             if [[ $JSON =~ "-" ]]
