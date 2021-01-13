@@ -39,6 +39,7 @@ jobs:
           JSON="{\"include\":["
 
           # Iterate diff files and add each for the run matrix
+          echo "about to start checking diff files"
 
           while read path; do
             # check definition file name for env setting
@@ -143,7 +144,7 @@ jobs:
         run: |
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                         -var="environment=${{ env }}" \
+                         -var="environment=$env" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -163,7 +164,7 @@ jobs:
           echo "Merged to main. applying trial's RG"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${{ env }}" \
+                          -var="environment=$env" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
