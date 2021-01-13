@@ -48,6 +48,7 @@ jobs:
               export ENV=$(echo $JSON | cut -d- -f2 | cut -d. -f1)
             else
               export ENV="dev"
+              echo "::set-output name=env::'dev'"
             fi
 
             echo "definition env is - ${ENV}"
@@ -142,17 +143,17 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
-          echo "definition env is - $ENV"
-          echo "definition env is - ${ENV}"
-          echo "definition env is - ${{ENV}}"
-          echo "definition env is - {$ENV}"
-          echo "definition env is - '$ENV'"
-          echo "definition env is - '${ENV}'"
-          echo "definition env is - '${{ENV}}'"
-          echo "definition env is - '{ENV}'"
-          echo "definition env is - '{{ENV}}'"
-          echo "definition env is - '{$ENV}'"
-          echo "definition env is - '$ENV'"
+          echo "definition env is - env"
+          echo "definition env is - ${env}"
+          echo "definition env is - ${{env}}"
+          echo "definition env is - {env}"
+          echo "definition env is - 'env'"
+          echo "definition env is - '${env}'"
+          echo "definition env is - '${{env}}'"
+          echo "definition env is - '{env}'"
+          echo "definition env is - '{{env}}'"
+          echo "definition env is - '{env}'"
+          echo "definition env is - 'env'"
 
 
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
