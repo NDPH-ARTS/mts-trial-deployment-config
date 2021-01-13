@@ -50,7 +50,7 @@ jobs:
               export ENV="dev"
             fi
 
-            echo "definition env is - $ENV"
+            echo "definition env is - ${ENV}"
 
             # if no file was changed. all values are empty, and the matrix should be empty
             if [ -z "$path" ]
@@ -142,7 +142,7 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
-          echo "definition env is - ${ENV}"
+          echo "definition env is - $ENV"
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
                          -var="environment=${ENV}" \
