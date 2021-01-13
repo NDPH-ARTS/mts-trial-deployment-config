@@ -43,9 +43,9 @@ jobs:
             # check definition file name for env setting
             if [[ $JSON =~ "-" ]]
             then
-              env=$(echo $JSON | cut -d- -f2 | cut -d. -f1)
+              export env=$(echo $JSON | cut -d- -f2 | cut -d. -f1)
             else
-              env="dev"
+              export env="dev"
             fi
 
             echo "definition env is - $env"
