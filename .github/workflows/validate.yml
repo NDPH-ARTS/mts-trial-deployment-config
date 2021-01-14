@@ -27,5 +27,5 @@ jobs:
       - name: Validate JSON
         uses: docker://orrosenblatt/validate-json-action:latest
         env:
-          INPUT_SCHEMA: json-schema/trial-json-schema.json
+          INPUT_SCHEMA: trial-config-schema/trial-json-schema.json
           INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
