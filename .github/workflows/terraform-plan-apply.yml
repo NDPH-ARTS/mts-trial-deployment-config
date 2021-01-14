@@ -113,6 +113,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: f3fba52d-c7db-46f8-9e7a-766ca869972e
       ARM_TENANT_ID: 99804659-431f-48fa-84c1-65c9609de05b
       ARM_ACCESS_KEY: ${{secrets.TF_ARM_ACCESS_KEY}}
+      ENVIRONMENT : dev
     steps:
       - uses: actions/checkout@v2
 
@@ -123,15 +124,16 @@ jobs:
         run: terraform init
 
       - name: Terraform workspace
-        run: terraform workspace select ${{ matrix.trial_id }} || terraform workspace new ${{ matrix.trial_id }}
+        run: terraform workspace select "${{ matrix.trial_id }}-$ENVIRONMENT" || terraform workspace new "${{ matrix.trial_id }}-$ENVIRONMENT"
 
       - name: Terraform Format
         run: terraform fmt -check
 
       # Plan TF
-      - name: Plan TF for "${{ matrix.trial_name }}"
+      - name: Plan TF for "${{ matrix.trial_name }}" ($ENVIRONMENT)
         run: |
-          terraform plan -var="trial_name=${{ matrix.trial_name }}" \
+          terraform plan -var="environment=$ENVIRONMENT"
+                         -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
@@ -146,11 +148,12 @@ jobs:
                          -var="trial_sc_config_image_tag=${{ matrix.trial_sc_config_image_tag }}" \
 
       # Apply, only on merge to main
-      - name: Apply TF for "${{ matrix.trial_name }}"
+      - name: Apply TF for "${{ matrix.trial_name }}" ($ENVIRONMENT)
         # if: github.ref == 'refs/heads/main'
         run: |
           echo "Merged to main. applying trial's RG"
-          terraform apply -var="trial_name=${{ matrix.trial_name }}" \
+          terraform apply -var="environment=$ENVIRONMENT"
+                          -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
