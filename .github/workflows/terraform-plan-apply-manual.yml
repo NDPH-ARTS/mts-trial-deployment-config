@@ -1,11 +1,23 @@
-name: Terraform Plan and Apply for Trials
+# This is a basic workflow that is manually triggered
 
+name: Manual Terraform Plan and Apply for Trials
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+# Leaving the initial test inputs until teh manula workflow is tested and we can accept input vars
 on:
-  push:
-    branches: [ main, feature/** ]
-    paths-ignore:
-    - 'terraform/shared_rg/**'
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Person to greet'
+        # Default value if no value is explicitly provided
+        default: 'World'
+        # Input has to be provided for the workflow to run
+        required: true
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   prepare-run-matrix:
     name: Detect changed definitions and prepare matrix
@@ -39,6 +51,8 @@ jobs:
           JSON="{\"include\":["
 
           # Iterate diff files and add each for the run matrix
+          echo "about to start checking diff files"
+
           while read path; do
 
             # if no file was changed. all values are empty, and the matrix should be empty
@@ -131,8 +145,22 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
+          echo "definition env is - env"
+          echo "definition env is - ${env}"
+          echo "definition env is - ${{env}}"
+          echo "definition env is - {env}"
+          echo "definition env is - 'env'"
+          echo "definition env is - '${env}'"
+          echo "definition env is - '${{env}}'"
+          echo "definition env is - '{env}'"
+          echo "definition env is - '{{env}}'"
+          echo "definition env is - '{env}'"
+          echo "definition env is - 'env'"
+
+
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
+                         -var="environment=$ENV" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -152,6 +180,7 @@ jobs:
           echo "Merged to main. applying trial's RG"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
+                          -var="environment=${ENV}" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
