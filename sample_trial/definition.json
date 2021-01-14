@@ -1,7 +1,7 @@
 {
-    "name": "mytrial",
-    "id": "sample2",
-    "version": 2,
+    "name": "mytesttrial",
+    "id": "sampletrial",
+    "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "site_service": {
         "image_name": "nginx",
