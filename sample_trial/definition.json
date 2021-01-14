@@ -2,7 +2,7 @@
     "name": "sampletrial",
     "id": "sample1",
     "version": 1,
-    "rootUser": "jondoe@contoso.com",
+    "rootUser": "jondoe1@contoso.com",
     "site_service": {
         "image_name": "nginx",
         "image_tag": "latest"

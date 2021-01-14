@@ -1,0 +1,31 @@
+name: ValidateTrialJsonSchema
+on:
+  push:
+    branches: [ main, feature/json-validation ]
+  pull_request:
+    branches: [ main, feature/json-validation ]
+
+
+jobs:
+  Validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Check changed files
+        id: calc_files_diff
+        run: |
+          git fetch origin main:localmain
+
+          export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema")
+
+          echo "Files changed since last commit..."
+          echo "$FILES"
+
+          echo "::set-output name=diff::$( echo "$FILES" | tr '\n' ',' | sed '$s/,$/\n/' )"
+
+      - name: Validate JSON
+        uses: docker://orrosenblatt/validate-json-action:latest
+        env:
+          INPUT_SCHEMA: json-schema/trial-json-schema.json
+          INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
