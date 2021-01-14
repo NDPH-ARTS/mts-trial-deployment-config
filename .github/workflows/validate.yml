@@ -17,6 +17,7 @@ jobs:
         run: |
           git fetch origin main:localmain
 
+          # Gets changed json files excluding the json schema
           export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema")
 
           echo "Files changed since last commit..."
@@ -27,5 +28,5 @@ jobs:
       - name: Validate JSON
         uses: docker://orrosenblatt/validate-json-action:latest
         env:
-          INPUT_SCHEMA: trial-config-schema/trial-json-schema.json
+          INPUT_SCHEMA: .ci/trial-json-schema.json
           INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}

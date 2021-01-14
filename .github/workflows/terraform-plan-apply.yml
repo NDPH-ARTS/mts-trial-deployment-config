@@ -22,6 +22,7 @@ jobs:
         run: |
           git fetch origin main:localmain
 
+          # Gets changed json files excluding the json schema
           export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema")
 
           echo "Files changed since last commit..."
