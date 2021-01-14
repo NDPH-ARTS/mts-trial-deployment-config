@@ -136,7 +136,7 @@ jobs:
         run: terraform init
 
       - name: Terraform workspace
-        run: terraform workspace select ${{ matrix.trial_id }} || terraform workspace new ${{ matrix.trial_id }}
+        run: terraform workspace select ${{ matrix.trial_id }}-${{ github.event.inputs.env }} || terraform workspace new ${{ matrix.trial_id }}-${{ github.event.inputs.env }} 
 
       - name: Terraform Format
         run: terraform fmt -check
