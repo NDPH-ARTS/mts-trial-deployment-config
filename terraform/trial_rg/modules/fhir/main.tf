@@ -37,6 +37,9 @@ resource "azurerm_app_service" "fhir_server" {
         retention_in_days = 30     # in days
       }
     }
+
+    detailed_error_messages_enabled = true
+    failed_request_tracing_enabled  = true
   }
 
   app_settings = {
