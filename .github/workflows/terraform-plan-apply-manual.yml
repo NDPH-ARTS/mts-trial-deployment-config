@@ -4,6 +4,7 @@ name: Manual Terraform Plan and Apply for Trials
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
+# Leaving the initial test inputs until teh manula workflow is tested and we can accept input vars
 on:
   workflow_dispatch:
     # Inputs the workflow accepts.
