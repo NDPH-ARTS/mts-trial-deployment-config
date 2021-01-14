@@ -26,6 +26,7 @@ jobs:
           echo "::set-output name=diff::$( echo "$FILES" | tr '\n' ',' | sed '$s/,$/\n/' )"
 
       - name: Validate JSON
+        if: ${{ steps.calc_files_diff.outputs.diff != "" }}
         uses: docker://orrosenblatt/validate-json-action:latest
         env:
           INPUT_SCHEMA: .ci/trial-json-schema.json
