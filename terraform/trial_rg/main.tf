@@ -112,7 +112,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "vnet_app_servic
 }
 
 resource "random_password" "roles_sql_password" {
-  length = 16
+  length = 64
   special = true
   override_special = "_%@"
 }
@@ -129,7 +129,7 @@ module "roles_sql_server" {
   db_name     = "ROLES"
   app_name    = "roles"
   sql_user    = "rolesuser"
-  sql_pass    = "x9RE7(pz?dfqp9!2"
+  sql_pass    = random_password.roles_sql_password.result
   application = "sql-roles"
 }
 
