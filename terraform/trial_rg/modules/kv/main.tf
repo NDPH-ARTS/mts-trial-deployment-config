@@ -19,6 +19,7 @@ resource "azurerm_key_vault" "trial_keyvault" {
 module "private_endpoint" {
   source                = "../privateendpoint"
   trial_name            = var.trial_name
+  environment           = var.environment
   rg_name               = var.rg_name
   resource_name         = azurerm_key_vault.trial_keyvault.name
   resource_id           = azurerm_key_vault.trial_keyvault.id

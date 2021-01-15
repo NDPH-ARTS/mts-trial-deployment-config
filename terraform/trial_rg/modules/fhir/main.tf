@@ -8,6 +8,7 @@ resource "random_password" "fhir_sql_password" {
 module "fhir_sql_server" {
   source     = "../sql"
   trial_name = var.trial_name
+  environment = var.environment
   rg_name    = var.rg_name
   vnet_id    = var.vnet_id
   subnet_id  = var.endpointsubnet

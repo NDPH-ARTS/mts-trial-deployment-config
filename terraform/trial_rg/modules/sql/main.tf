@@ -26,6 +26,7 @@ resource "azurerm_sql_database" "sqldb" {
 module "private_endpoint" {
   source        = "../privateendpoint"
   trial_name    = var.trial_name
+  environment   = var.environment
   rg_name       = var.rg_name
   resource_name = azurerm_mssql_server.sql_server.name
   resource_id   = azurerm_mssql_server.sql_server.id

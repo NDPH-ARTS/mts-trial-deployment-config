@@ -30,6 +30,7 @@ resource "azurerm_app_service_plan" "apps_service_plan" {
 module "trial_audit" {
   source     = "./modules/audit"
   trial_name = var.trial_name
+  environment = var.environment
   rg_name    = azurerm_resource_group.trial_rg.name
 
   depends_on = [
@@ -41,6 +42,7 @@ module "trial_audit" {
 module "trial_vnet" {
   source      = "./modules/vnet"
   trial_name  = var.trial_name
+  environment = var.environment
   rg_name     = azurerm_resource_group.trial_rg.name
 
   depends_on = [
@@ -52,6 +54,7 @@ module "trial_vnet" {
 module "fhir_server" {
   source              = "./modules/fhir"
   trial_name          = var.trial_name
+  environment = var.environment
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   vnet_id             = module.trial_vnet.id
@@ -119,6 +122,7 @@ resource "random_password" "roles_sql_password" {
 module "roles_sql_server" {
   source      = "./modules/sql"
   trial_name  = var.trial_name
+  environment = var.environment
   rg_name     = azurerm_resource_group.trial_rg.name
   vnet_id     = module.trial_vnet.id
   subnet_id   = module.trial_vnet.endpointsubnet
