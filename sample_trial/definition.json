@@ -1,6 +1,6 @@
 {
-    "name": "mywftesttrial",
-    "id": "wfsampletrial",
+    "name": "wftsttrial",
+    "id": "wfsamptrial",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "site_service": {
