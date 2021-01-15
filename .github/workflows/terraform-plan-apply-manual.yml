@@ -34,8 +34,6 @@ jobs:
           echo "env var: ${{ github.event.inputs.env }}"
           git fetch origin main:localmain
 
-          echo "${{ github.event.inputs.env }}"
-
           export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
 
           echo "Files changed since last commit..."

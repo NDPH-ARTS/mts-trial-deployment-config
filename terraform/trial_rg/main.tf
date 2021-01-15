@@ -129,7 +129,7 @@ module "roles_sql_server" {
   db_name     = "ROLES"
   app_name    = "roles"
   sql_user    = "rolesuser"
-  sql_pass    = random_password.roles_sql_password.result
+  sql_pass    = "x9RE7(pz?dfqp9!2"
   application = "sql-roles"
 }
 
