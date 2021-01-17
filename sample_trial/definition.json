@@ -13,7 +13,7 @@
     },
     "config_server_service": {
         "image_name": "ghcr.io/ndph-arts/trial-config-service",
-        "image_tag": "2d193042bc0766be588f04af705e6439e379acb8"
+        "image_tag": "177243bc197d8ed2be5cbe6a488fc3bced056e9e"
     },
     "spring_cloud": {
         "gateway_service": {
