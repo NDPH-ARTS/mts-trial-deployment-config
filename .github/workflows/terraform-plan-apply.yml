@@ -118,6 +118,8 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
 
       - name: Terraform Init
         run: terraform init
@@ -164,3 +166,28 @@ jobs:
                           -var="trial_sc_discovery_image_tag=${{ matrix.trial_sc_discovery_image_tag }}" \
                           -var="trial_sc_config_image_tag=${{ matrix.trial_sc_config_image_tag }}" \
                           -auto-approve
+
+          # '-raw' is important so no other characters will be added
+          ui_storage_conn_string=$(terraform output -raw ui_conn_string)
+          # create an env var from the connection string, so will be available for the later steps
+          echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
+
+          ## DO NOT DELETE ##
+          # mask this value so this sensitive data won't be logged.
+          echo "::add-mask::$ui_storage_conn_string"
+
+      # Get release zip file
+      - name: get assets zip
+        run: |
+          wget https://github.com/NDPH-ARTS/mts-trial-ui/releases/download/latest/all_assets.zip
+
+      # Unzip & Customzie (replace values)
+      - name: Unzip and modify
+        run: |
+          unzip all_assets.zip -d ui_component
+          # Customize here...
+
+      # Upload to storage account (to $web container)
+      - name: Upload to storage
+        run: |
+          az storage blob upload-batch --connection-string ${ui_storage_conn_string} --source ui_component --destination '$web'
