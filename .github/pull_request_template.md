@@ -1,12 +1,10 @@
-<ins>User Story:</ins> x
+## Description
+Please replace this text with a summary of the change and which issue is fixed.
 
-<ins>In this PR the following changes / features are proposed:</ins>
- * Change 0
- * ...
- * Change n
+### Changes
+- [ARTS-###] - some description
 
-<ins>This PR was tested by:</ins>
+### Checklist:
 
- Manual / Automatic / etc...
-
-<ins>Notes for reviewers:</ins>
+- [ ] Branch name follows convention (feature/arts-###-short-name OR fix/arts-###-short-name)
+- [ ] I have included a short-meaningful title, description and changes for this PR
