@@ -1,6 +1,6 @@
 {
-    "name": "mytrial",
-    "id": "sample2",
+    "name": "demotrial",
+    "id": "sample",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "site_service": {
