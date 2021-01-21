@@ -24,7 +24,7 @@
     "practitioner_service": {
       "$ref": "#/definitions/PractitionerService"
     },
-    "config_server_service": {
+    "init_process": {
       "$ref": "#/definitions/ConfigServerService"
     },
     "spring_cloud": {
@@ -38,7 +38,7 @@
     "rootUser",
     "site_service",
     "practitioner_service",
-    "config_server_service",
+    "init_process",
     "spring_cloud"
   ],
   "definitions": {

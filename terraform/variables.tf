@@ -38,12 +38,12 @@ variable "practitioner_image_tag" {
   default     = "latest"
 }
 
-variable "trial_config_service_image_name" {
+variable "trial_init_process_image_name" {
   type        = string
   description = "trial configuration service image name (fqdn)."
 }
 
-variable "trial_config_service_image_tag" {
+variable "trial_init_process_image_tag" {
   type        = string
   description = "trial configuration service image tag."
   default     = "latest"
