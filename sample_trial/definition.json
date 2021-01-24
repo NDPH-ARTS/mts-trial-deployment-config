@@ -26,9 +26,13 @@
             "image_name": "nginx",
             "image_tag": "latest"
         },
-        "config_service": {
+        "config_server": {
             "image_name": "ghcr.io/ndph-arts/trial-config-service",
-            "image_tag": "6e94f7841240153c7594a4e3c30e7e4a90523266"
+            "image_tag": "6e94f7841240153c7594a4e3c30e7e4a90523266",
+            "git_config_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
+            "config_profile": "default",
+            "config_label": "main",
+            "search_paths": [ "sample_trial/config_server", "sample_trial/config_server/practitioner_service"]
         }
     }
 }
