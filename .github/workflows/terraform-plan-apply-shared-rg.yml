@@ -2,7 +2,7 @@ name: Terraform Plan and Apply for the Shared Resource Group
 
 on:
   push:
-    branches: [ main, feature/** ]
+    branches: [ main, feature/**, fix/** ]
     paths:
     - 'terraform/shared_rg/**'
 
