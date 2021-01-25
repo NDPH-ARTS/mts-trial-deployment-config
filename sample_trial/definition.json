@@ -6,11 +6,11 @@
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
     "ui_client_id": "f352ce15-0142-4dfa-8e18-801ee6391557",
     "site_service": {
-        "image_name": "ghcr.io/ndph-arts/trial-site-service",
+        "image_name": "ghcr.io/ndph-arts/site-service",
         "image_tag": "latest"
     },
     "practitioner_service": {
-        "image_name": "ghcr.io/ndph-arts/trial-practitioner-service",
+        "image_name": "ghcr.io/ndph-arts/practitioner-service",
         "image_tag": "latest"
     },
     "config_server_service": {
@@ -18,7 +18,7 @@
         "image_tag": "latest"
     },
     "role_service": {
-        "image_name": "ghcr.io/ndph-arts/trial-role-service",
+        "image_name": "ghcr.io/ndph-arts/role-service",
         "image_tag": "latest"
     },
     "spring_cloud": {
