@@ -27,8 +27,17 @@ module "trial_app_service_practitioner" {
   docker_image        = var.practitioner_image_name
   docker_image_tag    = var.practitioner_image_tag
 
+  # todo use private endpoint
+  settings = {
+    "SPRING_APPLICATION_NAME"     = "practitioner-service",
+    "SPRING_CLOUD_CONFIG_PROFILE" = "default",
+    "SPRING_CLOUD_CONFIG_LABEL"   = "main",
+    "SPRING_CLOUD_CONFIG_URI"     = module.trial_sc_config.endpoint
+  }
+
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
+    module.trial_sc_config,
   ]
 }
 
