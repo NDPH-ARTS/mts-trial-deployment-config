@@ -30,7 +30,7 @@
             "image_name": "ghcr.io/ndph-arts/config-server",
             "image_tag": "6e94f7841240153c7594a4e3c30e7e4a90523266",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": [ "sample_trial/config_server", "sample_trial/config_server/practitioner_service"]
+            "search_paths": "sample_trial/config_server, sample_trial/config_server/practitioner_service"
         }
     }
 }
