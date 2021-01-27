@@ -1,6 +1,6 @@
 {
-    "name": "cpdemo2",
-    "id": "cpdemo",
+    "name": "confdemo2",
+    "id": "confdemo2",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -15,7 +15,7 @@
     },
     "init_process": {
         "image_name": "ghcr.io/ndph-arts/trial-config-service",
-        "image_tag": "2d193042bc0766be588f04af705e6439e379acb8"
+        "image_tag": "0aba8d94e36a828e0a190269ac869ac87749d114"
     },
     "spring_cloud": {
         "gateway_service": {
@@ -28,9 +28,9 @@
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "6e94f7841240153c7594a4e3c30e7e4a90523266",
+            "image_tag": "0aba8d94e36a828e0a190269ac869ac87749d114",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": [ "sample_trial/config_server", "sample_trial/config_server/practitioner_service"]
+            "search_paths": "sample_trial/config_server, sample_trial/config_server/practitioner_service"
         }
     }
 }
