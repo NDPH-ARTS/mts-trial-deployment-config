@@ -4,6 +4,6 @@ output "service_id" {
 }
 
 output "endpoint" {
-  value       = azurerm_app_service.generic_service.outbound_ip_addresses[0]
+  value       = azurerm_app_service.generic_service.outbound_ip_addresses
   description = "The public endpoint."
 }
