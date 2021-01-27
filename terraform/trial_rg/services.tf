@@ -100,6 +100,11 @@ module "trial_sc_config" {
   docker_image        = var.trial_sc_config_image_name
   docker_image_tag    = var.trial_sc_config_image_tag
 
+  settings = {
+    "SPRING_CLOUD_CONFIG_SERVER_GIT_URI"         = var.trial_sc_config_git_uri,
+    "SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCH_PATH" = var.trial_sc_config_search_paths
+  }
+
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
   ]

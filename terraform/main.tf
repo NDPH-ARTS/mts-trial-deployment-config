@@ -20,4 +20,6 @@ module "trial_rg" {
 
   trial_sc_config_image_name = var.trial_sc_config_image_name
   trial_sc_config_image_tag  = var.trial_sc_config_image_tag
+  trial_sc_config_git_uri = var.trial_sc_config_git_uri
+  trial_sc_config_search_paths = var.trial_sc_config_search_paths
 }
