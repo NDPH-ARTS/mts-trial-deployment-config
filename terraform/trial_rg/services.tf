@@ -110,8 +110,10 @@ module "trial_sc_config" {
   docker_image_tag    = var.trial_sc_config_image_tag
 
   settings = {
-    "SPRING_CLOUD_CONFIG_SERVER_GIT_URI"          = var.trial_sc_config_git_uri,
+    "SPRING_CLOUD_CONFIG_SERVER_GIT_URI"         = var.trial_sc_config_git_uri,
     "SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS" = var.trial_sc_config_search_paths
+    "SERVER_PORT"                                = 8080
+    "WEBSITES_PORT"                              = 8080
   }
 
   depends_on = [
