@@ -29,8 +29,8 @@
     "practitioner_service" : {
       "$ref" : "#/definitions/Service"
     },
-    "config_server_service" : {
-      "$ref" : "#/definitions/Service"
+    "init_process": {
+      "$ref": "#/definitions/Service"
     },
     "role_service" : {
       "$ref" : "#/definitions/Service"

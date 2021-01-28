@@ -42,12 +42,12 @@ variable "practitioner_image_tag" {
   default     = "latest"
 }
 
-variable "trial_config_service_image_name" {
+variable "trial_init_process_image_name" {
   type        = string
   description = "configuration server image name (fqdn)."
 }
 
-variable "trial_config_service_image_tag" {
+variable "trial_init_process_image_tag" {
   type        = string
   description = "configuration server image tag."
   default     = "latest"
@@ -84,4 +84,14 @@ variable "trial_sc_config_image_tag" {
   type        = string
   description = "SC config image tag."
   default     = "latest"
+}
+
+variable "trial_sc_config_git_uri" {
+  type        = string
+  description = "Git configuration uri, from which to pull all the applications configuration"
+}
+
+variable "trial_sc_config_search_paths" {
+  type        = string
+  description = "Search path within the git uri, to find different configs for the different apps."
 }

@@ -1,6 +1,6 @@
 {
-    "name": "trial0",
-    "id": "t01",
+    "name": "trial02",
+    "id": "t02",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -13,7 +13,7 @@
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
         "image_tag": "main-latest"
     },
-    "config_server_service": {
+    "init_process": {
         "image_name": "ghcr.io/ndph-arts/trial-config-service",
         "image_tag": "main-latest"
     },
@@ -31,8 +31,10 @@
             "image_tag": "main-latest"
         },
         "config_server": {
-            "image_name": "ghcr.io/ndph-arts/sc-config-server",
-            "image_tag": "main-latest"
+            "image_name": "ghcr.io/ndph-arts/config-server",
+            "image_tag": "6e94f7841240153c7594a4e3c30e7e4a90523266",
+            "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
+            "search_paths": "sample_trial/config_server, sample_trial/config_server/practitioner_service"
         }
     }
 }
