@@ -2,7 +2,6 @@ name: Terraform Plan and Apply for Trials
 
 on:
   push:
-    branches: [ main, feature/** ]
     paths-ignore:
     - 'terraform/shared_rg/**'
 
