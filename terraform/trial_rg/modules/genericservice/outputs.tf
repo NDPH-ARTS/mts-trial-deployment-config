@@ -3,7 +3,7 @@ output "service_id" {
   description = "The id of the generated app service."
 }
 
-output "endpoint" {
-  value       = azurerm_app_service.generic_service.outbound_ip_addresses
+output "name" {
+  value       = azurerm_app_service.generic_service.name
   description = "The public endpoint."
 }

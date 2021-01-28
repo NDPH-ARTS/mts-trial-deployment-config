@@ -32,7 +32,7 @@ module "trial_app_service_practitioner" {
     "SPRING_APPLICATION_NAME"     = "practitioner-service",
     "SPRING_CLOUD_CONFIG_PROFILE" = "default",
     "SPRING_CLOUD_CONFIG_LABEL"   = "main",
-    "SPRING_CLOUD_CONFIG_URI"     = module.trial_sc_config.endpoint
+    "SPRING_CLOUD_CONFIG_URI"     = "https://${module.trial_sc_config.name}.azurewebsites.net"
   }
 
   depends_on = [
