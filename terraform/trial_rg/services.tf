@@ -111,7 +111,7 @@ module "trial_sc_config" {
 
   settings = {
     "SPRING_CLOUD_CONFIG_SERVER_GIT_URI"          = var.trial_sc_config_git_uri,
-    "SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCH_PATHS" = var.trial_sc_config_search_paths
+    "SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS" = var.trial_sc_config_search_paths
   }
 
   depends_on = [
