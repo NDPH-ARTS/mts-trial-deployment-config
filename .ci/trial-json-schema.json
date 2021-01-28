@@ -29,7 +29,7 @@
     "practitioner_service" : {
       "$ref" : "#/definitions/Service"
     },
-    "init_process": {
+    "init_service": {
       "$ref": "#/definitions/Service"
     },
     "role_service" : {

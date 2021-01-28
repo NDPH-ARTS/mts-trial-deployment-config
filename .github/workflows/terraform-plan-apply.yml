@@ -64,8 +64,8 @@ jobs:
             practitionerImage=`echo $(jq -r '.practitioner_service.image_name' ./$path)`
             practitionerImageTag=`echo $(jq -r '.practitioner_service.image_tag' ./$path)`
 
-            initProcessImage=`echo $(jq -r '.init_process.image_name' ./$path)`
-            initProcessImageTag=`echo $(jq -r '.init_process.image_tag' ./$path)`
+            initProcessImage=`echo $(jq -r '.init_service.image_name' ./$path)`
+            initProcessImageTag=`echo $(jq -r '.init_service.image_tag' ./$path)`
 
             scGatewayImage=`echo $(jq -r '.spring_cloud.gateway_service.image_name' ./$path)`
             scGatewayImageTag=`echo $(jq -r '.spring_cloud.gateway_service.image_tag' ./$path)`
@@ -86,7 +86,7 @@ jobs:
             # Apps
             MatrixItem="$MatrixItem \"site_image_name\": \"$siteImage\",\"site_image_tag\": \"$siteImageTag\","
             MatrixItem="$MatrixItem \"practitioner_image_name\": \"$practitionerImage\",\"practitioner_image_tag\": \"$practitionerImageTag\","
-            MatrixItem="$MatrixItem \"trial_init_process_image_name\": \"$initProcessImage\",\"trial_init_process_image_tag\": \"$initProcessImageTag\","
+            MatrixItem="$MatrixItem \"trial_init_service_image_name\": \"$initProcessImage\",\"trial_init_service_image_tag\": \"$initProcessImageTag\","
 
             # Spring cloud apps
             MatrixItem="$MatrixItem \"trial_sc_gateway_image_name\": \"$scGatewayImage\",\"trial_sc_gateway_image_tag\": \"$scGatewayImageTag\","
@@ -147,13 +147,13 @@ jobs:
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
-                         -var="trial_init_process_image_name=${{ matrix.trial_init_process_image_name }}" \
+                         -var="trial_init_service_image_name=${{ matrix.trial_init_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
                          -var="trial_sc_discovery_image_name=${{ matrix.trial_sc_discovery_image_name }}" \
                          -var="trial_sc_config_image_name=${{ matrix.trial_sc_config_image_name }}" \
                          -var="site_image_tag=${{ matrix.site_image_tag }}" \
                          -var="practitioner_image_tag=${{ matrix.practitioner_image_tag }}" \
-                         -var="trial_init_process_image_tag=${{ matrix.trial_init_process_image_tag }}" \
+                         -var="trial_init_service_image_tag=${{ matrix.trial_init_service_image_tag }}" \
                          -var="trial_sc_gateway_image_tag=${{ matrix.trial_sc_gateway_image_tag }}" \
                          -var="trial_sc_discovery_image_tag=${{ matrix.trial_sc_discovery_image_tag }}" \
                          -var="trial_sc_config_image_tag=${{ matrix.trial_sc_config_image_tag }}" \
@@ -168,13 +168,13 @@ jobs:
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
-                          -var="trial_init_process_image_name=${{ matrix.trial_init_process_image_name }}" \
+                          -var="trial_init_service_image_name=${{ matrix.trial_init_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
                           -var="trial_sc_discovery_image_name=${{ matrix.trial_sc_discovery_image_name }}" \
                           -var="trial_sc_config_image_name=${{ matrix.trial_sc_config_image_name }}" \
                           -var="site_image_tag=${{ matrix.site_image_tag }}" \
                           -var="practitioner_image_tag=${{ matrix.practitioner_image_tag }}" \
-                          -var="trial_init_process_image_tag=${{ matrix.trial_init_process_image_tag }}" \
+                          -var="trial_init_service_image_tag=${{ matrix.trial_init_service_image_tag }}" \
                           -var="trial_sc_gateway_image_tag=${{ matrix.trial_sc_gateway_image_tag }}" \
                           -var="trial_sc_discovery_image_tag=${{ matrix.trial_sc_discovery_image_tag }}" \
                           -var="trial_sc_config_image_tag=${{ matrix.trial_sc_config_image_tag }}" \

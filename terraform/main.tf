@@ -8,8 +8,8 @@ module "trial_rg" {
   practitioner_image_name = var.practitioner_image_name
   practitioner_image_tag  = var.practitioner_image_tag
 
-  trial_init_process_image_name = var.trial_init_process_image_name
-  trial_init_process_image_tag  = var.trial_init_process_image_tag
+  trial_init_service_image_name = var.trial_init_service_image_name
+  trial_init_service_image_tag  = var.trial_init_service_image_tag
 
   # Spring cloud
   trial_sc_gateway_image_name = var.trial_sc_gateway_image_name

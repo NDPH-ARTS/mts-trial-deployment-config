@@ -50,8 +50,8 @@ module "trial_app_service_config" {
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
-  docker_image        = var.trial_init_process_image_name
-  docker_image_tag    = var.trial_init_process_image_tag
+  docker_image        = var.trial_init_service_image_name
+  docker_image_tag    = var.trial_init_service_image_tag
 
   settings = {
     "always_on"   = "true",
