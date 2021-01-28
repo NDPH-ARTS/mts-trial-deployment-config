@@ -64,8 +64,8 @@ jobs:
             practitionerImage=`echo $(jq -r '.practitioner_service.image_name' ./$path)`
             practitionerImageTag=`echo $(jq -r '.practitioner_service.image_tag' ./$path)`
 
-            initProcessImage=`echo $(jq -r '.init_service.image_name' ./$path)`
-            initProcessImageTag=`echo $(jq -r '.init_service.image_tag' ./$path)`
+            initServiceImage=`echo $(jq -r '.init_service.image_name' ./$path)`
+            initServiceImageTag=`echo $(jq -r '.init_service.image_tag' ./$path)`
 
             scGatewayImage=`echo $(jq -r '.spring_cloud.gateway_service.image_name' ./$path)`
             scGatewayImageTag=`echo $(jq -r '.spring_cloud.gateway_service.image_tag' ./$path)`
@@ -86,7 +86,7 @@ jobs:
             # Apps
             MatrixItem="$MatrixItem \"site_image_name\": \"$siteImage\",\"site_image_tag\": \"$siteImageTag\","
             MatrixItem="$MatrixItem \"practitioner_image_name\": \"$practitionerImage\",\"practitioner_image_tag\": \"$practitionerImageTag\","
-            MatrixItem="$MatrixItem \"trial_init_service_image_name\": \"$initProcessImage\",\"trial_init_service_image_tag\": \"$initProcessImageTag\","
+            MatrixItem="$MatrixItem \"trial_init_service_image_name\": \"$initServiceImage\",\"trial_init_service_image_tag\": \"$initServiceImageTag\","
 
             # Spring cloud apps
             MatrixItem="$MatrixItem \"trial_sc_gateway_image_name\": \"$scGatewayImage\",\"trial_sc_gateway_image_tag\": \"$scGatewayImageTag\","

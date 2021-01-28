@@ -1,6 +1,6 @@
 {
-    "name": "eldem01",
-    "id": "etemp01",
+    "name": "trial0",
+    "id": "t01",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -11,7 +11,7 @@
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "d50bf51c2ac3365d6e662b569c434eda99f882c3"
+        "image_tag": "main-latest"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/trial-config-service",
@@ -32,7 +32,7 @@
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "d50bf51c2ac3365d6e662b569c434eda99f882c3",
+            "image_tag": "main-latest",
             "git_uri": "https://github.com/NDPH-ARTS/spring-config-server.git",
             "search_paths": "trial-config-service, practitioner-service"
         }
