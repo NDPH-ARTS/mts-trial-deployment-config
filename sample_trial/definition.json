@@ -14,7 +14,7 @@
         "image_tag": "main-latest"
     },
     "init_service": {
-        "image_name": "ghcr.io/ndph-arts/trial-config-service",
+        "image_name": "ghcr.io/ndph-arts/init-service",
         "image_tag": "main-latest"
     },
     "role_service": {
@@ -34,7 +34,7 @@
             "image_name": "ghcr.io/ndph-arts/config-server",
             "image_tag": "main-latest",
             "git_uri": "https://github.com/NDPH-ARTS/spring-config-server.git",
-            "search_paths": "trial-config-service, practitioner-service"
+            "search_paths": "practitioner-service"
         }
     }
 }

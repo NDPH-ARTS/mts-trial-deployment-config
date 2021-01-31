@@ -85,7 +85,7 @@ module "trial_keyvault" {
 locals {
   service_ids = [module.fhir_server.service_id, module.trial_app_service_site.service_id,
     module.trial_app_service_practitioner.service_id,
-    module.trial_app_service_config.service_id,
+    module.trial_app_service_init.service_id,
     module.trial_sc_gateway.service_id, module.trial_sc_discovery.service_id,
   module.trial_sc_config.service_id]
 }
@@ -101,7 +101,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "vnet_app_servic
     module.fhir_server,
     module.trial_app_service_site,
     module.trial_app_service_practitioner,
-    module.trial_app_service_config,
+    module.trial_app_service_init,
     module.trial_sc_gateway,
     module.trial_sc_discovery,
     module.trial_sc_config

@@ -42,10 +42,11 @@ module "trial_app_service_practitioner" {
   ]
 }
 
-# config server service
-module "trial_app_service_config" {
+# init service
+# todo: make 1-time service: ARTS-561
+module "trial_app_service_init" {
   source              = "./modules/genericservice"
-  app_name            = "config"
+  app_name            = "init"
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
