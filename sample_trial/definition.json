@@ -34,7 +34,7 @@
             "image_name": "ghcr.io/ndph-arts/config-server",
             "image_tag": "main-latest",
             "git_uri": "https://github.com/NDPH-ARTS/spring-config-server.git",
-            "search_paths": "services/practitioner-service"
+            "search_paths": "services, services/practitioner-service"
         }
     }
 }
