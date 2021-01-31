@@ -86,13 +86,13 @@ jobs:
             # Apps
             MatrixItem="$MatrixItem \"site_image_name\": \"$siteImage\",\"site_image_tag\": \"$siteImageTag\","
             MatrixItem="$MatrixItem \"practitioner_image_name\": \"$practitionerImage\",\"practitioner_image_tag\": \"$practitionerImageTag\","
-            MatrixItem="$MatrixItem \"trial_init_service_image_name\": \"$initServiceImage\",\"trial_init_service_image_tag\": \"$initServiceImageTag\","
+            MatrixItem="$MatrixItem \"init_service_image_name\": \"$initServiceImage\",\"init_service_image_tag\": \"$initServiceImageTag\","
 
             # Spring cloud apps
-            MatrixItem="$MatrixItem \"trial_sc_gateway_image_name\": \"$scGatewayImage\",\"trial_sc_gateway_image_tag\": \"$scGatewayImageTag\","
-            MatrixItem="$MatrixItem \"trial_sc_discovery_image_name\": \"$scDiscoveryImage\",\"trial_sc_discovery_image_tag\": \"$scDiscoveryImageTag\","
-            MatrixItem="$MatrixItem \"trial_sc_config_image_name\": \"$scConfigImage\",\"trial_sc_config_image_tag\": \"$scConfigImageTag\","
-            MatrixItem="$MatrixItem \"trial_sc_config_git_uri\": \"$scConfigGitUri\",\"trial_sc_config_search_paths\": \"$scConfigSearchPaths\","
+            MatrixItem="$MatrixItem \"sc_gateway_image_name\": \"$scGatewayImage\",\"sc_gateway_image_tag\": \"$scGatewayImageTag\","
+            MatrixItem="$MatrixItem \"sc_discovery_image_name\": \"$scDiscoveryImage\",\"sc_discovery_image_tag\": \"$scDiscoveryImageTag\","
+            MatrixItem="$MatrixItem \"sc_config_image_name\": \"$scConfigImage\",\"sc_config_image_tag\": \"$scConfigImageTag\","
+            MatrixItem="$MatrixItem \"sc_config_git_uri\": \"$scConfigGitUri\",\"sc_config_search_paths\": \"$scConfigSearchPaths\","
 
             MatrixItem="$MatrixItem },"
             JSON="$JSON$MatrixItem"
@@ -147,18 +147,18 @@ jobs:
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
-                         -var="trial_init_service_image_name=${{ matrix.trial_init_service_image_name }}" \
-                         -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
-                         -var="trial_sc_discovery_image_name=${{ matrix.trial_sc_discovery_image_name }}" \
-                         -var="trial_sc_config_image_name=${{ matrix.trial_sc_config_image_name }}" \
+                         -var="init_service_image_name=${{ matrix.init_service_image_name }}" \
+                         -var="sc_gateway_image_name=${{ matrix.sc_gateway_image_name }}" \
+                         -var="sc_discovery_image_name=${{ matrix.sc_discovery_image_name }}" \
+                         -var="sc_config_image_name=${{ matrix.sc_config_image_name }}" \
                          -var="site_image_tag=${{ matrix.site_image_tag }}" \
                          -var="practitioner_image_tag=${{ matrix.practitioner_image_tag }}" \
-                         -var="trial_init_service_image_tag=${{ matrix.trial_init_service_image_tag }}" \
-                         -var="trial_sc_gateway_image_tag=${{ matrix.trial_sc_gateway_image_tag }}" \
-                         -var="trial_sc_discovery_image_tag=${{ matrix.trial_sc_discovery_image_tag }}" \
-                         -var="trial_sc_config_image_tag=${{ matrix.trial_sc_config_image_tag }}" \
-                         -var="trial_sc_config_git_uri=${{ matrix.trial_sc_config_git_uri }}" \
-                         -var="trial_sc_config_search_paths=${{ matrix.trial_sc_config_search_paths }}" \
+                         -var="init_service_image_tag=${{ matrix.init_service_image_tag }}" \
+                         -var="sc_gateway_image_tag=${{ matrix.sc_gateway_image_tag }}" \
+                         -var="sc_discovery_image_tag=${{ matrix.sc_discovery_image_tag }}" \
+                         -var="sc_config_image_tag=${{ matrix.sc_config_image_tag }}" \
+                         -var="sc_config_git_uri=${{ matrix.sc_config_git_uri }}" \
+                         -var="sc_config_search_paths=${{ matrix.sc_config_search_paths }}" \
 
       # Apply, only on merge to main
       - name: Apply TF for "${{ matrix.trial_name }}"
@@ -168,18 +168,18 @@ jobs:
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
-                          -var="trial_init_service_image_name=${{ matrix.trial_init_service_image_name }}" \
-                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
-                          -var="trial_sc_discovery_image_name=${{ matrix.trial_sc_discovery_image_name }}" \
-                          -var="trial_sc_config_image_name=${{ matrix.trial_sc_config_image_name }}" \
+                          -var="init_service_image_name=${{ matrix.init_service_image_name }}" \
+                          -var="sc_gateway_image_name=${{ matrix.sc_gateway_image_name }}" \
+                          -var="sc_discovery_image_name=${{ matrix.sc_discovery_image_name }}" \
+                          -var="sc_config_image_name=${{ matrix.sc_config_image_name }}" \
                           -var="site_image_tag=${{ matrix.site_image_tag }}" \
                           -var="practitioner_image_tag=${{ matrix.practitioner_image_tag }}" \
-                          -var="trial_init_service_image_tag=${{ matrix.trial_init_service_image_tag }}" \
-                          -var="trial_sc_gateway_image_tag=${{ matrix.trial_sc_gateway_image_tag }}" \
-                          -var="trial_sc_discovery_image_tag=${{ matrix.trial_sc_discovery_image_tag }}" \
-                          -var="trial_sc_config_image_tag=${{ matrix.trial_sc_config_image_tag }}" \
-                          -var="trial_sc_config_git_uri=${{ matrix.trial_sc_config_git_uri }}" \
-                          -var="trial_sc_config_search_paths=${{ matrix.trial_sc_config_search_paths }}" \
+                          -var="init_service_image_tag=${{ matrix.init_service_image_tag }}" \
+                          -var="sc_gateway_image_tag=${{ matrix.sc_gateway_image_tag }}" \
+                          -var="sc_discovery_image_tag=${{ matrix.sc_discovery_image_tag }}" \
+                          -var="sc_config_image_tag=${{ matrix.sc_config_image_tag }}" \
+                          -var="sc_config_git_uri=${{ matrix.sc_config_git_uri }}" \
+                          -var="sc_config_search_paths=${{ matrix.sc_config_search_paths }}" \
                           -auto-approve
 
           # '-raw' is important so no other characters will be added
