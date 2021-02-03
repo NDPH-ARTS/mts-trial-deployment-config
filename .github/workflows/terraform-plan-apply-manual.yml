@@ -27,6 +27,7 @@ jobs:
     name: Detect changed definitions and prepare matrix
     runs-on: ubuntu-latest
     outputs:
+      deploy_env: ${{ steps.set-matrix.outputs.deploy_env }}
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_empty_matrix: ${{ steps.set-matrix.outputs.is_empty_matrix }}
     steps:
