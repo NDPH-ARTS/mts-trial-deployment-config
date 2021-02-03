@@ -1,7 +1,7 @@
 {
-    "name": "dgstrial",
-    "id": "dgstrial",
-    "version": 1,
+    "name": "dgstrialalltest",
+    "id": "dgstrialalltest",
+    "version": 2,
     "rootUser": "jondoe1@contoso.com",
     "site_service": {
         "image_name": "nginx",
