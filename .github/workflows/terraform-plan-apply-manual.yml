@@ -5,6 +5,11 @@ name: Manual Terraform Plan and Apply for Trials
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
 on:
+  push:
+    branches: [ main, feature/** ]
+    paths-ignore:
+    - 'terraform/shared_rg/**'
+
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
@@ -16,7 +21,6 @@ on:
         # Input has to be provided for the workflow to run
         required: true
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   prepare-run-matrix:
     name: Detect changed definitions and prepare matrix
@@ -31,10 +35,15 @@ jobs:
       - name: Check changed files
         id: calc_files_diff
         run: |
-          echo "env var: ${{ github.event.inputs.env }}"
           git fetch origin main:localmain
 
-          export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
+          if [ -z ${{ github.event.inputs.env }} ]
+          then
+            export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
+          else
+            # Gets changed json files excluding the json schema
+            export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
+          fi
 
           echo "Files changed since last commit..."
           echo "$FILES"
@@ -50,8 +59,6 @@ jobs:
           JSON="{\"include\":["
 
           # Iterate diff files and add each for the run matrix
-          echo "about to start checking diff files"
-
           while read path; do
 
             # if no file was changed. all values are empty, and the matrix should be empty
@@ -69,6 +76,8 @@ jobs:
             # Extract values for the trial
             trialName=`echo $(jq -r '.name' ./$path)`
             trialId=`echo $(jq -r '.id' ./$path)`
+            tenantId=`echo $(jq -r '.tenant_id' ./$path)`
+            uiClientId=`echo $(jq -r '.ui_client_id' ./$path)`
             siteImage=`echo $(jq -r '.site_service.image_name' ./$path)`
             siteImageTag=`echo $(jq -r '.site_service.image_tag' ./$path)`
             practitionerImage=`echo $(jq -r '.practitioner_service.image_name' ./$path)`
@@ -85,7 +94,7 @@ jobs:
             # in this section we add to the output (the matrix), a new block, which
             # contains all the read content from the definition file (e.g. the trial name,
             #  id, images, tags, etc... that are relevant for the following steps)
-            MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\","
+            MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\", \"ui_client_id\": \"$uiClientId\", \"tenant_id\": \"$tenantId\","
 
             # Apps
             MatrixItem="$MatrixItem \"site_image_name\": \"$siteImage\",\"site_image_tag\": \"$siteImageTag\","
@@ -131,12 +140,14 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform workspace
-        run: terraform workspace select ${{ matrix.trial_id }}-${{ github.event.inputs.env }} || terraform workspace new ${{ matrix.trial_id }}-${{ github.event.inputs.env }} 
+        run: terraform workspace select ${{ matrix.trial_id }} || terraform workspace new ${{ matrix.trial_id }}
 
       - name: Terraform Format
         run: terraform fmt -check
@@ -144,10 +155,12 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
-          echo "definition env is - ${{ github.event.inputs.env }}"
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                         -var="environment=${{ github.event.inputs.env }}" \
+                          if [ -z ${{ github.event.inputs.env }} ]
+                          then
+                            -var="environment=${{ github.event.inputs.env }}" \
+                          fi
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -167,7 +180,10 @@ jobs:
           echo "Merged to main. applying trial's RG"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
+                          if [ -z ${{ github.event.inputs.env }} ]
+                          then
                           -var="environment=${{ github.event.inputs.env }}" \
+                          fi
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -180,3 +196,39 @@ jobs:
                           -var="trial_sc_discovery_image_tag=${{ matrix.trial_sc_discovery_image_tag }}" \
                           -var="trial_sc_config_image_tag=${{ matrix.trial_sc_config_image_tag }}" \
                           -auto-approve
+
+          # '-raw' is important so no other characters will be added
+          ui_storage_conn_string=$(terraform output -raw ui_conn_string)
+          # create an env var from the connection string, so will be available for the later steps
+          echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
+          echo "trial_name=${{ matrix.trial_name }}" >> $GITHUB_ENV
+          echo "tenant_id=${{ matrix.tenant_id }}" >> $GITHUB_ENV
+          echo "ui_client_id=${{ matrix.ui_client_id }}" >> $GITHUB_ENV
+
+          ## DO NOT DELETE ##
+          # mask this value so this sensitive data won't be logged.
+          echo "::add-mask::$ui_storage_conn_string"
+
+      # Get release zip file
+      - name: UI component -  Get assets zip
+        run: |
+          wget https://github.com/NDPH-ARTS/mts-trial-ui/releases/download/latest/mts-trial-ui.zip
+
+      # Unzip & Customzie (replace values)
+      - name: UI component - Unzip and modify
+        run: |
+          unzip mts-trial-ui.zip
+
+          sed -i 's/{{clientId}}/${{ env.ui_client_id }}/' mts-trial-ui/index.html
+          sed -i 's/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${{ env.tenant_id }}\/v2.0/' mts-trial-ui/index.html
+          sed -i 's/{{trialName}}/${{ env.trial_name }}/' mts-trial-ui/index.html
+
+      # Upload to storage account (to $web container)
+      - name: UI component - Upload to storage
+        run: |
+          az storage blob upload-batch --connection-string ${ui_storage_conn_string} --source mts-trial-ui --destination '$web'
+
+
+
+
+
