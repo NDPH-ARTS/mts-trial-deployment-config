@@ -168,10 +168,10 @@ jobs:
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
 
-          echo " env is - ${{ deploy_env }}"
+          echo " env is - ${{ needs.prepare-run-matrix.outputs.deploy_env }}"
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${{ deploy_env }}" \
+                          -var="environment=${{ needs.prepare-run-matrix.outputs.deploy_env }}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -189,10 +189,10 @@ jobs:
         # if: github.ref == 'refs/heads/main'
         run: |
           echo "Merged to main. applying trial's RG"
-          echo " env is - ${{ deploy_env }}"
+          echo " env is - ${{ needs.prepare-run-matrix.outputs.deploy_env }}"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${{ deploy_env }}" \
+                          -var="environment=${{ needs.prepare-run-matrix.outputs.deploy_env }}" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
