@@ -37,7 +37,7 @@ jobs:
         run: |
           git fetch origin main:localmain
 
-          if [ -z ${{ github.event.inputs.env }} ]
+          if [ ! -z ${{ github.event.inputs.env }} ]
           then
             echo "setting files with env"
             echo "env var is - ${{ github.event.inputs.env }} ."
