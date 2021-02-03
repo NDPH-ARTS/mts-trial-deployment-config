@@ -12,11 +12,6 @@ on:
         # Input has to be provided for the workflow to run
         required: true
   
-  push:
-    branches: [ main, feature/** ]
-    paths-ignore:
-    - 'terraform/shared_rg/**'
-
 jobs:
   prepare-run-matrix:
     name: Detect changed definitions and prepare matrix
