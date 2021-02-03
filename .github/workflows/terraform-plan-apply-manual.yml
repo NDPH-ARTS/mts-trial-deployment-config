@@ -49,6 +49,7 @@ jobs:
             export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
           fi
 
+          echo "${{ env.deploy_env }}"
           echo "Files changed since last commit..."
           echo "$FILES"
 
