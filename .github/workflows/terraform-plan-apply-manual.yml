@@ -1,27 +1,18 @@
-# This is a basic workflow that is manually triggered
+name: Terraform Plan and Apply for Trials
 
-name: Manual Terraform Plan and Apply for Trials
-
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
 on:
   push:
     branches: [ main, feature/** ]
     paths-ignore:
-    - 'terraform/shared_rg/**'
-
+      - 'terraform/shared_rg/**'
 
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
       env:
-        # Friendly description to be shown in the UI instead of 'name'
         description: 'Deployment environment to create'
-        # Default value if no value is explicitly provided
         default: 'dev'
-        # Input has to be provided for the workflow to run
         required: true
-
 jobs:
   prepare-run-matrix:
     name: Detect changed definitions and prepare matrix
@@ -49,12 +40,12 @@ jobs:
             export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
           fi
 
-          echo "${{ env.deploy_env }}"
           echo "Files changed since last commit..."
           echo "$FILES"
 
           # Escape newlines (replace \n with %0A)
           echo "::set-output name=diff::$( echo "$FILES" | sed ':a;N;$!ba;s/\n/%0A/g' )"
+
       # Create an execution plan, which includes each found file
       - name: Set matrix for TF plan and apply
         id: set-matrix
@@ -139,7 +130,6 @@ jobs:
       ARM_SUBSCRIPTION_ID: f3fba52d-c7db-46f8-9e7a-766ca869972e
       ARM_TENANT_ID: 99804659-431f-48fa-84c1-65c9609de05b
       ARM_ACCESS_KEY: ${{secrets.TF_ARM_ACCESS_KEY}}
-
     steps:
       - uses: actions/checkout@v2
 
@@ -162,7 +152,7 @@ jobs:
         run: |
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${{ needs.prepare-run-matrix.outputs.deploy_env }}" \
+                         -var="environment=${{ needs.prepare-run-matrix.outputs.deploy_env }}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -226,8 +216,3 @@ jobs:
       - name: UI component - Upload to storage
         run: |
           az storage blob upload-batch --connection-string ${ui_storage_conn_string} --source mts-trial-ui --destination '$web'
-
-
-
-
-
