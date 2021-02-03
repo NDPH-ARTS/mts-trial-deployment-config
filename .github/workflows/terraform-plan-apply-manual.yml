@@ -15,7 +15,7 @@ on:
     inputs:
       env:
         # Friendly description to be shown in the UI instead of 'name'
-        description: 'Deployment environment'
+        description: 'Deployment environment to create'
         # Default value if no value is explicitly provided
         default: 'dev'
         # Input has to be provided for the workflow to run
