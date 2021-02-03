@@ -1,4 +1,4 @@
-name: Test Terraform Plan and Apply for Trials
+name: Terraform Plan and Apply All for Trials
 
 on:
   push:
