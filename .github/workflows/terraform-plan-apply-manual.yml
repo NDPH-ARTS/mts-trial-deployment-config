@@ -41,12 +41,12 @@ jobs:
           then
             echo "setting files with env"
             echo "env var is - ${{ github.event.inputs.env }} ."
-            var env = ${{github.event.inputs.env}}
+            export ENV = ${{github.event.inputs.env}}
             export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
           else
             echo "setting files without env"
             # Gets changed json files excluding the json schema
-            var env = 'dev'
+            export ENV = 'dev'
             export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
           fi
 
@@ -161,10 +161,10 @@ jobs:
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
           echo "github env is - ${{ github.event.inputs.env }}"
-          echo " env is - ${env}"
+          echo " env is - ${ENV}"
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${env}" \
+                          -var="environment=${ENV}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -183,10 +183,10 @@ jobs:
         run: |
           echo "Merged to main. applying trial's RG"
           echo "github env is - ${{ github.event.inputs.env }}"
-          echo " env is - ${env}"
+          echo " env is - ${ENV}"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${env}" \
+                          -var="environment=${ENV}" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
