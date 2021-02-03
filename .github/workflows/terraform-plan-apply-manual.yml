@@ -28,30 +28,26 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_empty_matrix: ${{ steps.set-matrix.outputs.is_empty_matrix }}
-      if [ ! -z ${{ github.event.inputs.env }} ]
-      then
-      echo "deploy_env=${{github.event.inputs.env}}" >> $GITHUB_ENV
-      else
-      echo "deploy_env=dev" >> $GITHUB_ENV
-      fi
+
     steps:
       - uses: actions/checkout@v2
 
       # Get a list of changed .json files
       - name: Check changed files
         id: calc_files_diff
-        with:
-          DEV_ENV: ${{ env.deploy_env }}
+
         run: |
           git fetch origin main:localmain
 
           if [ ! -z ${{ github.event.inputs.env }} ]
           then
             echo "setting files with env"
+            echo "deploy_env=${{github.event.inputs.env}}" >> $GITHUB_ENV
             export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
           else
             echo "setting files without env"
             # Gets changed json files excluding the json schema
+            echo "deploy_env=dev" >> $GITHUB_ENV
             export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
           fi
 
@@ -65,6 +61,8 @@ jobs:
       # Create an execution plan, which includes each found file
       - name: Set matrix for TF plan and apply
         id: set-matrix
+        with:
+          DEV_ENV: ${{ env.deploy_env }}
         run: |
           echo "${{ env.deploy_env }}"
           FILES="${{ steps.calc_files_diff.outputs.diff }}"
