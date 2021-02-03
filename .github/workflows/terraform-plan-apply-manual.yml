@@ -10,6 +10,7 @@ on:
     paths-ignore:
     - 'terraform/shared_rg/**'
 
+
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
@@ -58,10 +59,11 @@ jobs:
 
       # Create an execution plan, which includes each found file
       - name: Set matrix for TF plan and apply
-        id: set-matrix
-        with:
+        env:
           DEPLOY_ENV: ${{ env.deploy_env }}
+        id: set-matrix
         run: |
+          echo "$DEPLOY_ENV"
           FILES="${{ steps.calc_files_diff.outputs.diff }}"
           JSON="{\"include\":["
 
