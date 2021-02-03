@@ -42,7 +42,7 @@ jobs:
           if [ ! -z ${{ github.event.inputs.env }} ]
           then
             echo "setting files with env"
-            echo "::set-output name=deploy_env::$( ${{github.event.inputs.env}} )"
+            echo "::set-output name=deploy_env::$( echo ${{github.event.inputs.env}} )"
             export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
           else
             echo "setting files without env"
