@@ -26,20 +26,20 @@
     "site_service" : {
       "$ref" : "#/definitions/Service"
     },
+    "role_service" : {
+      "$ref" : "#/definitions/Service"
+    },
     "practitioner_service" : {
       "$ref" : "#/definitions/Service"
     },
-    "init_service": {
-      "$ref": "#/definitions/Service"
-    },
-    "role_service" : {
+    "init_service" : {
       "$ref" : "#/definitions/Service"
     },
     "spring_cloud" : {
       "$ref" : "#/definitions/SpringCloud"
     }
   },
-  "required" : [ "name", "id", "version", "rootUser", "tenant_id", "ui_client_id", "site_service", "practitioner_service", "init_service", "role_service", "spring_cloud" ],
+  "required" : [ "name", "id", "version", "rootUser", "tenant_id", "ui_client_id", "site_service", "role_service", "practitioner_service", "init_service", "spring_cloud" ],
   "definitions" : {
     "Service" : {
       "type" : "object",
@@ -58,6 +58,12 @@
       "type" : "object",
       "additionalProperties" : false,
       "properties" : {
+        "profile" : {
+          "type" : "string"
+        },
+        "label" : {
+          "type" : "string"
+        },
         "gateway_service" : {
           "$ref" : "#/definitions/Service"
         },
@@ -68,7 +74,7 @@
           "$ref" : "#/definitions/ConfigServer"
         }
       },
-      "required" : [ "gateway_service", "discovery_service", "config_server" ]
+      "required" : [ "profile", "label", "gateway_service", "discovery_service", "config_server" ]
     },
     "ConfigServer" : {
       "type" : "object",
