@@ -42,12 +42,12 @@ jobs:
           if [ ! -z ${{ github.event.inputs.env }} ]
           then
             echo "setting files with env"
-            echo "deploy_env=${{github.event.inputs.env}}" >> $GITHUB_ENV
+            echo "::set-output name=deploy_env::$( ${{github.event.inputs.env}} )"
             export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
           else
             echo "setting files without env"
             # Gets changed json files excluding the json schema
-            echo "deploy_env=dev" >> $GITHUB_ENV
+            echo "::set-output name=deploy_env::$( echo "dev" )"
             export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
           fi
 
@@ -57,8 +57,6 @@ jobs:
 
           # Escape newlines (replace \n with %0A)
           echo "::set-output name=diff::$( echo "$FILES" | sed ':a;N;$!ba;s/\n/%0A/g' )"
-          echo "$DEPLOY_ENV"
-          echo "::set-output name=deploy_env::$( echo "$DEPLOY_ENV" )"
       # Create an execution plan, which includes each found file
       - name: Set matrix for TF plan and apply
         id: set-matrix
