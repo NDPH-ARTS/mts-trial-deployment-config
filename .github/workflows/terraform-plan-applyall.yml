@@ -1,11 +1,6 @@
 name: Test Terraform Plan and Apply for Trials
 
 on:
-  push:
-    branches: [ main, feature/** ]
-    paths-ignore:
-    - 'terraform/shared_rg/**'
-
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
@@ -16,6 +11,11 @@ on:
         default: 'dev'
         # Input has to be provided for the workflow to run
         required: true
+  
+  push:
+    branches: [ main, feature/** ]
+    paths-ignore:
+    - 'terraform/shared_rg/**'
 
 jobs:
   prepare-run-matrix:
