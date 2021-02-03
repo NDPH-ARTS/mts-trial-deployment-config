@@ -27,7 +27,7 @@ jobs:
     name: Detect changed definitions and prepare matrix
     runs-on: ubuntu-latest
     outputs:
-      deploy_env: ${{ steps.set-matrix.outputs.deploy_env }}
+      deploy_env: ${{ steps.calc_files_diff.outputs.deploy_env }}
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_empty_matrix: ${{ steps.set-matrix.outputs.is_empty_matrix }}
     steps:
@@ -57,14 +57,12 @@ jobs:
 
           # Escape newlines (replace \n with %0A)
           echo "::set-output name=diff::$( echo "$FILES" | sed ':a;N;$!ba;s/\n/%0A/g' )"
-
+          echo "$DEPLOY_ENV"
+          echo "::set-output name=deploy_env::$( echo "$DEPLOY_ENV" )"
       # Create an execution plan, which includes each found file
       - name: Set matrix for TF plan and apply
-        env:
-          DEPLOY_ENV: ${{ env.deploy_env }}
         id: set-matrix
         run: |
-          echo "$DEPLOY_ENV"
           FILES="${{ steps.calc_files_diff.outputs.diff }}"
           JSON="{\"include\":["
 
@@ -128,8 +126,7 @@ jobs:
 
           # Set output
           echo "::set-output name=matrix::$( echo "$JSON" )"
-          echo "$DEPLOY_ENV"
-          echo "::set-output name=deploy_env::$( echo "$DEPLOY_ENV" )"
+
   tfplan:
     name: Execute TF on "${{ matrix.trial_name }}":${{ matrix.path }}
     needs: prepare-run-matrix
