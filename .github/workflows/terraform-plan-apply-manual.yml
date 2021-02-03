@@ -39,8 +39,11 @@ jobs:
 
           if [ -z ${{ github.event.inputs.env }} ]
           then
+            echo "setting files with env"
+            echo "env var is - ${{ github.event.inputs.env }} ."
             export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
           else
+            echo "setting files without env"
             # Gets changed json files excluding the json schema
             export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
           fi
