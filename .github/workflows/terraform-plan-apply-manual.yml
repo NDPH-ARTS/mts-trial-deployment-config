@@ -144,6 +144,8 @@ jobs:
       ARM_SUBSCRIPTION_ID: f3fba52d-c7db-46f8-9e7a-766ca869972e
       ARM_TENANT_ID: 99804659-431f-48fa-84c1-65c9609de05b
       ARM_ACCESS_KEY: ${{secrets.TF_ARM_ACCESS_KEY}}
+      DEPLOY_ENV: ${{ env.deploy_env }}
+
     steps:
       - uses: actions/checkout@v2
 
@@ -164,10 +166,11 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
-          echo " env is - ${DEPLOY_ENV}"
+          echo "$DEPLOY_ENV"
+          echo " env is - $DEPLOY_ENV"
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${DEPLOY_ENV}" \
+                          -var="environment=$DEPLOY_ENV" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -185,10 +188,10 @@ jobs:
         # if: github.ref == 'refs/heads/main'
         run: |
           echo "Merged to main. applying trial's RG"
-          echo " env is - ${DEPLOY_ENV}"
+          echo " env is - $DEPLOY_ENV"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${DEPLOY_ENV}" \
+                          -var="environment=$DEPLOY_ENV" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
