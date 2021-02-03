@@ -128,7 +128,7 @@ jobs:
           # Set output
           echo "::set-output name=matrix::$( echo "$JSON" )"
           echo "$DEPLOY_ENV"
-          echo "::set-output name=deploy_env::$DEPLOY_ENV"
+          echo "::set-output name=deploy_env::$( echo "$DEPLOY_ENV" )"
   tfplan:
     name: Execute TF on "${{ matrix.trial_name }}":${{ matrix.path }}
     needs: prepare-run-matrix
