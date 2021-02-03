@@ -30,6 +30,7 @@ module "trial_app_service_practitioner" {
   # todo use private endpoint
   settings = {
     "SPRING_APPLICATION_NAME"     = "practitioner-service",
+    "SPRING_PROFILES_ACTIVE"      = var.sc_profile,
     "SPRING_CLOUD_CONFIG_PROFILE" = var.sc_profile,
     "SPRING_CLOUD_CONFIG_LABEL"   = var.sc_label,
     "SPRING_CLOUD_CONFIG_URI"     = "https://${module.trial_sc_config.name}.azurewebsites.net"
