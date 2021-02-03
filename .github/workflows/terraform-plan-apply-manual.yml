@@ -41,11 +41,9 @@ jobs:
 
           if [ ! -z ${{ github.event.inputs.env }} ]
           then
-            echo "setting files with env"
             echo "::set-output name=deploy_env::$( echo ${{github.event.inputs.env}} )"
             export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
           else
-            echo "setting files without env"
             # Gets changed json files excluding the json schema
             echo "::set-output name=deploy_env::$( echo "dev" )"
             export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
@@ -162,8 +160,6 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
-
-          echo " env is - ${{ needs.prepare-run-matrix.outputs.deploy_env }}"
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
                           -var="environment=${{ needs.prepare-run-matrix.outputs.deploy_env }}" \
@@ -184,7 +180,6 @@ jobs:
         # if: github.ref == 'refs/heads/main'
         run: |
           echo "Merged to main. applying trial's RG"
-          echo " env is - ${{ needs.prepare-run-matrix.outputs.deploy_env }}"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
                           -var="environment=${{ needs.prepare-run-matrix.outputs.deploy_env }}" \

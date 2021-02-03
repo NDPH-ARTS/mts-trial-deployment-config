@@ -6,11 +6,19 @@ on:
     paths-ignore:
     - 'terraform/shared_rg/**'
 
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      env:
+        description: 'Deployment environment to create'
+        default: 'dev'
+        required: true
 jobs:
   prepare-run-matrix:
     name: Detect changed definitions and prepare matrix
     runs-on: ubuntu-latest
     outputs:
+      deploy_env: ${{ steps.calc_files_diff.outputs.deploy_env }}
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_empty_matrix: ${{ steps.set-matrix.outputs.is_empty_matrix }}
     steps:
@@ -22,8 +30,15 @@ jobs:
         run: |
           git fetch origin main:localmain
 
-          # Gets changed json files excluding the json schema
-          export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
+          if [ ! -z ${{ github.event.inputs.env }} ]
+          then
+            echo "::set-output name=deploy_env::$( echo ${{github.event.inputs.env}} )"
+            export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
+          else
+            # Gets changed json files excluding the json schema
+            echo "::set-output name=deploy_env::$( echo "dev" )"
+            export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
+          fi
 
           echo "Files changed since last commit..."
           echo "$FILES"
@@ -137,6 +152,7 @@ jobs:
         run: |
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
+                         -var="environment=${{ needs.prepare-run-matrix.outputs.deploy_env }}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -156,6 +172,7 @@ jobs:
           echo "Merged to main. applying trial's RG"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
+                          -var="environment=${{ needs.prepare-run-matrix.outputs.deploy_env }}" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
