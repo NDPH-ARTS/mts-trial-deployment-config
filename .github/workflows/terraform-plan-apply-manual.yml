@@ -28,14 +28,12 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_empty_matrix: ${{ steps.set-matrix.outputs.is_empty_matrix }}
-
     steps:
       - uses: actions/checkout@v2
 
       # Get a list of changed .json files
       - name: Check changed files
         id: calc_files_diff
-
         run: |
           git fetch origin main:localmain
 
@@ -51,7 +49,7 @@ jobs:
             export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
           fi
 
-          echo "${DEV_ENV}"
+          echo "${{ env.deploy_env }}"
           echo "Files changed since last commit..."
           echo "$FILES"
 
@@ -62,9 +60,8 @@ jobs:
       - name: Set matrix for TF plan and apply
         id: set-matrix
         with:
-          DEV_ENV: ${{ env.deploy_env }}
+          DEPLOY_ENV: ${{ env.deploy_env }}
         run: |
-          echo "${{ env.deploy_env }}"
           FILES="${{ steps.calc_files_diff.outputs.diff }}"
           JSON="{\"include\":["
 
@@ -165,10 +162,10 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
-          echo " env is - ${DEV_ENV}"
+          echo " env is - ${DEPLOY_ENV}"
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${DEV_ENV}" \
+                          -var="environment=${DEPLOY_ENV}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -186,10 +183,10 @@ jobs:
         # if: github.ref == 'refs/heads/main'
         run: |
           echo "Merged to main. applying trial's RG"
-          echo " env is - ${DEV_ENV}"
+          echo " env is - ${DEPLOY_ENV}"
           terraform apply -var="trial_name=${{ matrix.trial_name }}" \
                           -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${DEV_ENV}" \
+                          -var="environment=${DEPLOY_ENV}" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                           -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
