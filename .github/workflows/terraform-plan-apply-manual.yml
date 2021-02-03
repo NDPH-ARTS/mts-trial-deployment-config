@@ -158,9 +158,12 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
+          echo "github env is - ${{ github.event.inputs.env }}"
+          var env = ${{github.event.inputs.env}:-dev}
+          echo " env is - ${env}"
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=${{ github.event.inputs.env }}" \
+                          -var="environment=${env}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
