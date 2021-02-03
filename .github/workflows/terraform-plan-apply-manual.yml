@@ -165,11 +165,23 @@ jobs:
       # Plan TF
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
-          echo "$DEPLOY_ENV"
-          echo " env is - $DEPLOY_ENV"
+
+          if [ ! -z ${{ github.event.inputs.env }} ]
+                    then
+                      echo "setting files with env"
+                      echo "deploy_env=${{github.event.inputs.env}}" >> $GITHUB_ENV
+                      export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
+                    else
+                      echo "setting files without env"
+                      # Gets changed json files excluding the json schema
+                      echo "deploy_env=dev" >> $GITHUB_ENV
+                      export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
+                    fi
+
+          echo "${{ env.deploy_env }}"
           terraform plan -var="trial_name=${{ matrix.trial_name }}" \
                          -var="site_image_name=${{ matrix.site_image_name }}" \
-                          -var="environment=$DEPLOY_ENV" \
+                          -var="environment=${{ env.deploy_env }}" \
                          -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                          -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
                          -var="trial_sc_gateway_image_name=${{ matrix.trial_sc_gateway_image_name }}" \
@@ -187,9 +199,22 @@ jobs:
         # if: github.ref == 'refs/heads/main'
         run: |
           echo "Merged to main. applying trial's RG"
-          echo " env is - $DEPLOY_ENV"
-          terraform apply -var="trial_name=${{ matrix.trial_name }}" \
-                          -var="site_image_name=${{ matrix.site_image_name }}" \
+          if [ ! -z ${{ github.event.inputs.env }} ]
+                              then
+                                echo "setting files with env"
+                                echo "deploy_env=${{github.event.inputs.env}}" >> $GITHUB_ENV
+                                export FILES=$(git diff --name-only localmain | grep .json | grep "\/${{ github.event.inputs.env }}_.")
+                              else
+                                echo "setting files without env"
+                                # Gets changed json files excluding the json schema
+                                echo "deploy_env=dev" >> $GITHUB_ENV
+                                export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "\/.*_.")
+                              fi
+
+                    echo "${{ env.deploy_env }}"
+                    terraform plan -var="trial_name=${{ matrix.trial_name }}" \
+                                   -var="site_image_name=${{ matrix.site_image_name }}" \
+                                    -var="environment=${{ env.deploy_env }}" \
                           -var="environment=$DEPLOY_ENV" \
                           -var="practitioner_image_name=${{ matrix.practitioner_image_name }}" \
                           -var="trial_config_service_image_name=${{ matrix.trial_config_service_image_name }}" \
