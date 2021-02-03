@@ -60,6 +60,7 @@ jobs:
       - name: Set matrix for TF plan and apply
         id: set-matrix
         run: |
+          echo "${{ env.deploy_env }}"
           FILES="${{ steps.calc_files_diff.outputs.diff }}"
           JSON="{\"include\":["
 
