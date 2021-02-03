@@ -1,7 +1,7 @@
 {
     "name": "wfqatrial",
     "id": "wfqasamptrial",
-    "version": 2,
+    "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "site_service": {
         "image_name": "nginx",
