@@ -14,6 +14,7 @@ resource "azurerm_mssql_server" "sql_server" {
 resource "azurerm_mssql_database" "sqldb" {
   name = var.db_name
   server_id = azurerm_mssql_server.sql_server.id
+  sku_name = "GP_S_Gen5_2" # serverless
   max_size_gb = 4
   auto_pause_delay_in_minutes = -1
   min_capacity = 1
