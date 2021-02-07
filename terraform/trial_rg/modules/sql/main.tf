@@ -16,6 +16,11 @@ resource "azurerm_sql_database" "sqldb" {
   resource_group_name = var.rg_name
   location            = var.location
   server_name         = azurerm_mssql_server.sql_server.name
+  max_size_gb = "4"
+  auto_pause_delay_in_minute = "-1"
+  min_capacity = "1"
+  max_capacity = "2"
+
 
   depends_on = [
     azurerm_mssql_server.sql_server,
