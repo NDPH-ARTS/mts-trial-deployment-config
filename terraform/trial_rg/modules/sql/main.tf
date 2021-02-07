@@ -46,7 +46,7 @@ resource "azurerm_mssql_database" "sqldb" {
 # Allow access for azure services
 resource "azurerm_sql_firewall_rule" "example" {
   name                = "FirewallRule1"
-  resource_group_name = azurerm_mssql_server.sql_server.resource_group
+  resource_group_name = azurerm_mssql_server.sql_server.resource_group_name
   server_name         = azurerm_mssql_server.sql_server.name
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0"
