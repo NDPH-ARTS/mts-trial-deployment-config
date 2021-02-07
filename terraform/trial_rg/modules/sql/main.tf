@@ -7,7 +7,7 @@ resource "azurerm_mssql_server" "sql_server" {
   version                       = "12.0"
   administrator_login           = var.sql_user
   administrator_login_password  = var.sql_pass
-  public_network_access_enabled = false
+  public_network_access_enabled = true # TODO: set to false when private link works
 }
 
 # DB
