@@ -8,6 +8,7 @@ resource "azurerm_mssql_server" "sql_server" {
   administrator_login           = var.sql_user
   administrator_login_password  = var.sql_pass
   public_network_access_enabled = true # TODO: set to false when private link works
+  
 }
 
 # DB
@@ -39,3 +40,14 @@ resource "azurerm_mssql_database" "sqldb" {
 #   sql           = true
 #   application   = var.application
 # }
+
+
+# TODO: delete this when private endpoints work.
+# Allow access for azure services
+resource "azurerm_sql_firewall_rule" "example" {
+  name                = "FirewallRule1"
+  resource_group_name = azurerm_mssql_server.sql_server.resource_group
+  server_name         = azurerm_mssql_server.sql_server.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
