@@ -42,6 +42,29 @@ module "trial_app_service_practitioner" {
   ]
 }
 
+# Role service
+module "trial_app_service_role" {
+  source              = "./modules/genericservice"
+  app_name            = "role"
+  rg_name             = azurerm_resource_group.trial_rg.name
+  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  trial_name          = var.trial_name
+  environment         = var.environment
+  docker_image        = var.role_service_image_name
+  docker_image_tag    = var.role_service_image_tag
+
+  settings = {
+    "always_on"   = "true",
+    "JDBC_DRIVER" = "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+    "JDBC_URL"    = "jdbc:sqlserver://${module.roles_sql_server.sqlserver_name}.database.windows.net:1433;databaseName=ROLES;user=${module.roles_sql_server.db_user};password=${module.roles_sql_server.db_password}"
+  }
+
+  depends_on = [
+    azurerm_app_service_plan.apps_service_plan,
+    module.roles_sql_server,
+  ]
+}
+
 # init service
 # todo: make 1-time service: ARTS-362
 module "trial_app_service_init" {
@@ -56,13 +79,10 @@ module "trial_app_service_init" {
 
   settings = {
     "always_on"   = "true",
-    "JDBC_DRIVER" = "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-    "JDBC_URL"    = "jdbc:sqlserver://${module.roles_sql_server.sqlserver_name}.database.windows.net:1433;databaseName=ROLES;user=${module.roles_sql_server.db_user};password=${module.roles_sql_server.db_password}"
   }
 
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
-    module.roles_sql_server,
   ]
 }
 
