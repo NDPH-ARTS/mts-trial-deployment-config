@@ -12,15 +12,12 @@ resource "azurerm_mssql_server" "sql_server" {
 
 # DB
 resource "azurerm_mssql_database" "sqldb" {
-  name                = var.db_name
-  resource_group_name = var.rg_name
-  location            = var.location
-  server_name         = azurerm_mssql_server.sql_server.name
-  max_size_gb = "4"
-  auto_pause_delay_in_minute = "-1"
-  min_capacity = "1"
-  max_capacity = "2"
-
+  name = var.db_name
+  server_id = azurerm_mssql_server.sql_server.id
+  max_size_gb = 4
+  auto_pause_delay_in_minutes = -1
+  min_capacity = 1
+  max_capacity = 2
 
   depends_on = [
     azurerm_mssql_server.sql_server,
