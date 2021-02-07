@@ -56,6 +56,7 @@ module "trial_app_service_role" {
   settings = {
     "always_on"   = "true",
     "JDBC_DRIVER" = "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+    # TODO: replace with KeyVault reference
     "JDBC_URL"    = "jdbc:sqlserver://${module.roles_sql_server.sqlserver_name}.database.windows.net:1433;databaseName=ROLES;user=${module.roles_sql_server.db_user};password=${module.roles_sql_server.db_password}"
   }
 
