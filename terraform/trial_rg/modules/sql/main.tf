@@ -25,15 +25,17 @@ resource "azurerm_mssql_database" "sqldb" {
   ]
 }
 
+# TODO: currect this is uncomment
+
 # After the SQL server is deployed, connect it to a new private endpoint
-module "private_endpoint" {
-  source        = "../privateendpoint"
-  trial_name    = var.trial_name
-  rg_name       = var.rg_name
-  resource_name = azurerm_mssql_server.sql_server.name
-  resource_id   = azurerm_mssql_server.sql_server.id
-  vnet_id       = var.vnet_id
-  subnet_id     = var.subnet_id
-  sql           = true
-  application   = var.application
-}
+# module "private_endpoint" {
+#   source        = "../privateendpoint"
+#   trial_name    = var.trial_name
+#   rg_name       = var.rg_name
+#   resource_name = azurerm_mssql_server.sql_server.name
+#   resource_id   = azurerm_mssql_server.sql_server.id
+#   vnet_id       = var.vnet_id
+#   subnet_id     = var.subnet_id
+#   sql           = true
+#   application   = var.application
+# }
