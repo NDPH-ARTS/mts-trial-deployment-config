@@ -24,8 +24,6 @@
         "image_tag": "main-latest"
     },
     "spring_cloud": {
-        "profile": "dev",
-        "label": "main",
         "gateway_service": {
             "image_name": "ghcr.io/ndph-arts/sc-gateway-service",
             "image_tag": "main-latest"
