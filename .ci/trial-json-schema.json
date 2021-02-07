@@ -23,6 +23,12 @@
     "ui_client_id" : {
       "type" : "string"
     },
+    "spring_profile" : {
+      "type" : "string"
+    },
+    "spring_config_label" : {
+      "type" : "string"
+    },
     "site_service" : {
       "$ref" : "#/definitions/Service"
     },
@@ -39,7 +45,7 @@
       "$ref" : "#/definitions/SpringCloud"
     }
   },
-  "required" : [ "name", "id", "version", "rootUser", "tenant_id", "ui_client_id", "site_service", "role_service", "practitioner_service", "init_service", "spring_cloud" ],
+  "required" : [ "name", "id", "version", "rootUser", "tenant_id", "ui_client_id", "spring_profile", "spring_config_label", "site_service", "role_service", "practitioner_service", "init_service", "spring_cloud" ],
   "definitions" : {
     "Service" : {
       "type" : "object",
@@ -58,12 +64,6 @@
       "type" : "object",
       "additionalProperties" : false,
       "properties" : {
-        "profile" : {
-          "type" : "string"
-        },
-        "label" : {
-          "type" : "string"
-        },
         "gateway_service" : {
           "$ref" : "#/definitions/Service"
         },
@@ -74,7 +74,7 @@
           "$ref" : "#/definitions/ConfigServer"
         }
       },
-      "required" : [ "profile", "label", "gateway_service", "discovery_service", "config_server" ]
+      "required" : [ "gateway_service", "discovery_service", "config_server" ]
     },
     "ConfigServer" : {
       "type" : "object",
