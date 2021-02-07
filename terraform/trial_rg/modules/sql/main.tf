@@ -11,7 +11,7 @@ resource "azurerm_mssql_server" "sql_server" {
 }
 
 # DB
-resource "azurerm_sql_database" "sqldb" {
+resource "azurerm_mssql_database" "sqldb" {
   name                = var.db_name
   resource_group_name = var.rg_name
   location            = var.location
