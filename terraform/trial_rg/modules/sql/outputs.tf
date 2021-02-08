@@ -3,7 +3,7 @@ output "sqlserver_name" {
   description = "The generated sql server name."
 }
 
-# TODO: currect this is uncomment
+# TODO: currect this and uncomment
 
 # output "private_link_endpoint_ip" {
 #   description = "Private Link Endpoint IP"
