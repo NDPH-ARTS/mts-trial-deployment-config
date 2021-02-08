@@ -15,7 +15,7 @@ resource "azurerm_key_vault" "trial_keyvault" {
   }
 }
 
-# TODO: currect this and uncomment
+# TODO: correct this and uncomment
 
 # Connect KV to a new private endpoint
 # module "private_endpoint" {
