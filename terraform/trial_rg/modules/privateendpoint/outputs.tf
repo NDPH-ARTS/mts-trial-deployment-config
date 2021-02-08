@@ -1,4 +1,4 @@
-# TODO: currect this is uncomment
+# TODO: currect this and uncomment
 
 # output "private_link_endpoint_ip" {
 #   description = "Private Link Endpoint IP"

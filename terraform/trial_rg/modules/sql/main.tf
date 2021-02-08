@@ -26,7 +26,7 @@ resource "azurerm_mssql_database" "sqldb" {
   ]
 }
 
-# TODO: currect this is uncomment
+# TODO: currect this and uncomment
 
 # After the SQL server is deployed, connect it to a new private endpoint
 # module "private_endpoint" {
