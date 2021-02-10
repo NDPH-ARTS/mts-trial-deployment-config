@@ -1,9 +1,19 @@
 ## Service application
 
+locals {
+  site_name = "as-${var.trial_name}-site-${var.environment}"
+  practitioner_name = "as-${var.trial_name}-practitioner-${var.environment}"
+  role_name = "as-${var.trial_name}-role-${var.environment}"
+  init_name = "as-${var.trial_name}-init-${var.environment}"
+  gateway_name = "as-${var.trial_name}-sc-gateway-${var.environment}"
+  discovery_name = "as-${var.trial_name}-sc-discovery-${var.environment}"
+  config_name = "as-${var.trial_name}-sc-config-${var.environment}"
+}
+
 # Site service
 module "trial_app_service_site" {
   source              = "./modules/genericservice"
-  app_name            = "site"
+  app_name            = local.site_name
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
@@ -12,18 +22,29 @@ module "trial_app_service_site" {
   docker_image_tag    = var.site_image_tag
 
   settings = {
-    "WEBSITES_PORT"               = "8080" # The container is listening on 8080
+    "SPRING_APPLICATION_NAME"                 = "site-service"
+    "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
+    "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
+    "SERVER_PORT"                             = "80"
+    "WEBSITES_PORT"                           = "80"
+    "SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED"   = "true"
+    "SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID" = "config-server"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_FETCHREGISTRY"             = "true"
+    "EUREKA_INSTANCE_HOSTNAME"                = "${local.site_name}.azurewebsites.net"
   }
 
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
+    module.trial_sc_config,
+    module.trial_sc_discovery,
   ]
 }
 
 # Practitioner service
 module "trial_app_service_practitioner" {
   source              = "./modules/genericservice"
-  app_name            = "practitioner"
+  app_name            = local.practitioner_name
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
@@ -33,23 +54,29 @@ module "trial_app_service_practitioner" {
 
   # todo use private endpoint
   settings = {
-    "SPRING_APPLICATION_NAME"     = "practitioner-service"
-    "SPRING_PROFILES_ACTIVE"      = var.spring_profile
-    "SPRING_CLOUD_CONFIG_LABEL"   = var.spring_config_label
-    "SPRING_CLOUD_CONFIG_URI"     = "https://${module.trial_sc_config.name}.azurewebsites.net"
-    "WEBSITES_PORT"               = "8080" # The container is listening on 8080
+    "SPRING_APPLICATION_NAME"                 = "practitioner-service"
+    "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
+    "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
+    "SERVER_PORT"                             = "80"
+    "WEBSITES_PORT"                           = "80" # The container is listening on 8080
+    "SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED"   = "true"
+    "SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID" = "config-server"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_FETCHREGISTRY"             = "true"
+    "EUREKA_INSTANCE_HOSTNAME"                = "${local.practitioner_name}.azurewebsites.net"
   }
 
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
     module.trial_sc_config,
+    module.trial_sc_discovery,
   ]
 }
 
 # Role service
 module "trial_app_service_role" {
   source              = "./modules/genericservice"
-  app_name            = "role"
+  app_name            = local.role_name
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
@@ -62,12 +89,23 @@ module "trial_app_service_role" {
     "JDBC_DRIVER" = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
     # TODO: replace with KeyVault reference
     "JDBC_URL"    = "jdbc:sqlserver://${module.roles_sql_server.sqlserver_name}.database.windows.net:1433;databaseName=ROLES;user=${module.roles_sql_server.db_user};password=${module.roles_sql_server.db_password}"
-    "WEBSITES_PORT"               = "8080" # The container is listening on 8080
+    "SPRING_APPLICATION_NAME"                 = "role-service"
+    "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
+    "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
+    "SERVER_PORT"                             = "80"
+    "WEBSITES_PORT"                           = "80"
+    "SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED"   = "true"
+    "SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID" = "config-server"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_FETCHREGISTRY"             = "true"
+    "EUREKA_INSTANCE_HOSTNAME"                = "${local.role_name}.azurewebsites.net"
   }
 
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
     module.roles_sql_server,
+    module.trial_sc_config,
+    module.trial_sc_discovery,
   ]
 }
 
@@ -75,7 +113,7 @@ module "trial_app_service_role" {
 # todo: make 1-time service: ARTS-362
 module "trial_app_service_init" {
   source              = "./modules/genericservice"
-  app_name            = "init"
+  app_name            = local.init_name
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
@@ -100,7 +138,7 @@ module "trial_app_service_init" {
 # config server service
 module "trial_sc_gateway" {
   source              = "./modules/genericservice"
-  app_name            = "sc-gateway"
+  app_name            = local.gateway_name
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
@@ -109,18 +147,28 @@ module "trial_sc_gateway" {
   docker_image_tag    = var.sc_gateway_image_tag
 
   settings = {
-    "SERVER_PORT"                                = 8080
-    "WEBSITES_PORT"                              = 8080
+    "SPRING_APPLICATION_NAME"                 = "gateway-service"
+    "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
+    "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
+    "SERVER_PORT"                             = "80"
+    "WEBSITES_PORT"                           = "80"
+    "SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED"   = "true"
+    "SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID" = "config-server"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_FETCHREGISTRY"             = "true"
+    "EUREKA_INSTANCE_HOSTNAME"                = "${local.gateway_name}.azurewebsites.net"
   }
 
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
+    module.trial_sc_config,
+    module.trial_sc_discovery,
   ]
 }
 
 module "trial_sc_discovery" {
   source              = "./modules/genericservice"
-  app_name            = "sc-discovery"
+  app_name            = local.discovery_name
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
@@ -129,6 +177,9 @@ module "trial_sc_discovery" {
   docker_image_tag    = var.sc_discovery_image_tag
 
   settings = {
+    "SPRING_PROFILES_ACTIVE"                     = var.spring_profile
+    "EUREKA_CLIENT_REGISTERWITHEUREKA"           = "false"
+    "EUREKA_CLIENT_FETCHREGISTRY"                = "false"
     "SERVER_PORT"                                = 8080
     "WEBSITES_PORT"                              = 8080
   }
@@ -140,7 +191,7 @@ module "trial_sc_discovery" {
 
 module "trial_sc_config" {
   source              = "./modules/genericservice"
-  app_name            = "sc-config"
+  app_name            = local.config_name
   rg_name             = azurerm_resource_group.trial_rg.name
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
@@ -149,14 +200,19 @@ module "trial_sc_config" {
   docker_image_tag    = var.sc_config_image_tag
 
   settings = {
+    "SPRING_PROFILES_ACTIVE"                     = var.spring_profile
     "SPRING_CLOUD_CONFIG_SERVER_GIT_URI"         = var.sc_config_git_uri
     "SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS" = var.sc_config_search_paths
-    "SERVER_PORT"                                = 8080
-    "WEBSITES_PORT"                              = 8080
+    "SERVER_PORT"                                = 80
+    "WEBSITES_PORT"                              = 80
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"       = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_FETCHREGISTRY"                = "true"
+    "EUREKA_INSTANCE_HOSTNAME"                   = "${local.config_name}.azurewebsites.net"
   }
 
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
+    module.trial_sc_discovery,
   ]
 }
 
