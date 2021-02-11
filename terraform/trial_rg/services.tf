@@ -22,15 +22,11 @@ module "trial_app_service_site" {
   docker_image_tag    = var.site_image_tag
 
   settings = {
-    "SPRING_APPLICATION_NAME"                 = "site-service"
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
     "WEBSITES_PORT"                           = "80"
-    "SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED"   = "true"
-    "SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID" = "config-server"
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
-    "EUREKA_CLIENT_FETCHREGISTRY"             = "true"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.site_name}.azurewebsites.net"
   }
 
@@ -54,15 +50,11 @@ module "trial_app_service_practitioner" {
 
   # todo use private endpoint
   settings = {
-    "SPRING_APPLICATION_NAME"                 = "practitioner-service"
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
     "WEBSITES_PORT"                           = "80" # The container is listening on 8080
-    "SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED"   = "true"
-    "SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID" = "config-server"
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
-    "EUREKA_CLIENT_FETCHREGISTRY"             = "true"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.practitioner_name}.azurewebsites.net"
   }
 
@@ -89,15 +81,11 @@ module "trial_app_service_role" {
     "JDBC_DRIVER" = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
     # TODO: replace with KeyVault reference
     "JDBC_URL"    = "jdbc:sqlserver://${module.roles_sql_server.sqlserver_name}.database.windows.net:1433;databaseName=ROLES;user=${module.roles_sql_server.db_user};password=${module.roles_sql_server.db_password}"
-    "SPRING_APPLICATION_NAME"                 = "role-service"
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
     "WEBSITES_PORT"                           = "80"
-    "SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED"   = "true"
-    "SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID" = "config-server"
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
-    "EUREKA_CLIENT_FETCHREGISTRY"             = "true"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.role_name}.azurewebsites.net"
   }
 
@@ -147,15 +135,11 @@ module "trial_sc_gateway" {
   docker_image_tag    = var.sc_gateway_image_tag
 
   settings = {
-    "SPRING_APPLICATION_NAME"                 = "gateway-service"
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
     "WEBSITES_PORT"                           = "80"
-    "SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED"   = "true"
-    "SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID" = "config-server"
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
-    "EUREKA_CLIENT_FETCHREGISTRY"             = "true"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.gateway_name}.azurewebsites.net"
   }
 
@@ -178,8 +162,6 @@ module "trial_sc_discovery" {
 
   settings = {
     "SPRING_PROFILES_ACTIVE"                     = var.spring_profile
-    "EUREKA_CLIENT_REGISTERWITHEUREKA"           = "false"
-    "EUREKA_CLIENT_FETCHREGISTRY"                = "false"
     "SERVER_PORT"                                = 8080
     "WEBSITES_PORT"                              = 8080
   }
@@ -206,7 +188,6 @@ module "trial_sc_config" {
     "SERVER_PORT"                                = 80
     "WEBSITES_PORT"                              = 80
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"       = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
-    "EUREKA_CLIENT_FETCHREGISTRY"                = "true"
     "EUREKA_INSTANCE_HOSTNAME"                   = "${local.config_name}.azurewebsites.net"
   }
 
