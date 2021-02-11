@@ -26,7 +26,7 @@ module "trial_app_service_site" {
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
     "WEBSITES_PORT"                           = "80"
-    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.site_name}.azurewebsites.net"
   }
 
@@ -54,7 +54,7 @@ module "trial_app_service_practitioner" {
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
     "WEBSITES_PORT"                           = "80" # The container is listening on 8080
-    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.practitioner_name}.azurewebsites.net"
   }
 
@@ -85,7 +85,7 @@ module "trial_app_service_role" {
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
     "WEBSITES_PORT"                           = "80"
-    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.role_name}.azurewebsites.net"
   }
 
@@ -139,7 +139,7 @@ module "trial_sc_gateway" {
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
     "WEBSITES_PORT"                           = "80"
-    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.gateway_name}.azurewebsites.net"
   }
 
@@ -187,7 +187,7 @@ module "trial_sc_config" {
     "SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS" = var.sc_config_search_paths
     "SERVER_PORT"                                = 80
     "WEBSITES_PORT"                              = 80
-    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"       = "https://${module.trial_sc_discovery.name}.azurewebsites.net/eureka/"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"       = "${module.trial_sc_discovery.hostname}/eureka/"
     "EUREKA_INSTANCE_HOSTNAME"                   = "${local.config_name}.azurewebsites.net"
   }
 
