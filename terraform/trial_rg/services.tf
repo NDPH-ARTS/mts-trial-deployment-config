@@ -116,6 +116,12 @@ module "trial_app_service_init" {
 
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
+    module.trial_sc_config,
+    module.trial_sc_discovery,
+    module.trial_app_service_site,
+    module.trial_app_service_practitioner,
+    module.trial_app_service_role,
+    module.trial_sc_gateway,
   ]
 }
 
