@@ -53,7 +53,7 @@ module "trial_app_service_practitioner" {
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
-    "WEBSITES_PORT"                           = "80" # The container is listening on 8080
+    "WEBSITES_PORT"                           = "80"
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.practitioner_name}.azurewebsites.net"
   }
