@@ -59,8 +59,8 @@ module "trial_app_service_practitioner" {
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.practitioner_name}.azurewebsites.net"
     "FHIR_URI"                                = module.fhir_server.hostname
-    "ROLE_SERVICE_URI"                        = module.trial_app_service_role.hostname
-    "SITE_SERVICE_URI"                        = module.trial_app_service_site.hostname
+    "ROLE_SERVICE_URI"                        = "http:/role-service"
+    "SITE_SERVICE_URI"                        = "http://site-service"
   }
 
   depends_on = [
