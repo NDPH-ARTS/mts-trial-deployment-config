@@ -39,3 +39,8 @@ jobs:
           target: 'sample_trial/definition.yml'
           # Uncomment to enable strict checks
           # strict: '1'
+      - name: Validate YML2
+        if: always()
+        run: |
+          npm install ajv-cli
+          ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
