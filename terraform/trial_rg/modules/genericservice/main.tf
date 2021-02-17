@@ -12,6 +12,10 @@ resource "azurerm_app_service" "generic_service" {
     always_on        = true
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   logs {
     http_logs {
       file_system {

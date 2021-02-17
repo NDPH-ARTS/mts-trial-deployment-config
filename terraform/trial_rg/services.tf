@@ -22,6 +22,7 @@ module "trial_app_service_site" {
   docker_image_tag    = var.site_image_tag
 
   settings = {
+    "MANAGED_IDENTITY"                        = module.trial_app_service_init.identity
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
@@ -52,6 +53,7 @@ module "trial_app_service_practitioner" {
 
   # todo use private endpoint
   settings = {
+    "MANAGED_IDENTITY"                        = module.trial_app_service_init.identity
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
@@ -70,6 +72,7 @@ module "trial_app_service_practitioner" {
     module.trial_app_service_site,
     module.trial_app_service_role,
     module.fhir_server,
+    module.trial_app_service_init
   ]
 }
 
@@ -85,6 +88,7 @@ module "trial_app_service_role" {
   docker_image_tag    = var.role_image_tag
 
   settings = {
+    "MANAGED_IDENTITY"                        = module.trial_app_service_init.identity
     "always_on"   = "true"
     "JDBC_DRIVER" = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
     # TODO: replace with KeyVault reference
@@ -122,15 +126,32 @@ module "trial_app_service_init" {
     "WEBSITES_PORT"               = "8080" # The container is listening on 8080
   }
 
+
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
     module.trial_sc_config,
     module.trial_sc_discovery,
     module.trial_app_service_site,
-    module.trial_app_service_practitioner,
     module.trial_app_service_role,
     module.trial_sc_gateway,
   ]
+}
+
+data "azurerm_subscription" "current" {
+
+}
+
+data "azurerm_role_definition" "contributor" {
+  name = "Contributor"
+}
+resource "azurerm_role_assignment" "example" {
+  depends_on = [
+    module.trial_app_service_init
+  ]
+  name               = "identity"
+  scope              = data.azurerm_subscription.current.id
+  role_definition_id = "${data.azurerm_subscription.current.subscription_id}${data.azurerm_role_definition.contributor.id}"
+  principal_id       = module.trial_app_service_init.identity
 }
 
 ## End - Service application
