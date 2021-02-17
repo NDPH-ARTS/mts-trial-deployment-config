@@ -148,7 +148,7 @@ resource "azurerm_role_assignment" "example" {
   depends_on = [
     module.trial_app_service_init
   ]
-  name               = "identity"
+  name               = module.trial_app_service_init.name
   scope              = data.azurerm_subscription.current.id
   role_definition_id = "${data.azurerm_subscription.current.subscription_id}${data.azurerm_role_definition.contributor.id}"
   principal_id       = module.trial_app_service_init.identity
