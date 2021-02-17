@@ -44,3 +44,11 @@ jobs:
         run: |
           sudo npm install -g ajv-cli
           ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
+      - name: Validate YML3
+        if: always()
+        uses: nwisbeta/validate-yaml-schema@v1.0.3
+        with:
+          yamlSchemasJson: |
+            {
+                ".ci/trial-json-schema.json": ["sample_trial/definition.yml"],
+            }
