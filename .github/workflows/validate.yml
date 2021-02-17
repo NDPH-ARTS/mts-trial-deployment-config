@@ -22,9 +22,20 @@ jobs:
 
           echo "::set-output name=diff::$( echo "$FILES" | tr '\n' ',' | sed '$s/,$/\n/' )"
 
-      - name: Validate definition.yml files
-        if: ${{ steps.calc_files_diff.outputs.diff != '' }}
+      - name: Validate JSON
+        # if: ${{ steps.calc_files_diff.outputs.diff != '' }}
+        if: always()
         uses: docker://orrosenblatt/validate-json-action:latest
         env:
           INPUT_SCHEMA: .ci/trial-json-schema.json
-          INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
+          # INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
+          INPUT_JSONS: sample_trial/definition.json
+      
+      - name: Validate YML
+        if: always()
+        uses: nrkno/yaml-schema-validator-github-action@master
+        with:
+          schema: '.ci/trial-json-schema.json'
+          target: 'sample_trial/definition.yml'
+          # Uncomment to enable strict checks
+          # strict: '1'
