@@ -42,5 +42,5 @@ jobs:
       - name: Validate YML2
         if: always()
         run: |
-          npm install ajv-cli
+          npm install -g ajv-cli
           ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
