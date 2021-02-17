@@ -1,7 +1,6 @@
-name: ValidateTrialJsonSchema
+name: Validate Trial Config Files
 on:
   push
-
 
 jobs:
   Validate:
@@ -14,15 +13,16 @@ jobs:
         run: |
           git fetch origin main:localmain
 
-          # Gets changed json files excluding the json schema, right now only validating definition.json
-          export FILES=$(git diff --name-only localmain | grep definition.json)
+          # Gets changed definition files
+          # TODO: validate all config files and not just trial's definition.yml
+          export FILES=$(git diff --name-only localmain | grep definition.yml)
 
           echo "Files changed since last commit..."
           echo "$FILES"
 
           echo "::set-output name=diff::$( echo "$FILES" | tr '\n' ',' | sed '$s/,$/\n/' )"
 
-      - name: Validate JSON
+      - name: Validate definition.yml files
         if: ${{ steps.calc_files_diff.outputs.diff != '' }}
         uses: docker://orrosenblatt/validate-json-action:latest
         env:
