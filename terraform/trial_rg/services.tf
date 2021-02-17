@@ -37,6 +37,7 @@ module "trial_app_service_site" {
     module.trial_sc_config,
     module.trial_sc_discovery,
     module.fhir_server,
+    module.trial_app_service_init,
   ]
 }
 
@@ -72,7 +73,7 @@ module "trial_app_service_practitioner" {
     module.trial_app_service_site,
     module.trial_app_service_role,
     module.fhir_server,
-    module.trial_app_service_init
+    module.trial_app_service_init,
   ]
 }
 
@@ -106,6 +107,7 @@ module "trial_app_service_role" {
     module.roles_sql_server,
     module.trial_sc_config,
     module.trial_sc_discovery,
+    module.trial_app_service_init,
   ]
 }
 
