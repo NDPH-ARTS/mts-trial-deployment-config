@@ -61,8 +61,8 @@ jobs:
             echo "current definition file path: $path"
 
             # Extract values for the trial
-            trialName=`echo $(jq -r '.name' ./$path)`
-            trialId=`echo $(jq -r '.id' ./$path)`
+            trialName=$(jq -r '.name' ./$path)
+            trialId=$(jq -r '.id' ./$path)
             real_path=$(realpath $path)
             MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\", \"real_path\": \"$real_path\",},"
 
@@ -113,13 +113,26 @@ jobs:
         run: terraform fmt -check
 
       - name: Prepare tfvars file
+        env:
+          TFVARS_TEMPLATE: 'tfvars.template'
         run: |
           set -o errexit
           set -o pipefail
           set -o nounset
           # set -o xtrace
 
-          cat tfvars.template | while read line
+          # Return 0 if file $1 exists and ending by end of line character, else return 1
+          check_ending_eol() {
+            [[ -s "$1" && -z "$(tail -c 1 "$1")" ]]
+          }
+
+          if ! check_ending_eol ${TFVARS_TEMPLATE}
+          then
+            echo "ERROR: ${TFVARS_TEMPLATE} doesn't exist or doesn't end with new line." >&2
+            exit 1
+          fi
+
+          cat ${TFVARS_TEMPLATE} | while read line
           do
               # no need to process comment lines that start with "#", or empty ones.
               if [[ $line == \#* ]] || [[ -z "$line" ]]; then continue; fi
