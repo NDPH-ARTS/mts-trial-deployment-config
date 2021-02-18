@@ -149,7 +149,7 @@ resource "azurerm_role_assignment" "example" {
     module.trial_app_service_init
   ]
   skip_service_principal_aad_check = true
-  scope              = azurerm_resource_group.trial_rg.id
+  scope              = data.azurerm_subscription.current.id
   role_definition_id = "${data.azurerm_subscription.current.subscription_id}${data.azurerm_role_definition.contributor.id}"
   principal_id       = module.trial_app_service_init.identity
 }
