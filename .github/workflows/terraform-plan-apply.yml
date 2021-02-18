@@ -63,8 +63,8 @@ jobs:
             # Extract values for the trial
             trialName=$(jq -r '.name' ./$path)
             trialId=$(jq -r '.id' ./$path)
-            real_path=$(realpath $path)
-            MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\", \"real_path\": \"$real_path\",},"
+            trial_dir=$(dirname $(realpath $path))
+            MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\", \"trial_dir\": \"$trial_dir\",},"
 
             JSON="$JSON$MatrixItem"
           done <<< "$FILES"
@@ -132,6 +132,8 @@ jobs:
             exit 1
           fi
 
+          definition_path=${{ matrix.trial_dir }}/definition.json
+
           cat ${TFVARS_TEMPLATE} | while read line
           do
               # no need to process comment lines that start with "#", or empty ones.
@@ -142,7 +144,7 @@ jobs:
 
               var_name=${line_array[0]}
               json_path=${line_array[1]}
-              json_value=$(jq -r ${json_path} ${{ matrix.real_path }})
+              json_value=$(jq -r ${json_path} ${definition_path})
               echo "${var_name}=\"${json_value}\"" >> ${{ matrix.trial_name }}.tfvars
           done 
 
