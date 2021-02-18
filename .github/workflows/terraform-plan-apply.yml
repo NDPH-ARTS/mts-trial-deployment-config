@@ -238,6 +238,9 @@ jobs:
       # Add Branding Assets
       - name: UI component - Copy Logo File
         run: |
+          set -o errexit
+          set -o nounset
+
           cp ../../branding_sample_trial/assets/branding/img/ndph-logo.png mts-trial-ui/assets/branding/img/.
 
       # Upload to storage account (to $web container)
