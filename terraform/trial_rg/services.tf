@@ -141,8 +141,8 @@ data "azurerm_subscription" "current" {
 
 }
 
-data "azurerm_role_definition" "contributor" {
-  name = "Contributor"
+data "azurerm_role_definition" "owner" {
+  name = "Owner"
 }
 resource "azurerm_role_assignment" "example" {
   depends_on = [
@@ -150,7 +150,7 @@ resource "azurerm_role_assignment" "example" {
   ]
   skip_service_principal_aad_check = true
   scope              = data.azurerm_subscription.current.id
-  role_definition_id = "${data.azurerm_subscription.current.subscription_id}${data.azurerm_role_definition.contributor.id}"
+  role_definition_id = "${data.azurerm_subscription.current.subscription_id}${data.azurerm_role_definition.owner.id}"
   principal_id       = module.trial_app_service_init.identity
 }
 
