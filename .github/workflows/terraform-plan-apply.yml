@@ -236,6 +236,8 @@ jobs:
           sed -i 's/{{trialName}}/${{ env.trial_name }}/' mts-trial-ui/index.html
 
       # Add Branding Assets
+      - name: UI component - Copy Logo File
+        run: |
           cp ../../branding_sample_trial/assets/branding/img/ndph-logo.png mts-trial-ui/assets/branding/img/.
 
       # Upload to storage account (to $web container)
