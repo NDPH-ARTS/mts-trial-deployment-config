@@ -1,0 +1,20 @@
+
+# Container group module for init service that loads a docker image in a container instance
+
+resource "azurerm_container_group" "init_service" {
+  name                = var.app_name
+  location            = var.location
+  resource_group_name = var.rg_name
+  ip_address_type     = "public"
+  dns_name_label      = var.dns_name_label
+  os_type             = "Linux"
+
+  container {
+    name              = var.app_name
+    image             = "${var.docker_image}:${var.docker_image_tag}"
+    cpu               = "1"
+    memory            = "1.5"
+
+    environment_variables = var.settings
+  }
+}
