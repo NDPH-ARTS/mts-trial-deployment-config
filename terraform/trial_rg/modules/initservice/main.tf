@@ -6,8 +6,9 @@ resource "azurerm_container_group" "init_service" {
   location            = var.location
   resource_group_name = var.rg_name
   ip_address_type     = "public"
-  #dns_name_label      = var.dns_name_label
+  dns_name_label      = "temp1234567" #remove this one go private
   os_type             = "Linux"
+  restart_policy      = "Never"
 
   container {
     name              = var.app_name
