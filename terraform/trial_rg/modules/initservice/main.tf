@@ -6,7 +6,7 @@ resource "azurerm_container_group" "init_service" {
   location            = var.location
   resource_group_name = var.rg_name
   ip_address_type     = "public"
-  dns_name_label      = var.dns_name_label
+  #dns_name_label      = var.dns_name_label
   os_type             = "Linux"
 
   container {
