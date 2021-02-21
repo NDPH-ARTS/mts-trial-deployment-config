@@ -115,7 +115,17 @@ module "trial_app_service_init" {
   docker_image        = var.init_service_image_name
   docker_image_tag    = var.init_service_image_tag
 
+# todo use private endpoint
   settings = {
+    "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
+    "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
+    "SERVER_PORT"                             = "8080"
+    "WEBSITES_PORT"                           = "8080"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
+    "EUREKA_INSTANCE_HOSTNAME"                = "${local.practitioner_name}.azurewebsites.net"
+    "PRACTITIONER_SERVICE"                    = module.trial_app_service_practitioner.hostname
+    "ROLE_SERVICE"                            = module.trial_app_service_role.hostname
+    "SITE_SERVICE"                            = module.trial_app_service_site.hostname
   }
 
   depends_on = [

@@ -6,7 +6,7 @@ resource "azurerm_container_group" "init_service" {
   location            = var.location
   resource_group_name = var.rg_name
   ip_address_type     = "public"
-  dns_name_label      = "temp1234567" #remove this one go private
+  dns_name_label      = "temp1234567" #remove this once we change ip_address_type to private and define network id
   os_type             = "Linux"
   restart_policy      = "Never"
 
