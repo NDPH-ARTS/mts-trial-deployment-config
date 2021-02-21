@@ -16,6 +16,11 @@ resource "azurerm_container_group" "init_service" {
     cpu               = "1"
     memory            = "1.5"
 
+    ports {
+      port = 8080
+      protocol = "TCP"
+    }
+
     environment_variables = var.settings
   }
 }
