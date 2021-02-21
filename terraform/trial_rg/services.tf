@@ -105,7 +105,7 @@ module "trial_app_service_role" {
   ]
 }
 
-# init service, a 1-time service: ARTS-362
+# init service, a onetime service: ARTS-362
 module "trial_app_service_init" {
   source              = "./modules/initservice"
   app_name            = local.init_name
@@ -135,7 +135,6 @@ module "trial_app_service_init" {
     module.trial_app_service_site,
     module.trial_app_service_practitioner,
     module.trial_app_service_role,
-    module.trial_sc_gateway,
   ]
 }
 
