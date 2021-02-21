@@ -82,10 +82,10 @@ module "trial_keyvault" {
 
 # Prepare an array of service ids so we can iterate on those and add them to the vnet
 # loop-like style
+# TODO: add init-service to VNET - diffrent module
 locals {
   service_ids = [module.fhir_server.service_id, module.trial_app_service_site.service_id,
     module.trial_app_service_practitioner.service_id,
-    module.trial_app_service_init.service_id,
     module.trial_sc_gateway.service_id, module.trial_sc_discovery.service_id,
   module.trial_sc_config.service_id]
 }

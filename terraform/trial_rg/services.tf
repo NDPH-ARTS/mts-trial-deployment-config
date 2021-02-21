@@ -105,21 +105,17 @@ module "trial_app_service_role" {
   ]
 }
 
-# init service
-# todo: make 1-time service: ARTS-362
+# init service, a 1-time service: ARTS-362
 module "trial_app_service_init" {
-  source              = "./modules/genericservice"
+  source              = "./modules/initservice"
   app_name            = local.init_name
   rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
   docker_image        = var.init_service_image_name
   docker_image_tag    = var.init_service_image_tag
 
   settings = {
-    "always_on"   = "true"
-    "WEBSITES_PORT"               = "8080" # The container is listening on 8080
   }
 
   depends_on = [
