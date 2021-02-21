@@ -4,7 +4,7 @@ locals {
   site_name = "as-${var.trial_name}-site-${var.environment}"
   practitioner_name = "as-${var.trial_name}-practitioner-${var.environment}"
   role_name = "as-${var.trial_name}-role-${var.environment}"
-  init_name = "as-${var.trial_name}-init-${var.environment}"
+  init_name = "aci-${var.trial_name}-init-${var.environment}"
   gateway_name = "as-${var.trial_name}-sc-gateway-${var.environment}"
   discovery_name = "as-${var.trial_name}-sc-discovery-${var.environment}"
   config_name = "as-${var.trial_name}-sc-config-${var.environment}"
