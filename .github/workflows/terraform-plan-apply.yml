@@ -206,7 +206,7 @@ jobs:
           set -o errexit
           set -o nounset
 
-          cp ../branding_sample_trial/assets/branding/img/ndph-logo.png mts-trial-ui/assets/branding/img/
+          cp ../sample_trial/assets/branding/img/ndph-logo.png mts-trial-ui/assets/branding/img/
       # Upload to storage account (to $web container)
       - name: UI component - Upload to storage
         # if: github.ref == 'refs/heads/main'
