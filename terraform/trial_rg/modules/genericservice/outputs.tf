@@ -14,7 +14,5 @@ output "hostname" {
 }
 
 output "identity" {
-
   value = azurerm_app_service.generic_service.identity[0].principal_id
-
 }

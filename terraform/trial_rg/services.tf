@@ -144,7 +144,7 @@ data "azurerm_subscription" "current" {
 data "azurerm_role_definition" "contributor" {
   name = "Contributor"
 }
-resource "azurerm_role_assignment" "example" {
+resource "azurerm_role_assignment" "init_role_assignment" {
   depends_on = [
     module.trial_app_service_init
   ]
