@@ -123,9 +123,9 @@ module "trial_app_service_init" {
     "WEBSITES_PORT"                           = "8080"
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
     "EUREKA_INSTANCE_HOSTNAME"                = "${local.practitioner_name}.azurewebsites.net"
-    "PRACTITIONER_SERVICE"                    = module.trial_app_service_practitioner.hostname
-    "ROLE_SERVICE"                            = module.trial_app_service_role.hostname
-    "SITE_SERVICE"                            = module.trial_app_service_site.hostname
+    "PRACTITIONER_SERVICE_URI"                = module.trial_app_service_practitioner.hostname
+    "ROLE_SERVICE_URI"                        = module.trial_app_service_role.hostname
+    "SITE_SERVICE_URI"                        = module.trial_app_service_site.hostname
   }
 
   depends_on = [

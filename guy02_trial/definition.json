@@ -1,6 +1,6 @@
 {
-    "name": "guy03",
-    "id": "guy03",
+    "name": "guy02",
+    "id": "guy02",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -17,7 +17,7 @@
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "main-latest"
+        "image_tag": "6a838f786f471c6bfd1fd00c0e99d60fe9c38607"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
