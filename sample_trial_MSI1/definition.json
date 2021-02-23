@@ -1,6 +1,6 @@
 {
-    "name": "darren1",
-    "id": "ds01",
+    "name": "darren2",
+    "id": "ds2",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -30,11 +30,11 @@
         },
         "discovery_service": {
             "image_name": "ghcr.io/ndph-arts/discovery-server",
-            "image_tag": "feature/ARTS-353-init-service-token-latest"
+            "image_tag": "main-latest"
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "feature/ARTS-353-init-service-token-latest",
+            "image_tag": "main-latest",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
             "search_paths": "sample_trial/services, sample_trial/services/*"
         }
