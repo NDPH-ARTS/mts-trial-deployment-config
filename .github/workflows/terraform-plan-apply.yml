@@ -176,6 +176,7 @@ jobs:
           echo "trial_name=${{ matrix.trial_name }}" >> $GITHUB_ENV
           echo "tenant_id=${{ matrix.tenant_id }}" >> $GITHUB_ENV
           echo "ui_client_id=${{ matrix.ui_client_id }}" >> $GITHUB_ENV
+          echo "gateway_hostname=${{ module.trial_sc_gateway.hostname }}" >> $GITHUB_ENV
 
           ## DO NOT DELETE ##
           # mask this value so this sensitive data won't be logged.
@@ -200,6 +201,7 @@ jobs:
           sed -i 's/{{clientId}}/${{ env.ui_client_id }}/' mts-trial-ui/index.html
           sed -i 's/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${{ env.tenant_id }}\/v2.0/' mts-trial-ui/index.html
           sed -i 's/{{trialName}}/${{ env.trial_name }}/' mts-trial-ui/index.html
+          sed -i 's/{{gatewayUrl}}/https:\/\/${{ env.gateway_hostname }}\/api/' mts-trial-ui/index.html
 
       # Add Branding Assets
       - name: UI component - Copy Logo File
