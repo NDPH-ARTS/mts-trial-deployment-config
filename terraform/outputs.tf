@@ -5,7 +5,7 @@ output "ui_conn_string" {
 }
 
 output "gateway_host" {
-  value       = module.trial_rg.modules.trial_sc_gateway.genericservice.hostname
+  value       = module.trial_rg.gateway_host
   description = "The hostname of the API gateway."
   sensitive   = false
 }
