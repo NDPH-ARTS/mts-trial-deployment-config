@@ -176,7 +176,7 @@ jobs:
           echo "trial_name=${{ matrix.trial_name }}" >> $GITHUB_ENV
           echo "tenant_id=${{ matrix.tenant_id }}" >> $GITHUB_ENV
           echo "ui_client_id=${{ matrix.ui_client_id }}" >> $GITHUB_ENV
-          echo "gateway_hostname=$(terraform output module.trial_sc_gateway.hostname)" >> $GITHUB_ENV
+          echo "gateway_hostname=$(terraform output module.trial_rg.module.trial_sc_gateway.azurerm_app_service.generic_service.hostname)" >> $GITHUB_ENV
 
           ## DO NOT DELETE ##
           # mask this value so this sensitive data won't be logged.
