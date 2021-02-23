@@ -82,8 +82,7 @@ module "trial_app_service_role" {
   docker_image        = var.role_image_name
   docker_image_tag    = var.role_image_tag
 
-  settings = {
-    "always_on"   = "true"
+  settings = {    
     "JDBC_DRIVER" = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
     # TODO: replace with KeyVault reference
     "JDBC_URL"    = "jdbc:sqlserver://${module.roles_sql_server.sqlserver_name}.database.windows.net:1433;databaseName=ROLES;user=${module.roles_sql_server.db_user};password=${module.roles_sql_server.db_password}"
@@ -116,8 +115,6 @@ module "trial_app_service_init" {
   docker_image_tag    = var.init_service_image_tag
 
   settings = {
-    # "always_on"   = "true"
-    # "WEBSITES_PORT"               = "8080" # The container is listening on 8080
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
@@ -138,7 +135,6 @@ module "trial_app_service_init" {
     module.trial_app_service_site,
     module.trial_app_service_practitioner,
     module.trial_app_service_role,
-    module.trial_sc_gateway,
   ]
 }
 
