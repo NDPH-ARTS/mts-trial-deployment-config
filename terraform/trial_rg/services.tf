@@ -22,7 +22,7 @@ module "trial_app_service_site" {
   docker_image_tag    = var.site_image_tag
 
   settings = {
-    "init-service.identity"                   = module.trial_app_service_init.identity
+    "initService.identity"                   = module.trial_app_service_init.identity
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
@@ -54,7 +54,7 @@ module "trial_app_service_practitioner" {
 
   # todo use private endpoint
   settings = {
-    "init-service.identity"                   = module.trial_app_service_init.identity
+    "initService.identity"                   = module.trial_app_service_init.identity
     "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
     "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
     "SERVER_PORT"                             = "80"
@@ -89,7 +89,7 @@ module "trial_app_service_role" {
   docker_image_tag    = var.role_image_tag
 
   settings = {
-    "init-service.identity"                   = module.trial_app_service_init.identity
+    "initService.identity"                   = module.trial_app_service_init.identity
     "always_on"   = "true"
     "JDBC_DRIVER" = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
     # TODO: replace with KeyVault reference
@@ -126,6 +126,9 @@ module "trial_app_service_init" {
   settings = {
     "always_on"   = "true"
     "WEBSITES_PORT"               = "8080" # The container is listening on 8080
+    "PRACTITIONER-SERVICE_URI"    = module.trial_app_service_practitioner.hostname
+    "ROLE-SERVICE_URI"            = module.trial_app_service_role.hostname
+    "SITE-SERVICE_URI"            = module.trial_app_service_site.hostname
   }
 
 
