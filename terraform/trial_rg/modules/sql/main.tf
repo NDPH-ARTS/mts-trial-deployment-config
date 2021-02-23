@@ -16,7 +16,7 @@ resource "azurerm_mssql_database" "sqldb" {
   name = var.db_name
   server_id = azurerm_mssql_server.sql_server.id
   sku_name = "S0" # a small sku, probably not right for production
-  max_size_gb = 4
+  max_size_gb = 2
   
   depends_on = [
     azurerm_mssql_server.sql_server,
