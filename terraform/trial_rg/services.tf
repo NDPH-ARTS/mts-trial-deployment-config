@@ -137,10 +137,6 @@ module "trial_app_service_init" {
   ]
 }
 
-data "azurerm_subscription" "current" {
-
-}
-
 ## End - Service application
 
 ## Spring cloud application
