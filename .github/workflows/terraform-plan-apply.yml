@@ -170,10 +170,10 @@ jobs:
 
           # '-raw' is important so no other characters will be added
           ui_storage_conn_string=$(terraform output -raw ui_conn_string)
-          gateway_hostname_string=$(terraform output gateway_hostname)          
+          gateway_host_string=$(terraform output gateway_host)          
           # create an env var from the connection string, so will be available for the later steps
           echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
-          echo "gateway_hostname=$gateway_hostname_string" >> $GITHUB_ENV
+          echo "gateway_host=$gateway_host_string" >> $GITHUB_ENV
           echo "trial_path=${{ matrix.trial_dir }}" >> $GITHUB_ENV
           echo "trial_name=${{ matrix.trial_name }}" >> $GITHUB_ENV
           echo "tenant_id=${{ matrix.tenant_id }}" >> $GITHUB_ENV
