@@ -126,9 +126,6 @@ module "trial_app_service_init" {
   settings = {
     "always_on"   = "true"
     "WEBSITES_PORT"               = "8080" # The container is listening on 8080
-    "PRACTITIONER-SERVICE_URI"    = module.trial_app_service_practitioner.hostname
-    "ROLE-SERVICE_URI"            = module.trial_app_service_role.hostname
-    "SITE-SERVICE_URI"            = module.trial_app_service_site.hostname
   }
 
 
