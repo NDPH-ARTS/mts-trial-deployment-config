@@ -141,19 +141,6 @@ data "azurerm_subscription" "current" {
 
 }
 
-data "azurerm_role_definition" "contributor" {
-  name = "Contributor"
-}
-resource "azurerm_role_assignment" "init_role_assignment" {
-  depends_on = [
-    module.trial_app_service_init
-  ]
-  skip_service_principal_aad_check = true
-  scope              = data.azurerm_subscription.current.id
-  role_definition_id = "${data.azurerm_subscription.current.id}${data.azurerm_role_definition.contributor.id}"
-  principal_id       = module.trial_app_service_init.identity
-}
-
 ## End - Service application
 
 ## Spring cloud application
