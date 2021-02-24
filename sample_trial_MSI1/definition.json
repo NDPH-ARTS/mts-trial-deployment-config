@@ -1,6 +1,6 @@
 {
-    "name": "darren5",
-    "id": "ds5",
+    "name": "darren1",
+    "id": "ds1",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -26,15 +26,15 @@
     "spring_cloud": {
         "gateway_service": {
             "image_name": "ghcr.io/ndph-arts/gateway-server",
-            "image_tag": "4fb41bb002dcdfd61622244a4e598e546421709b"
+            "image_tag": "main-latest"
         },
         "discovery_service": {
             "image_name": "ghcr.io/ndph-arts/discovery-server",
-            "image_tag": "4fb41bb002dcdfd61622244a4e598e546421709b"
+            "image_tag": "main-latest"
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "4fb41bb002dcdfd61622244a4e598e546421709b",
+            "image_tag": "main-latest",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
             "search_paths": "sample_trial/services, sample_trial/services/*"
         }
