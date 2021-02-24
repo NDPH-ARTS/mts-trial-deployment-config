@@ -123,27 +123,22 @@ module "trial_app_service_init" {
   docker_image_tag    = var.init_service_image_tag
 
   settings = {
-    "SPRING_PROFILES_ACTIVE"                  = var.spring_profile
-    "SPRING_CLOUD_CONFIG_LABEL"               = var.spring_config_label
-    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"    = "${module.trial_sc_discovery.hostname}/eureka/"
+    "SPRING_PROFILES_ACTIVE"               = var.spring_profile
+    "SPRING_CLOUD_CONFIG_LABEL"            = var.spring_config_label
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE" = "${module.trial_sc_discovery.hostname}/eureka/"
     # TODO: remove this when discovery is available
-    "ROLE_SERVICE_URI"                        = module.trial_app_service_role.hostname
-    "SITE_SERVICE_URI"                        = module.trial_app_service_site.hostname
-    "PRACTITIONER_SERVICE_URI"                = module.trial_app_service_practitioner.hostname
-    # This is required to not restart the console app after its done
-    "SERVER_PORT"                             = "80"
-    "WEBSITES_PORT"                           = "80"
-    "SPRING_MAIN_WEB_APPLICATION_TYPE"        = "" # brings up the spring web app despite being a console app
+    "ROLE_SERVICE_URI"         = "https://${local.role_name}.azurewebsites.net"
+    "SITE_SERVICE_URI"         = "https://${local.site_name}.azurewebsites.net"
+    "PRACTITIONER_SERVICE_URI" = "https://${local.practitioner_name}.azurewebsites.net"
+    "SERVER_PORT"                      = "80"
+    "WEBSITES_PORT"                    = "80"
+    "SPRING_MAIN_WEB_APPLICATION_TYPE" = "" # brings up the spring web app despite being a console app
   }
-
 
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
     module.trial_sc_config,
     module.trial_sc_discovery,
-    module.trial_app_service_site,
-    module.trial_app_service_practitioner,
-    module.trial_app_service_role,
   ]
 }
 
