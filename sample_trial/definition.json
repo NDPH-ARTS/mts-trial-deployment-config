@@ -1,6 +1,6 @@
 {
-    "name": "arts549",
-    "id": "arts549a",
+    "name": "trial0",
+    "id": "t01",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -36,7 +36,7 @@
             "image_name": "ghcr.io/ndph-arts/config-server",
             "image_tag": "main-latest",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": "arts549/services, arts549/services/*"
+            "search_paths": "sample_trial/services, sample_trial/services/*"
         }
     }
 }
