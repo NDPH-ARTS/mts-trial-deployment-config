@@ -19,8 +19,8 @@ resource "azurerm_app_service" "generic_service" {
   logs {
     http_logs {
       file_system {
-        retention_in_mb   = 30     # in Megabytes
-        retention_in_days = 30     # in days
+        retention_in_mb   = 30 # in Megabytes
+        retention_in_days = 30 # in days
       }
     }
 
