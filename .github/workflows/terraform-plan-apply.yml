@@ -20,7 +20,9 @@ jobs:
         id: calc_files_diff
         run: |
           set -o errexit
+          set -o pipefail
           set -o nounset
+          # set -o xtrace
 
           git fetch origin main:localmain
 
@@ -164,7 +166,9 @@ jobs:
       - name: Plan TF for "${{ matrix.trial_name }}"
         run: |
           set -o errexit
+          set -o pipefail
           set -o nounset
+          # set -o xtrace
 
           terraform plan -var-file=${{ matrix.trial_name }}.tfvars -var="owner=${{ github.actor }}"
 
@@ -173,7 +177,9 @@ jobs:
         # if: github.ref == 'refs/heads/main'
         run: |
           set -o errexit
+          set -o pipefail
           set -o nounset
+          # set -o xtrace
 
           echo "Merged to main. applying trial's RG"
           terraform apply -var-file=${{ matrix.trial_name }}.tfvars -var="owner=${{ github.actor }}" -auto-approve
@@ -184,10 +190,16 @@ jobs:
           # create an env var from the connection string, so will be available for the later steps
           echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
           echo "gateway_host_string=$gateway_host_string" >> $GITHUB_ENV
+
           echo "trial_path=${{ matrix.trial_dir }}" >> $GITHUB_ENV
           echo "trial_name=${{ matrix.trial_name }}" >> $GITHUB_ENV
           echo "tenant_id=${{ matrix.tenant_id }}" >> $GITHUB_ENV
           echo "ui_client_id=${{ matrix.ui_client_id }}" >> $GITHUB_ENV
+
+          # extract more values from the definition file
+          definition_path=${{ matrix.trial_dir }}/definition.json
+          echo "tenant_id=$(jq -r '.tenant_id' ${definition_path})" >> $GITHUB_ENV
+          echo "ui_client_id=$(jq -r '.ui_client_id' ${definition_path})" >> $GITHUB_ENV
 
           ## DO NOT DELETE ##
           # mask this value so this sensitive data won't be logged.
@@ -205,30 +217,40 @@ jobs:
       - name: UI component - Unzip and modify
         run: |
           set -o errexit
+          set -o pipefail
           set -o nounset
+          set -o xtrace
 
           unzip mts-trial-ui.zip
 
-          sed -i 's/{{clientId}}/${{ env.ui_client_id }}/' mts-trial-ui/index.html
-          sed -i 's/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${{ env.tenant_id }}\/v2.0/' mts-trial-ui/index.html
-          sed -i 's/{{trialName}}/${{ env.trial_name }}/' mts-trial-ui/index.html
-          sed -i 's^{{gatewayUrl}}^${{ env.gateway_host_string }}/api^' mts-trial-ui/index.html
+          index_file="mts-trial-ui/index.html"
+          # sed doesn't like the github {{ }} vars, so droping the value to a regular var
+          trial_name=${{ matrix.trial_name }}
+
+          sed -i "s/{{clientId}}/${ui_client_id}/" ${index_file}
+          sed -i "s/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${tenant_id}\/v2.0/" ${index_file}
+          sed -i "s/{{trialName}}/${trial_name}/" ${index_file}
+          sed -i "s^{{gatewayUrl}}^${gateway_host_string}/api^" ${index_file}
 
       # Add Branding Assets
       - name: UI component - Copy Logo File
         run: |
           set -o errexit
+          set -o pipefail
           set -o nounset
+          # set -o xtrace
 
-          echo "using trial path '${{ env.trial_path }}'"
-          cp ${{ env.trial_path }}/assets/branding/img/logo.png mts-trial-ui/assets/branding/img/
+          echo "using trial path ${{ matrix.trial_dir }}"
+          cp ${{ matrix.trial_dir }}/assets/branding/img/logo.png mts-trial-ui/assets/branding/img/
 
       # Upload to storage account (to $web container)
       - name: UI component - Upload to storage
         # if: github.ref == 'refs/heads/main'
         run: |
           set -o errexit
+          set -o pipefail
           set -o nounset
+          set -o xtrace
 
           # first clean up the container, then upload the new assets
           az storage blob delete-batch --connection-string ${ui_storage_conn_string} --source "\$web" --pattern "*"
