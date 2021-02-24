@@ -1,6 +1,6 @@
 {
-    "name": "darren2",
-    "id": "dgs2",
+    "name": "darren3",
+    "id": "dgs3",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -9,32 +9,32 @@
     "spring_config_label": "main",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
-        "image_tag": "4fb41bb002dcdfd61622244a4e598e546421709b"
+        "image_tag": "29205d7ad6264136a734713d8bf6d6706faf3de7"
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "4fb41bb002dcdfd61622244a4e598e546421709b"
+        "image_tag": "29205d7ad6264136a734713d8bf6d6706faf3de7"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "4fb41bb002dcdfd61622244a4e598e546421709b"
+        "image_tag": "29205d7ad6264136a734713d8bf6d6706faf3de7"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
-        "image_tag": "4fb41bb002dcdfd61622244a4e598e546421709b"
+        "image_tag": "29205d7ad6264136a734713d8bf6d6706faf3de7"
     },
     "spring_cloud": {
         "gateway_service": {
             "image_name": "ghcr.io/ndph-arts/gateway-server",
-            "image_tag": "main-latest"
+            "image_tag": "29205d7ad6264136a734713d8bf6d6706faf3de7"
         },
         "discovery_service": {
             "image_name": "ghcr.io/ndph-arts/discovery-server",
-            "image_tag": "main-latest"
+            "image_tag": "29205d7ad6264136a734713d8bf6d6706faf3de7"
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "main-latest",
+            "image_tag": "29205d7ad6264136a734713d8bf6d6706faf3de7",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
             "search_paths": "sample_trial/services, sample_trial/services/*"
         }
