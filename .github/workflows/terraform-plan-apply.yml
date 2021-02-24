@@ -164,13 +164,14 @@ jobs:
         run: |
           set -o errexit
           set -o nounset
+          set + x
 
           echo "Merged to main. applying trial's RG"
           terraform apply -var-file=${{ matrix.trial_name }}.tfvars -auto-approve
 
           # '-raw' is important so no other characters will be added
           ui_storage_conn_string=$(terraform output -raw ui_conn_string)
-          gateway_host_string=$(terraform output gateway_host)          
+          gateway_host_string=$(terraform output -raw gateway_host)          
           # create an env var from the connection string, so will be available for the later steps
           echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
           echo "gateway_host=$gateway_host_string" >> $GITHUB_ENV
