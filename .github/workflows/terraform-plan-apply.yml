@@ -64,6 +64,16 @@ jobs:
             trialName=$(jq -r '.name' ./$path)
             trialId=$(jq -r '.id' ./$path)
             trial_dir=$(dirname $(realpath $path))
+
+            # Check that trial name in the json equals to its folder name.
+            last_dir_name=$(basename $trial_dir)
+            if [[ "$last_dir_name" != "$trialName" ]]
+            then
+              echo "ERROR: trial name (${trialName}) is not equal to its folder (${last_dir_name})." >&2
+              exit 1
+            fi
+
+            # Prepare the matrix item
             MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\", \"trial_dir\": \"$trial_dir\",},"
 
             JSON="$JSON$MatrixItem"
