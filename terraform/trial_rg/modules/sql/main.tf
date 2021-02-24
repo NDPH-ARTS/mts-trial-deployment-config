@@ -8,7 +8,7 @@ resource "azurerm_mssql_server" "sql_server" {
   administrator_login           = var.sql_user
   administrator_login_password  = var.sql_pass
   public_network_access_enabled = true # TODO: set to false when private link works
-  
+
 }
 
 # DB
@@ -17,7 +17,7 @@ resource "azurerm_mssql_database" "sqldb" {
   server_id = azurerm_mssql_server.sql_server.id
   sku_name = "S0" # a small sku, probably not right for production
   max_size_gb = 2
-  
+
   depends_on = [
     azurerm_mssql_server.sql_server,
   ]
