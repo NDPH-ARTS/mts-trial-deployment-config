@@ -203,7 +203,7 @@ jobs:
           sed -i 's/{{clientId}}/${{ env.ui_client_id }}/' mts-trial-ui/index.html
           sed -i 's/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${{ env.tenant_id }}\/v2.0/' mts-trial-ui/index.html
           sed -i 's/{{trialName}}/${{ env.trial_name }}/' mts-trial-ui/index.html          
-          sed -i 's^{{gatewayUrl}}/^${{ env.gateway_host_string }}/api^' mts-trial-ui/index.html
+          sed -i 's^{{gatewayUrl}}^${{ env.gateway_host_string }}/api^' mts-trial-ui/index.html
 
       # Add Branding Assets
       - name: UI component - Copy Logo File
