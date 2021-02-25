@@ -1,6 +1,6 @@
 {
-    "name": "authds1",
-    "id": "tads1",
+    "name": "authds2",
+    "id": "tads2",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -9,32 +9,32 @@
     "spring_config_label": "main",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
-        "image_tag": "694b910bc4352329108fe57fb7c7050217361dd3"
+        "image_tag": "a6480ae9b065c561111ac34358ca4ed9133e95ca"
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "694b910bc4352329108fe57fb7c7050217361dd3"
+        "image_tag": "a6480ae9b065c561111ac34358ca4ed9133e95ca"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "694b910bc4352329108fe57fb7c7050217361dd3"
+        "image_tag": "a6480ae9b065c561111ac34358ca4ed9133e95ca"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
-        "image_tag": "694b910bc4352329108fe57fb7c7050217361dd3"
+        "image_tag": "a6480ae9b065c561111ac34358ca4ed9133e95ca"
     },
     "spring_cloud": {
         "gateway_service": {
             "image_name": "ghcr.io/ndph-arts/gateway-server",
-            "image_tag": "694b910bc4352329108fe57fb7c7050217361dd3"
+            "image_tag": "a6480ae9b065c561111ac34358ca4ed9133e95ca"
         },
         "discovery_service": {
             "image_name": "ghcr.io/ndph-arts/discovery-server",
-            "image_tag": "694b910bc4352329108fe57fb7c7050217361dd3"
+            "image_tag": "a6480ae9b065c561111ac34358ca4ed9133e95ca"
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "694b910bc4352329108fe57fb7c7050217361dd3",
+            "image_tag": "a6480ae9b065c561111ac34358ca4ed9133e95ca",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
             "search_paths": "sample_trial/services, sample_trial/services/*"
         }
