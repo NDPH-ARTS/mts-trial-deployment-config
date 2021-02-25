@@ -118,3 +118,9 @@ variable "owner" {
   description = "The owner of the trial environment."
   default     = "unknown"
 }
+
+variable "shared_app_service_plan_id" {
+  type        = string
+  description = "An existing app service plan to use for new web apps created. Setting this will disable creating a service plan in the trial resource group."
+  default     = ""
+}

@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "vnet" {
 
 ## integration subnet
 resource "azurerm_subnet" "integrationsubnet" {
-  name                 = "integrationsubnet"
+  name                 = "integrationsubnet-${var.trial_name}-${var.environment}"
   resource_group_name  = var.rg_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.1.0/24"]
@@ -23,7 +23,7 @@ resource "azurerm_subnet" "integrationsubnet" {
 
 ## endpoint subnet
 resource "azurerm_subnet" "endpointsubnet" {
-  name                                           = "endpointsubnet"
+  name                                           = "endpointsubnet-${var.trial_name}-${var.environment}"
   resource_group_name                            = var.rg_name
   virtual_network_name                           = azurerm_virtual_network.vnet.name
   address_prefixes                               = ["10.0.2.0/24"]

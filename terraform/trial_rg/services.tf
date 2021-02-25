@@ -15,7 +15,7 @@ module "trial_app_service_site" {
   source              = "./modules/genericservice"
   app_name            = local.site_name
   rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  app_service_plan_id = module.app_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
   docker_image        = var.site_image_name
@@ -33,7 +33,7 @@ module "trial_app_service_site" {
   }
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
+    module.app_service_plan,
     module.trial_sc_config,
     module.trial_sc_discovery,
     module.fhir_server,
@@ -46,7 +46,7 @@ module "trial_app_service_practitioner" {
   source              = "./modules/genericservice"
   app_name            = local.practitioner_name
   rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  app_service_plan_id = module.app_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
   docker_image        = var.practitioner_image_name
@@ -67,7 +67,7 @@ module "trial_app_service_practitioner" {
   }
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
+    module.app_service_plan,
     module.trial_sc_config,
     module.trial_sc_discovery,
     module.trial_app_service_site,
@@ -82,7 +82,7 @@ module "trial_app_service_role" {
   source              = "./modules/genericservice"
   app_name            = local.role_name
   rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  app_service_plan_id = module.app_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
   docker_image        = var.role_image_name
@@ -102,7 +102,7 @@ module "trial_app_service_role" {
   }
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
+    module.app_service_plan,
     module.roles_sql_server,
     module.trial_sc_config,
     module.trial_sc_discovery,
@@ -116,7 +116,7 @@ module "trial_app_service_init" {
   source              = "./modules/genericservice"
   app_name            = local.init_name
   rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  app_service_plan_id = module.app_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
   docker_image        = var.init_service_image_name
@@ -127,16 +127,16 @@ module "trial_app_service_init" {
     "SPRING_CLOUD_CONFIG_LABEL"            = var.spring_config_label
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE" = "${module.trial_sc_discovery.hostname}/eureka/"
     # TODO: remove this when discovery is available
-    "ROLE_SERVICE_URI"         = "https://${local.role_name}.azurewebsites.net"
-    "SITE_SERVICE_URI"         = "https://${local.site_name}.azurewebsites.net"
-    "PRACTITIONER_SERVICE_URI" = "https://${local.practitioner_name}.azurewebsites.net"
+    "ROLE_SERVICE_URI"                 = "https://${local.role_name}.azurewebsites.net"
+    "SITE_SERVICE_URI"                 = "https://${local.site_name}.azurewebsites.net"
+    "PRACTITIONER_SERVICE_URI"         = "https://${local.practitioner_name}.azurewebsites.net"
     "SERVER_PORT"                      = "80"
     "WEBSITES_PORT"                    = "80"
     "SPRING_MAIN_WEB_APPLICATION_TYPE" = "" # brings up the spring web app despite being a console app
   }
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
+    module.app_service_plan,
     module.trial_sc_config,
     module.trial_sc_discovery,
   ]
@@ -151,7 +151,7 @@ module "trial_sc_gateway" {
   source              = "./modules/genericservice"
   app_name            = local.gateway_name
   rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  app_service_plan_id = module.app_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
   docker_image        = var.sc_gateway_image_name
@@ -167,7 +167,7 @@ module "trial_sc_gateway" {
   }
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
+    module.app_service_plan,
     module.trial_sc_config,
     module.trial_sc_discovery,
   ]
@@ -177,7 +177,7 @@ module "trial_sc_discovery" {
   source              = "./modules/genericservice"
   app_name            = local.discovery_name
   rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  app_service_plan_id = module.app_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
   docker_image        = var.sc_discovery_image_name
@@ -190,7 +190,7 @@ module "trial_sc_discovery" {
   }
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
+    module.app_service_plan,
   ]
 }
 
@@ -198,7 +198,7 @@ module "trial_sc_config" {
   source              = "./modules/genericservice"
   app_name            = local.config_name
   rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  app_service_plan_id = module.app_service_plan.id
   trial_name          = var.trial_name
   environment         = var.environment
   docker_image        = var.sc_config_image_name
@@ -215,7 +215,7 @@ module "trial_sc_config" {
   }
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
+    module.app_service_plan,
     module.trial_sc_discovery,
   ]
 }

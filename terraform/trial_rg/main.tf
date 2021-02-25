@@ -9,17 +9,13 @@ resource "azurerm_resource_group" "trial_rg" {
 }
 
 ## Service plan
-resource "azurerm_app_service_plan" "apps_service_plan" {
-  name                = "asp-${var.trial_name}-${var.environment}"
-  location            = azurerm_resource_group.trial_rg.location
-  resource_group_name = azurerm_resource_group.trial_rg.name
-  kind                = "Linux"
-  reserved            = true
-
-  sku {
-    tier = "PremiumV2"
-    size = "P1v2"
-  }
+module "app_service_plan" {
+  source                     = "./modules/appserviceplan"
+  trial_name                 = var.trial_name
+  environment                = var.environment
+  rg_name                    = azurerm_resource_group.trial_rg.name
+  location                   = azurerm_resource_group.trial_rg.location
+  shared_app_service_plan_id = var.shared_app_service_plan_id
 
   depends_on = [
     azurerm_resource_group.trial_rg,
@@ -53,13 +49,14 @@ module "fhir_server" {
   source              = "./modules/fhir"
   trial_name          = var.trial_name
   rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
+  app_service_plan_id = module.app_service_plan.id
   vnet_id             = module.trial_vnet.id
   endpointsubnet      = module.trial_vnet.endpointsubnet
 
   # needs an app service plan and an existing vnet
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
+    # azurerm_app_service_plan.apps_service_plan,
+    module.app_service_plan,
     module.trial_vnet,
   ]
 }
