@@ -189,7 +189,7 @@ jobs:
           set -o errexit
           set -o nounset
 
-          wget https://github.com/NDPH-ARTS/mts-trial-ui/releases/download/branding-assets/mts-trial-ui.zip
+          wget https://github.com/NDPH-ARTS/mts-trial-ui/releases/latest/download/mts-trial-ui.zip
 
       # Unzip & Customize (replace values)
       - name: UI component - Unzip and modify
@@ -199,8 +199,8 @@ jobs:
 
           unzip mts-trial-ui.zip
 
-          sed -i 's/{{clientId}}/${{ env.ui_client_id }}/' mts-trial-ui/index.html
-          sed -i 's/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${{ env.tenant_id }}\/v2.0/' mts-trial-ui/index.html
+          sed -i 's/{{clientId}}/${{ env.ARM_CLIENT_ID }}/' mts-trial-ui/index.html
+          sed -i 's/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${{ env.ARM_TENANT_ID }}\/v2.0/' mts-trial-ui/index.html
           sed -i 's/{{trialName}}/${{ env.trial_name }}/' mts-trial-ui/index.html
           sed -i 's^{{gatewayUrl}}^${{ env.gateway_host_string }}/api^' mts-trial-ui/index.html
 
