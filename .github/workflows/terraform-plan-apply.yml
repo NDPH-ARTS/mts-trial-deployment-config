@@ -66,8 +66,8 @@ jobs:
             trial_dir=$(dirname $(realpath $path))
             uiClientId=$(jq -r '.ui_client_id' ./$path)
             tenantId=$(jq -r '.tenant_id' ./$path)
-            MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\", \"trial_dir\": \"$trial_dir\", \"ui_client_id\": \"$uiClientId\", \"tenant_id\": \"$tenantId\","
-
+            MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\", \"trial_dir\": \"$trial_dir\", \"ui_client_id\": \"$uiClientId\", \"tenant_id\": \"$tenantId\",},"
+            
 
             JSON="$JSON$MatrixItem"
           done <<< "$FILES"
