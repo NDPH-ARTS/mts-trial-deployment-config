@@ -193,7 +193,7 @@ jobs:
           set -o errexit
           set -o pipefail
           set -o nounset
-          set -o xtrace
+          # set -o xtrace
 
           echo "Merged to main. applying trial's RG"
           terraform apply -auto-approve tfplan
@@ -237,7 +237,7 @@ jobs:
           sed -i "s^{{gatewayUrl}}^${gateway_host_string}/api^" ${index_file}
 
       # Add Branding Assets
-      - name: UI component - Copy Logo File
+      - name: UI component - copy assets
         run: |
           set -o errexit
           set -o pipefail
@@ -245,7 +245,8 @@ jobs:
           # set -o xtrace
 
           echo "using trial path ${{ matrix.trial_dir }}"
-          cp ${{ matrix.trial_dir }}/assets/branding/img/logo.png mts-trial-ui/assets/branding/img/
+          # copy everything in the assets folder
+          cp -fr ${{ matrix.trial_dir }}/assets/* mts-trial-ui/assets/
 
       # Upload to storage account (to $web container)
       - name: UI component - Upload to storage
