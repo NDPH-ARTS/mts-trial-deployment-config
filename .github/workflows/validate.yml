@@ -29,26 +29,4 @@ jobs:
         env:
           INPUT_SCHEMA: .ci/trial-json-schema.json
           # INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
-          INPUT_JSONS: sample_trial/definition.json
-      
-      - name: Validate YML
-        if: always()
-        uses: nrkno/yaml-schema-validator-github-action@master
-        with:
-          schema: '.ci/trial-json-schema.json'
-          target: 'sample_trial/definition.yml'
-          # Uncomment to enable strict checks
-          # strict: '1'
-      - name: Validate YML2
-        if: always()
-        run: |
-          sudo npm install -g ajv-cli
-          ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
-      - name: Validate YML3
-        if: always()
-        uses: nwisbeta/validate-yaml-schema@v1.0.3
-        with:
-          yamlSchemasJson: |
-            {
-                ".ci/trial-json-schema.json": ["sample_trial/definition.yml"],
-            }
+          INPUT_JSONS: sample_trial/definition.yml
