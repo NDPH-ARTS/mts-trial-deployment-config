@@ -15,7 +15,7 @@ init_service:
   image_tag: main-latest
 role_service:
   image_name: ghcr.io/ndph-arts/role-service
-  image_tag: main-latest
+ # image_tag: main-latest
 spring_cloud:
   gateway_service:
     image_name: ghcr.io/ndph-arts/gateway-server
