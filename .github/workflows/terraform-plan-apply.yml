@@ -79,7 +79,7 @@ jobs:
           # Set output
           echo "::set-output name=matrix::$( echo "$JSON" )"
 
-  tfplan:
+  deploy:
     name: "Execute TF on ${{ matrix.trial_name }}: ${{ matrix.path }}"
     needs: prepare-run-matrix
     if: ${{ needs.prepare-run-matrix.outputs.is_empty_matrix == 'false' }}
@@ -224,11 +224,11 @@ jobs:
           az storage blob delete-batch --connection-string ${ui_storage_conn_string} --source "\$web" --pattern "*"
           az storage blob upload-batch --connection-string ${ui_storage_conn_string} --source mts-trial-ui --destination '$web'
 
-  buildall:
+  deployall:
     runs-on: ubuntu-latest
     name: TF plan/apply (matrix)
-    needs: tfplan
+    needs: deploy
     steps:
       - name: Check TF (plan) matrix status
-        if: ${{ needs.tfplan.result != 'success' }}
+        if: ${{ needs.deploy.result != 'success' }}
         run: exit 1
