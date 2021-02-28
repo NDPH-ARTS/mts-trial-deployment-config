@@ -29,4 +29,10 @@ jobs:
         env:
           INPUT_SCHEMA: .ci/trial-json-schema.json
           # INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
-          INPUT_JSONS: sample_trial/definition.yml
+          INPUT_JSONS: sample_trial/definition.json
+
+      - name: Validate YML2
+        if: always()
+        run: |
+          sudo npm install -g ajv-cli
+          ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
