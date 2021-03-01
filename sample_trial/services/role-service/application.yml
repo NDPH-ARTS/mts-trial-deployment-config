@@ -1,6 +1,6 @@
 spring:
   liquibase:
-    change-log: ${LIQUIBASE_LOC}
+    change-log: ${SPRING_CLOUD_REPO}
     drop-first: false
     enabled: true
   jpa:
