@@ -22,25 +22,24 @@ jobs:
 
           echo "::set-output name=diff::$( echo "$FILES" | tr '\n' ',' | sed '$s/,$/\n/' )"
 
-      - name: Validate JSON
-        # if: ${{ steps.calc_files_diff.outputs.diff != '' }}
-        if: always()
-        uses: docker://orrosenblatt/validate-json-action:latest
-        env:
-          INPUT_SCHEMA: .ci/trial-json-schema.json
-          # INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
-          INPUT_JSONS: sample_trial/definition.json
+      # - name: Validate JSON
+      #   # if: ${{ steps.calc_files_diff.outputs.diff != '' }}
+      #   if: always()
+      #   uses: docker://orrosenblatt/validate-json-action:latest
+      #   env:
+      #     INPUT_SCHEMA: .ci/trial-json-schema.json
+      #     # INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
+      #     INPUT_JSONS: sample_trial/definition.json
 
-      - name: Validate YML2
-        if: always()
-        run: |
-          sudo npm install -g ajv-cli
-          sudo npm install -g betterAjvErrors
-          ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
+      # - name: Validate YML2
+      #   if: always()
+      #   run: |
+      #     sudo npm install -g ajv-cli
+      #     sudo npm install -g betterAjvErrors
+      #     ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
 
       - name: Output current branch name & date
         uses: satackey/action-js-inline@release-master
-        id: getdata
         with:
           # Edit the following line to install packages required to run your script.
           required-packages: fs better-ajv-errors ajv
