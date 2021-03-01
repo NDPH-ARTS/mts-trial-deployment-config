@@ -57,7 +57,7 @@ jobs:
             const schemaContent = fs.readFileSync('.ci/trial-json-schema.json','utf8');
             const schemaJson = JSON.parse(schemaContent);
             const dataContent = fs.readFileSync('sample_trial/definition.yml','utf8');
-            const dataObj = yaml.safeLoad(dataContent);
+            const dataObj = yaml.load(dataContent);
 
             const validate = ajv.compile(schemaJson);
             const valid = validate(dataObj);
