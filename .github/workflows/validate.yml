@@ -50,7 +50,7 @@ jobs:
             const fs = require('fs');
             const yaml = require('js-yaml');
 
-            const ajv = new Ajv.default({ jsonPointers: true });
+            const ajv = new Ajv.default({ jsPropertySyntax: true });
 
             
             // Load schema and data
