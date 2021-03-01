@@ -44,7 +44,7 @@ jobs:
         env:
           INPUT_SCHEMA: .ci/trial-json-schema.json
           # INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
-          INPUT_YML: sample_trial/definition.json
+          INPUT_YML: sample_trial/definition.yml
 
         with:
           # Edit the following line to install packages required to run your script.
