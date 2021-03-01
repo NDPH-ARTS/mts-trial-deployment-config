@@ -42,12 +42,13 @@ jobs:
         uses: satackey/action-js-inline@release-master
         with:
           # Edit the following line to install packages required to run your script.
-          required-packages: fs better-ajv-errors ajv
+          required-packages: fs better-ajv-errors ajv js-yaml
           script: |
             const core = require('@actions/core')
             const Ajv = require('ajv');
             const betterAjvErrors = require('better-ajv-errors');
             const fs = require('fs');
+            const yaml = require('js-yaml');
 
             const ajv = new Ajv.default({ jsonPointers: true });
 
@@ -55,13 +56,14 @@ jobs:
             // Load schema and data
             const schemaContent = fs.readFileSync('.ci/trial-json-schema.json','utf8');
             const schemaJson = JSON.parse(schemaContent);
-            const data = fs.readFileSync('sample_trial/definition.yml','utf8');
+            const dataContent = fs.readFileSync('sample_trial/definition.yml','utf8');
+            const dataObj = yaml.safeLoad(dataContent);
 
             const validate = ajv.compile(schemaJson);
-            const valid = validate(data);
+            const valid = validate(dataObj);
 
             if (!valid) {
-              const output = betterAjvErrors(schemaJson, data, validate.errors);
+              const output = betterAjvErrors(schemaJson, dataObj, validate.errors);
               console.log(output);
             }
             
