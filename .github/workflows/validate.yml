@@ -54,7 +54,7 @@ jobs:
             
             // Load schema and data
             const schema = fs.readFileSync('.ci/trial-json-schema.json','utf8');
-            const data = fs.readFileSync('sample_trial/definition.yaml','utf8');
+            const data = fs.readFileSync('sample_trial/definition.yml','utf8');
 
             const validate = ajv.compile(schema);
             const valid = validate(data);
