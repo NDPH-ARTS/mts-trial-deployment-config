@@ -50,7 +50,7 @@ jobs:
             const fs = require('fs');
             const yaml = require('js-yaml');
 
-            const ajv = new Ajv.default({ jsPropertySyntax: true });
+            const ajv = new Ajv.default({ jsonPointers: true });
 
             
             // Load schema and data
@@ -65,6 +65,5 @@ jobs:
             if (!valid) {
               const output = betterAjvErrors(schemaJson, dataObj, validate.errors);
               console.log(output);
-              core.setOutput('validate', output)
             }
             
