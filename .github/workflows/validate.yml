@@ -58,18 +58,23 @@ jobs:
 
             const ajv = new Ajv.default({ jsonPointers: true });
 
-            
-            // Load schema and data
-            const schemaContent = fs.readFileSync(process.env.INPUT_SCHEMA,'utf8');
-            const schemaJson = JSON.parse(schemaContent);
-            const dataContent = fs.readFileSync(process.env.INPUT_YML,'utf8');
-            const dataObj = yaml.load(dataContent);
+            try { 
+              // Load schema and data
+              const schemaContent = fs.readFileSync(process.env.INPUT_SCHEMA,'utf8');
+              const schemaJson = JSON.parse(schemaContent);
+              const dataContent = fs.readFileSync(process.env.INPUT_YML,'utf8');
+              const dataObj = yaml.load(dataContent);
 
-            const validate = ajv.compile(schemaJson);
-            const valid = validate(dataObj);
+              const validate = ajv.compile(schemaJson);
+              const valid = validate(dataObj);
 
-            if (!valid) {
-               const output = betterAjvErrors(schemaJson, dataObj, validate.errors, { format: 'cli', indent: 4 });
-               console.log(output);
-               core.setFailed(`Validation failed`);
+              if (!valid) {
+                const output = betterAjvErrors(schemaJson, dataObj, validate.errors, { format: 'cli', indent: 4 });
+                console.log(output);
+                core.setFailed(`Validation failed`);
+              }
             }
+            catch(err) {
+              core.setFailed(`Action failed with error ${err}`);
+            }
+            
