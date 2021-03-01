@@ -65,5 +65,6 @@ jobs:
             if (!valid) {
               const output = betterAjvErrors(schemaJson, dataObj, validate.errors);
               console.log(output);
+              core.setOutput('validate', output)
             }
             
