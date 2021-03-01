@@ -49,7 +49,7 @@ jobs:
             const betterAjvErrors = require('better-ajv-errors');
             const fs = require('fs');
 
-            const ajv = new Ajv({ jsonPointers: true });
+            const ajv = new Ajv.default({ jsonPointers: true });
 
             
             // Load schema and data
