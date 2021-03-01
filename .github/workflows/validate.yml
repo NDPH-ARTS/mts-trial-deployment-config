@@ -63,7 +63,6 @@ jobs:
             const valid = validate(dataObj);
 
             if (!valid) {
-              const errors = this.schemaValidator.errorsText(validator.errors);
-              const output = betterAjvErrors(validator.schema, data, validator.errors, { format: 'cli', indent: 4 });
-              console.log(output);
+               const output = betterAjvErrors(schemaJson, dataObj, validate.errors, { format: 'cli', indent: 4 });
+               console.log(output);
             }
