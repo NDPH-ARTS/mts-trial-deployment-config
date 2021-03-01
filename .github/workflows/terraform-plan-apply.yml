@@ -199,7 +199,7 @@ jobs:
           # set -o xtrace
 
           echo "Merged to main. applying trial's RG"
-          terraform apply -var="init_username=${{secrets.INIT_USERNAME}}" -var="init_password=${{secrets.INIT_PASSWORD}}" -var="init_client_id=${{secrets.INIT_CLIENT_ID}}"  -auto-approve tfplan
+          terraform apply -auto-approve tfplan
 
           # '-raw' is important so no other characters will be added
           ui_storage_conn_string=$(terraform output -raw ui_conn_string)
