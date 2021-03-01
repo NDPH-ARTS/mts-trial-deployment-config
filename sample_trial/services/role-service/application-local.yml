@@ -1,6 +1,6 @@
 spring:
   liquibase:
-    change-log: https://github.com/NDPH-ARTS/mts-trial-deployment-config.git/arts346roleconfig/sample_trial/services/role-service/db/changelog/changelog-role-service-master.xml
+    change-log: ${SPRING_CLOUD_REPO}/sample_trial/services/role-service/db/changelog/changelog-role-service-master.xml
     drop-first: false
     enabled: true
   jpa:
