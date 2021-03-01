@@ -38,8 +38,14 @@ jobs:
       #     sudo npm install -g betterAjvErrors
       #     ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
 
-      - name: Output current branch name & date
+      - name: Validate YML
         uses: satackey/action-js-inline@release-master
+        if: always()
+        env:
+          INPUT_SCHEMA: .ci/trial-json-schema.json
+          # INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
+          INPUT_YML: sample_trial/definition.json
+
         with:
           # Edit the following line to install packages required to run your script.
           required-packages: fs better-ajv-errors ajv js-yaml
@@ -54,9 +60,9 @@ jobs:
 
             
             // Load schema and data
-            const schemaContent = fs.readFileSync('.ci/trial-json-schema.json','utf8');
+            const schemaContent = fs.readFileSync(process.env.INPUT_SCHEMA,'utf8');
             const schemaJson = JSON.parse(schemaContent);
-            const dataContent = fs.readFileSync('sample_trial/definition.yml','utf8');
+            const dataContent = fs.readFileSync(process.env.INPUT_YML,'utf8');
             const dataObj = yaml.load(dataContent);
 
             const validate = ajv.compile(schemaJson);
