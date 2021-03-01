@@ -35,4 +35,33 @@ jobs:
         if: always()
         run: |
           sudo npm install -g ajv-cli
+          sudo npm install -g betterAjvErrors
           ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
+
+      - name: Output current branch name & date
+        uses: satackey/action-js-inline@release-master
+        id: getdata
+        with:
+          # Edit the following line to install packages required to run your script.
+          required-packages: fs better-ajv-errors ajv
+          script: |
+            const core = require('@actions/core')
+            const Ajv = require('ajv');
+            const betterAjvErrors = require('better-ajv-errors');
+            const fs = require('fs');
+
+            const ajv = new Ajv({ jsonPointers: true });
+
+            
+            // Load schema and data
+            const schema = fs.readFileSync('.ci/trial-json-schema.json','utf8');
+            const data = fs.readFileSync('sample_trial/definition.yaml','utf8');
+
+            const validate = ajv.compile(schema);
+            const valid = validate(data);
+
+            if (!valid) {
+              const output = betterAjvErrors(schema, data, validate.errors);
+              console.log(output);
+            }
+            
