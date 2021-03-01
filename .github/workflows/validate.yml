@@ -65,4 +65,5 @@ jobs:
             if (!valid) {
                const output = betterAjvErrors(schemaJson, dataObj, validate.errors, { format: 'cli', indent: 4 });
                console.log(output);
+               core.setFailed(`Validation failed`);
             }
