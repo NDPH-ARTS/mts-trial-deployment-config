@@ -1,6 +1,6 @@
 {
-    "name": "authnd2",
-    "id": "ads2",
+    "name": "authnd3",
+    "id": "ads3",
     "version": 1,
     "rootUser": "jondoe1@contoso.com",
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
@@ -9,19 +9,19 @@
     "spring_config_label": "main",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
-        "image_tag": "7c20944ef5b2caff61cc69910603498e9414d258"
+        "image_tag": "02b3477ae8581a4bc97f24855d7c2b4f0499839d"
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "7c20944ef5b2caff61cc69910603498e9414d258"
+        "image_tag": "02b3477ae8581a4bc97f24855d7c2b4f0499839d"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "7c20944ef5b2caff61cc69910603498e9414d258"
+        "image_tag": "02b3477ae8581a4bc97f24855d7c2b4f0499839d"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
-        "image_tag": "7c20944ef5b2caff61cc69910603498e9414d258"
+        "image_tag": "02b3477ae8581a4bc97f24855d7c2b4f0499839d"
     },
     "spring_cloud": {
         "gateway_service": {
