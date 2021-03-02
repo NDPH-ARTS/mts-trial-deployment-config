@@ -1,6 +1,10 @@
 server:
   error:
     include-message: always
+    
+http:
+  readTimeOutMs: 30000
+  connectTimeOutMs: 3000
 
 logging:
   level:
