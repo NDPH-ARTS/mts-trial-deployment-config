@@ -9,19 +9,19 @@
     "spring_config_label": "main",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
-        "image_tag": "6b7e6b4ec0ed572abe1b48ea9942a5bdd669a59d"
+        "image_tag": "17689a2f0f326d6a6820a293039f64f2ecf0a7b4"
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "6b7e6b4ec0ed572abe1b48ea9942a5bdd669a59d"
+        "image_tag": "17689a2f0f326d6a6820a293039f64f2ecf0a7b4"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "6b7e6b4ec0ed572abe1b48ea9942a5bdd669a59d"
+        "image_tag": "17689a2f0f326d6a6820a293039f64f2ecf0a7b4"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
-        "image_tag": "6b7e6b4ec0ed572abe1b48ea9942a5bdd669a59d"
+        "image_tag": "17689a2f0f326d6a6820a293039f64f2ecf0a7b4"
     },
     "spring_cloud": {
         "gateway_service": {
