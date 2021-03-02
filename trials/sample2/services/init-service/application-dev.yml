@@ -17,6 +17,10 @@ logging:
               client:
                 ExchangeFunctions: TRACE
 delay-start: 30
+
+http:
+  readTimeOutMs: 30000
+  connectTimeOutMs: 3000
 ---
 trial:
   trialName: "My Dev Sample Trial"
