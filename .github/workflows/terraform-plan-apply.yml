@@ -182,13 +182,15 @@ jobs:
           set -o nounset
           # set -o xtrace
 
+          echo "GITHUB_SHA=${GITHUB_SHA}"
+
           terraform plan -out=tfplan -var-file=${{ matrix.trial_name }}.tfvars \
             -var="owner=${{ github.actor }}" \
             -var="github_ref=${{ github.ref }}" \
             -var="init_username=${{secrets.INIT_USERNAME}}" \
             -var="init_password=${{secrets.INIT_PASSWORD}}" \
             -var="init_client_id=${{secrets.INIT_CLIENT_ID}}" \
-            -var="github_commit_sha=${GITHUB_SHA}"
+            -var="github_commit_sha=${{GITHUB_SHA}}"
 
       # Apply, only on merge to main
       - name: Terraform apply

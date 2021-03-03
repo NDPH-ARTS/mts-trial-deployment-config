@@ -33,5 +33,4 @@ module "trial_rg" {
   init_username          = var.init_username
   init_password          = var.init_password
   init_client_id         = var.init_client_id
-  github_commit_sha      = var.github_commit_sha
 }
