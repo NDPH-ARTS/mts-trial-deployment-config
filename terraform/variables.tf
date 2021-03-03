@@ -145,3 +145,8 @@ variable "github_ref" {
   description = "The ref that triggered this run. usually a branch name."
   default     = ""
 }
+
+variable "github_commit_sha" {
+  type        = string
+  description = "The github commit id which triggerted this github action"
+}
