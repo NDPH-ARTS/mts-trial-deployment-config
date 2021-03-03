@@ -1,6 +1,6 @@
 spring:
   liquibase:
-    change-log: classpath:db/changelog/changelog-role-service-master.xml
+    change-log: file:./db/changelog/changelog-role-service-master.xml
     drop-first: false
     enabled: true
   jpa:
