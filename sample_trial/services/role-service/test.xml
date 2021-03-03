@@ -8,4 +8,5 @@
 
     <include  file="changelog-role-service-schema.xml" relativeToChangelogFile="true"/>
     <include  file="changelog-permission-data.xml" relativeToChangelogFile="true"/>
+        <hello>shout out </hello>
 </databaseChangeLog>
