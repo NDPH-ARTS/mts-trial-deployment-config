@@ -135,7 +135,6 @@ module "trial_app_service_init" {
     "AZURE_USERNAME"                   = var.init_username
     "AZURE_PASSWORD"                   = var.init_password
     "AZURE_CLIENT_ID"                  = var.init_client_id
-    "GITHUB_COMMIT_SHA"                = var.github_commit_sha
   }
 
   depends_on = [
