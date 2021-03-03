@@ -3,8 +3,8 @@ server:
     include-message: always
     
 http:
-  readTimeOutMs: 50000
-  connectTimeOutMs: 5000
+  readTimeOutMs: 30000
+  connectTimeOutMs: 3000
 
 logging:
   level:
@@ -20,7 +20,7 @@ logging:
             function:
               client:
                 ExchangeFunctions: TRACE
-delay-start: 30
+delay-start: 120
 ---
 trial:
   trialName: "My Dev Sample Trial"
