@@ -11,11 +11,11 @@
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "main-latest"
+        "image_tag": "a8547c03b6a6bf94757ddbf5a164b875385c5150"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "520542705fe598fe8815a47f8bfa0497a087269d"
+        "image_tag": "main-latest"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
