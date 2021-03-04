@@ -9,3 +9,10 @@ output "gateway_host" {
   description = "The hostname of the API gateway."
   sensitive   = false
 }
+
+output "init_conn_string" {
+  value       = module.trial_rg.init_storage_conn_string
+  description = "The init service storage account connection string."
+  sensitive   = true
+}
+

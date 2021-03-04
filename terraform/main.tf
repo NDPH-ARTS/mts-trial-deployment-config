@@ -30,8 +30,7 @@ module "trial_rg" {
   spring_profile      = var.spring_profile
   spring_config_label = var.spring_config_label
 
-  init_username     = var.init_username
-  init_password     = var.init_password
-  init_client_id    = var.init_client_id
-  github_commit_sha = var.github_commit_sha
+  init_username  = var.init_username
+  init_password  = var.init_password
+  init_client_id = var.init_client_id
 }

@@ -182,15 +182,12 @@ jobs:
           set -o nounset
           # set -o xtrace
 
-          echo "GITHUB_SHA=${GITHUB_SHA}"
-
           terraform plan -out=tfplan -var-file=${{ matrix.trial_name }}.tfvars \
             -var="owner=${{ github.actor }}" \
             -var="github_ref=${{ github.ref }}" \
             -var="init_username=${{secrets.INIT_USERNAME}}" \
             -var="init_password=${{secrets.INIT_PASSWORD}}" \
-            -var="init_client_id=${{secrets.INIT_CLIENT_ID}}" \
-            -var="github_commit_sha=${GITHUB_SHA}"
+            -var="init_client_id=${{secrets.INIT_CLIENT_ID}}"
 
       # Apply, only on merge to main
       - name: Terraform apply
@@ -210,6 +207,9 @@ jobs:
           # create an env var from the connection string, so will be available for the later steps
           echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
           echo "gateway_host_string=$gateway_host_string" >> $GITHUB_ENV
+
+          init_storage_conn_string=$(terraform output -raw init_storage_conn_string)
+          echo "init_storage_conn_string=$init_storage_conn_string" >> $GITHUB_ENV
 
           ## DO NOT DELETE ##
           # mask this value so this sensitive data won't be logged.
