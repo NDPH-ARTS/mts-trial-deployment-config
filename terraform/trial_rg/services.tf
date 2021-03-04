@@ -127,13 +127,13 @@ resource "azurerm_storage_container" "initstoragecontainer" {
   container_access_type = "container" #todo: change to private and download more securely
 }
 
-resource "azurerm_storage_blob" "log" {
-  name                   = "log.txt"
-  storage_account_name   = azurerm_storage_account.initstorageaccount.name
-  storage_container_name = azurerm_storage_container.initstoragecontainer.name
-  type                   = "Append"
-  source_content         = ""
-}
+# resource "azurerm_storage_blob" "log" {
+#   name                   = "log.txt"
+#   storage_account_name   = azurerm_storage_account.initstorageaccount.name
+#   storage_container_name = azurerm_storage_container.initstoragecontainer.name
+#   type                   = "Append"
+#   source_content         = ""
+# }
 
 # init service
 module "trial_app_service_init" {
