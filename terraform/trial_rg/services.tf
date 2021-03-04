@@ -160,7 +160,7 @@ module "trial_app_service_init" {
     "AZURE_USERNAME"                         = var.init_username
     "AZURE_PASSWORD"                         = var.init_password
     "AZURE_CLIENT_ID"                        = var.init_client_id
-    "INIT_STORAGE_ACCOUNT_CONNECTION_STRING" = azurerm_storage_account.initstorageaccount
+    "INIT_STORAGE_ACCOUNT_CONNECTION_STRING" = azurerm_storage_account.initstorageaccount.primary_connection_string
   }
 
   depends_on = [
