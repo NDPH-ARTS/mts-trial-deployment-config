@@ -3,7 +3,7 @@ variable "trial_name" {
   description = "Trial name. Use only lowercase letters and numbers"
 
   validation {
-    condition     = length(var.trial_name) > 3 && length(var.trial_name) < 12 && can(regex("[a-z,0-9]", var.trial_name))
+    condition     = length(var.trial_name) >= 3 && length(var.trial_name) < 12 && can(regex("[a-z,0-9]", var.trial_name))
     error_message = "The trial_name must consist of lowercase letters and numbers only."
   }
 }
@@ -121,4 +121,30 @@ variable "owner" {
   type        = string
   description = "The owner of the trial environment."
   default     = "unknown"
+}
+
+variable "init_username" {
+  type        = string
+  description = "The init user name."
+  default     = "unknown"
+  sensitive   = true
+}
+
+variable "init_password" {
+  type        = string
+  description = "The init user password."
+  default     = "unknown"
+  sensitive   = true
+}
+
+variable "init_client_id" {
+  type        = string
+  description = "The init client id."
+  default     = "unknown"
+  sensitive   = true
+}
+
+variable "github_ref" {
+  type        = string
+  description = "The ref that triggered this run. usually a branch name."
 }

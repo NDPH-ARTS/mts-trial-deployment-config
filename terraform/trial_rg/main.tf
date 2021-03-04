@@ -1,10 +1,11 @@
 # Trial Resource Group
-
 resource "azurerm_resource_group" "trial_rg" {
   name     = "rg-trial-${var.trial_name}-${var.environment}"
   location = var.location
   tags = {
-    Owner = "${var.owner}"
+    Owner       = var.owner
+    Environment = var.environment
+    Ref         = var.github_ref
   }
 }
 
@@ -20,6 +21,18 @@ resource "azurerm_app_service_plan" "apps_service_plan" {
     tier = "PremiumV2"
     size = "P1v2"
   }
+
+  depends_on = [
+    azurerm_resource_group.trial_rg,
+  ]
+}
+
+# Application insights
+resource "azurerm_application_insights" "app_insights" {
+  name                = "ai-${var.trial_name}-${var.environment}"
+  location            = azurerm_resource_group.trial_rg.location
+  resource_group_name = azurerm_resource_group.trial_rg.name
+  application_type    = "web"
 
   depends_on = [
     azurerm_resource_group.trial_rg,
@@ -56,16 +69,19 @@ module "fhir_server" {
   app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
   vnet_id             = module.trial_vnet.id
   endpointsubnet      = module.trial_vnet.endpointsubnet
+  app_insights_key    = azurerm_application_insights.app_insights.instrumentation_key
 
   # needs an app service plan and an existing vnet
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
+    azurerm_application_insights.app_insights,
     module.trial_vnet,
   ]
 }
 
 # Key vault
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault
+# TODO: HAS TO BE UNIQUE. https://ndph-arts.atlassian.net/browse/ARTS-367
 module "trial_keyvault" {
   source      = "./modules/kv"
   trial_name  = var.trial_name
@@ -133,6 +149,7 @@ module "roles_sql_server" {
 }
 
 # Storage account for UI elemenet
+# TODO: HAS TO BE UNIQUE. https://ndph-arts.atlassian.net/browse/ARTS-367
 resource "azurerm_storage_account" "uistorageaccount" {
   name                      = "sa${var.trial_name}ui${var.environment}"
   resource_group_name       = azurerm_resource_group.trial_rg.name
