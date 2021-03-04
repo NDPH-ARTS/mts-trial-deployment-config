@@ -9,3 +9,4 @@
     <include  file="changelog-role-service-schema.xml" relativeToChangelogFile="true"/>
     <include  file="changelog-permission-data.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
+<test>inside clm</test>
