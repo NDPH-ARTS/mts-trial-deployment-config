@@ -25,14 +25,14 @@ http:
 trial:
   trialName: "My Dev Sample Trial"
   persons:
-    - givenName: Bootstrap
-      familyName: User
+    - givenName: Albert
+      familyName: Lehninger
       prefix: Mr
       roles:
         - superuser
       userAccount: 5d995fd0-a1ff-4b2c-ba93-238ba9e349b1
-    - givenName: automation
-      familyName: tester
+    - givenName: Charles
+      familyName: Darwin
       prefix: Mr
       roles:
         - superuser
