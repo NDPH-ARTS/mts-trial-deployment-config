@@ -31,6 +31,13 @@ trial:
       roles:
         - superuser
       userAccount: 5d995fd0-a1ff-4b2c-ba93-238ba9e349b1
+    - givenName: Charles
+      familyName: Darwin
+      prefix: Mr
+      roles:
+        - superuser
+      userAccount: 5d995fd0-a1ff-4b2c-ba93-238ba9e349b1
+
   sites:
     - name: CCO
       alias: CCO
