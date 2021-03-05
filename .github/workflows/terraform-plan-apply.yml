@@ -3,7 +3,7 @@ name: Terraform Plan and Apply for Trials
 on:
   push:
     paths-ignore:
-    - 'terraform/shared_rg/**'
+      - "terraform/shared_rg/**"
 
 jobs:
   prepare-run-matrix:
@@ -99,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: './terraform'
+        working-directory: "./terraform"
     env:
       ARM_CLIENT_ID: 2620bfcd-13ee-4f8b-81fd-bd128efdb707
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
@@ -134,7 +134,7 @@ jobs:
 
       - name: Prepare deployment variables
         env:
-          TFVARS_TEMPLATE: 'tfvars.template'
+          TFVARS_TEMPLATE: "tfvars.template"
         run: |
           set -o errexit
           set -o pipefail
@@ -218,7 +218,7 @@ jobs:
           set -o errexit
           set -o nounset
 
-          wget https://github.com/NDPH-ARTS/mts-trial-ui/releases/download/branding-assets/mts-trial-ui.zip
+          wget https://github.com/NDPH-ARTS/mts-trial-ui/releases/download/latest/mts-trial-ui.zip
 
       # Unzip & Customize (replace values)
       - name: UI component - Unzip and modify
