@@ -54,3 +54,8 @@ variable "settings" {
   }
   sensitive = true
 }
+
+variable "storage_account" {
+  type = map(any)
+  description = "One or more storage account blocks to mount"
+}

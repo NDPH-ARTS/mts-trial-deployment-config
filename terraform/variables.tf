@@ -145,3 +145,9 @@ variable "github_ref" {
   description = "The ref that triggered this run. usually a branch name."
   default     = ""
 }
+
+variable "init_log_path" {
+  type        = string
+  description = "Path of the init service log in Azure file storage"
+  default     = "/mnt/initlog"
+}

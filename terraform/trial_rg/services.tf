@@ -121,19 +121,11 @@ resource "azurerm_storage_account" "initstorageaccount" {
   allow_blob_public_access  = true
 }
 
-resource "azurerm_storage_container" "initstoragecontainer" {
-  name                  = "init"
+resource "azurerm_storage_share" "initstorageshare" {
+  name = "init"
   storage_account_name  = azurerm_storage_account.initstorageaccount.name
-  container_access_type = "container" #todo: change to private and download more securely
+  quota = 1
 }
-
-# resource "azurerm_storage_blob" "log" {
-#   name                   = "log.txt"
-#   storage_account_name   = azurerm_storage_account.initstorageaccount.name
-#   storage_container_name = azurerm_storage_container.initstoragecontainer.name
-#   type                   = "Append"
-#   source_content         = ""
-# }
 
 # init service
 module "trial_app_service_init" {
@@ -145,6 +137,15 @@ module "trial_app_service_init" {
   environment         = var.environment
   docker_image        = var.init_service_image_name
   docker_image_tag    = var.init_service_image_tag
+
+  storage_account     = {
+    name = azurerm_storage_account.initstorageaccount.name,
+    type = "AzureFiles",
+    account_name = azurerm_storage_account.initstorageaccount.name,
+    share_name = azurerm_storage_share.initstorageshare.name,
+    access_key = azurerm_storage_account.initstorageaccount.primary_access_key,
+    mount_path = var.init_log_path
+  }
 
   settings = {
     "SPRING_PROFILES_ACTIVE"               = var.spring_profile
@@ -160,7 +161,7 @@ module "trial_app_service_init" {
     "AZURE_USERNAME"                         = var.init_username
     "AZURE_PASSWORD"                         = var.init_password
     "AZURE_CLIENT_ID"                        = var.init_client_id
-    "INIT_STORAGE_ACCOUNT_CONNECTION_STRING" = azurerm_storage_account.initstorageaccount.primary_connection_string
+    "LOG_MOUNT_PATH"                         = var.init_log_path
   }
 
   depends_on = [
