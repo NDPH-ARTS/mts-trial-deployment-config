@@ -1,7 +1,7 @@
 
 # Service application generic module that loads a docker image
 # UNIQUE
-resource "azurerm_app_service" "generic_service" {
+resource "azurerm_app_service" "init_service" {
   name                = var.app_name
   location            = var.location
   resource_group_name = var.rg_name
