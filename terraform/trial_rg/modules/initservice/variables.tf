@@ -55,7 +55,7 @@ variable "settings" {
   sensitive = true
 }
 
-variable "storage_account" {
+variable "storage_account_settings" {
   type = object({
     name         = string,
     type         = string,

@@ -138,7 +138,7 @@ module "trial_app_service_init" {
   docker_image        = var.init_service_image_name
   docker_image_tag    = var.init_service_image_tag
 
-  storage_account = {
+  storage_account_settings = {
     name         = azurerm_storage_account.initstorageaccount.name,
     type         = "AzureFiles",
     account_name = azurerm_storage_account.initstorageaccount.name,
