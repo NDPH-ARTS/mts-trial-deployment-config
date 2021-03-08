@@ -31,4 +31,5 @@ resource "azurerm_app_service" "init_service" {
   app_settings = var.settings
 
   storage_account = var.storage_account
+
 }
