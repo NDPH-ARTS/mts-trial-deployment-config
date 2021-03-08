@@ -122,9 +122,9 @@ resource "azurerm_storage_account" "initstorageaccount" {
 }
 
 resource "azurerm_storage_share" "initstorageshare" {
-  name = "init"
-  storage_account_name  = azurerm_storage_account.initstorageaccount.name
-  quota = 1
+  name                 = "init"
+  storage_account_name = azurerm_storage_account.initstorageaccount.name
+  quota                = 1
 }
 
 # init service
@@ -138,13 +138,13 @@ module "trial_app_service_init" {
   docker_image        = var.init_service_image_name
   docker_image_tag    = var.init_service_image_tag
 
-  storage_account     = {
-    name = azurerm_storage_account.initstorageaccount.name,
-    type = "AzureFiles",
+  storage_account = {
+    name         = azurerm_storage_account.initstorageaccount.name,
+    type         = "AzureFiles",
     account_name = azurerm_storage_account.initstorageaccount.name,
-    share_name = azurerm_storage_share.initstorageshare.name,
-    access_key = azurerm_storage_account.initstorageaccount.primary_access_key,
-    mount_path = var.init_log_path
+    share_name   = azurerm_storage_share.initstorageshare.name,
+    access_key   = azurerm_storage_account.initstorageaccount.primary_access_key,
+    mount_path   = var.init_log_path
   }
 
   settings = {
@@ -152,16 +152,16 @@ module "trial_app_service_init" {
     "SPRING_CLOUD_CONFIG_LABEL"            = var.spring_config_label
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE" = "${module.trial_sc_discovery.hostname}/eureka/"
     # TODO: remove this when discovery is available
-    "ROLE_SERVICE_URI"                       = "https://${local.role_name}.azurewebsites.net"
-    "SITE_SERVICE_URI"                       = "https://${local.site_name}.azurewebsites.net"
-    "PRACTITIONER_SERVICE_URI"               = "https://${local.practitioner_name}.azurewebsites.net"
-    "SERVER_PORT"                            = "80"
-    "WEBSITES_PORT"                          = "80"
-    "SPRING_MAIN_WEB_APPLICATION_TYPE"       = "" # brings up the spring web app despite being a console app
-    "AZURE_USERNAME"                         = var.init_username
-    "AZURE_PASSWORD"                         = var.init_password
-    "AZURE_CLIENT_ID"                        = var.init_client_id
-    "LOG_MOUNT_PATH"                         = var.init_log_path
+    "ROLE_SERVICE_URI"                 = "https://${local.role_name}.azurewebsites.net"
+    "SITE_SERVICE_URI"                 = "https://${local.site_name}.azurewebsites.net"
+    "PRACTITIONER_SERVICE_URI"         = "https://${local.practitioner_name}.azurewebsites.net"
+    "SERVER_PORT"                      = "80"
+    "WEBSITES_PORT"                    = "80"
+    "SPRING_MAIN_WEB_APPLICATION_TYPE" = "" # brings up the spring web app despite being a console app
+    "AZURE_USERNAME"                   = var.init_username
+    "AZURE_PASSWORD"                   = var.init_password
+    "AZURE_CLIENT_ID"                  = var.init_client_id
+    "LOG_MOUNT_PATH"                   = var.init_log_path
   }
 
   depends_on = [

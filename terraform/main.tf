@@ -33,5 +33,5 @@ module "trial_rg" {
   init_username  = var.init_username
   init_password  = var.init_password
   init_client_id = var.init_client_id
-  init_log_path = var.init_log_path
+  init_log_path  = var.init_log_path
 }
