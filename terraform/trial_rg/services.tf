@@ -129,23 +129,20 @@ resource "azurerm_storage_share" "initstorageshare" {
 
 # init service
 module "trial_app_service_init" {
-  source              = "./modules/initservice"
-  app_name            = local.init_name
-  rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
-  trial_name          = var.trial_name
-  environment         = var.environment
-  docker_image        = var.init_service_image_name
-  docker_image_tag    = var.init_service_image_tag
-
-  storage_account_settings = {
-    name         = azurerm_storage_account.initstorageaccount.name,
-    type         = "AzureFiles",
-    account_name = azurerm_storage_account.initstorageaccount.name,
-    share_name   = azurerm_storage_share.initstorageshare.name,
-    access_key   = azurerm_storage_account.initstorageaccount.primary_access_key,
-    mount_path   = var.init_log_path
-  }
+  source                       = "./modules/initservice"
+  app_name                     = local.init_name
+  rg_name                      = azurerm_resource_group.trial_rg.name
+  app_service_plan_id          = azurerm_app_service_plan.apps_service_plan.id
+  trial_name                   = var.trial_name
+  environment                  = var.environment
+  docker_image                 = var.init_service_image_name
+  docker_image_tag             = var.init_service_image_tag
+  storage_account_name         = azurerm_storage_account.initstorageaccount.name
+  storage_account_type         = "AzureFiles"
+  storage_account_account_name = azurerm_storage_account.initstorageaccount.name
+  storage_account_share_name   = azurerm_storage_share.initstorageshare.name
+  storage_account_access_key   = azurerm_storage_account.initstorageaccount.primary_access_key
+  storage_account_mount_path   = var.init_log_path
 
   settings = {
     "SPRING_PROFILES_ACTIVE"               = var.spring_profile
@@ -167,6 +164,7 @@ module "trial_app_service_init" {
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
     azurerm_storage_account.initstorageaccount,
+    azurerm_storage_share.initstorageshare,
     module.trial_sc_config,
     module.trial_sc_discovery,
   ]

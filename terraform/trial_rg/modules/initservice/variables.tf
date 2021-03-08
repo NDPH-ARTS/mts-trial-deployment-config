@@ -55,14 +55,21 @@ variable "settings" {
   sensitive = true
 }
 
-variable "storage_account_settings" {
-  type = object({
-    name         = string,
-    type         = string,
-    account_name = string,
-    share_name   = string,
-    access_key   = string,
-    mount_path   = string
-  })
-  description = "One or more storage account blocks to mount"
+variable "storage_account_name" {
+  type = string
+}
+variable "storage_account_type" {
+  type = string
+}
+variable "storage_account_account_name" {
+  type = string
+}
+variable "storage_account_share_name" {
+  type = string
+}
+variable "storage_account_access_key" {
+  type = string
+}
+variable "storage_account_mount_path" {
+  type = string
 }

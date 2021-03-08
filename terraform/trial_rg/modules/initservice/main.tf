@@ -1,5 +1,5 @@
 
-# Service application generic module that loads a docker image
+# Service application module that loads a docker image and mounts to storage account
 # UNIQUE
 resource "azurerm_app_service" "init_service" {
   name                = var.app_name
@@ -30,6 +30,13 @@ resource "azurerm_app_service" "init_service" {
 
   app_settings = var.settings
 
-  storage_account = var.storage_account_settings
+  storage_account = {
+    name         = var.storage_account_name,
+    type         = var.storage_account_type,
+    account_name = var.storage_account_account_name,
+    share_name   = var.share_name,
+    access_key   = var.access_key,
+    mount_path   = var.mount_path
+  }
 
 }
