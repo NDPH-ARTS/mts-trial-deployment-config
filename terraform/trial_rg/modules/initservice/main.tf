@@ -29,4 +29,6 @@ resource "azurerm_app_service" "generic_service" {
   }
 
   app_settings = var.settings
+
+  storage_account = var.storage_account
 }
