@@ -26,7 +26,7 @@ trial:
   trialName: "My Dev Sample Trial"
   persons:
     - givenName: Albert
-      familyName: Lehninger
+      familyName: Llehninger
       prefix: Mr
       roles:
         - superuser
