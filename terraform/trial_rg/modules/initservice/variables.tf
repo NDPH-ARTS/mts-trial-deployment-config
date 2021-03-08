@@ -56,6 +56,6 @@ variable "settings" {
 }
 
 variable "storage_account" {
-  type        = map(any)
+  type        = object(any)
   description = "One or more storage account blocks to mount"
 }
