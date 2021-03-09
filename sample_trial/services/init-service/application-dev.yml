@@ -42,6 +42,7 @@ trial:
       permissions:
         - id: create-person
         - id: view-person
+        - id: link-user
     - id: country-admin
       permissions:
         - id: create-person
