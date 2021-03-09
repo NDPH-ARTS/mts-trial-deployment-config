@@ -16,7 +16,7 @@ locals {
     "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.app_insights.connection_string
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE"  = "${module.trial_sc_discovery.hostname}/eureka/"
     # TODO: try to move back to a managed identity
-    "INIT_SERVICE_IDENTITY"  = "5d995fd0-a1ff-4b2c-ba93-238ba9e349b1" # module.trial_app_service_init.identity
+    "INIT_SERVICE_IDENTITY"  = "e6fd67af-ef25-4a4b-af7c-0ed8a7bd40cf" # module.trial_app_service_init.identity
     "WEBSITE_DNS_SERVER"     = "168.63.129.16"
     "WEBSITE_VNET_ROUTE_ALL" = 1
   }
