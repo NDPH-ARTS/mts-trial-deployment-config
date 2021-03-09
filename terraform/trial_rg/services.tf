@@ -151,18 +151,18 @@ resource "azurerm_storage_share" "initstorageshare" {
 
 # init service
 module "trial_app_service_init" {
-  source              = "./modules/initservice"
-  app_name            = local.init_name
-  rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
-  trial_name          = var.trial_name
-  environment         = var.environment
-  docker_image        = var.init_service_image_name
-  docker_image_tag    = var.init_service_image_tag
-  vnet_id             = module.trial_vnet.id
-  subnet_id           = module.trial_vnet.endpointsubnet
-  dns_zone_name       = module.trial_vnet.webapp_dns_zone_name
-  dns_zone_id         = module.trial_vnet.webapp_dns_zone_id
+  source                       = "./modules/initservice"
+  app_name                     = local.init_name
+  rg_name                      = azurerm_resource_group.trial_rg.name
+  app_service_plan_id          = azurerm_app_service_plan.apps_service_plan.id
+  trial_name                   = var.trial_name
+  environment                  = var.environment
+  docker_image                 = var.init_service_image_name
+  docker_image_tag             = var.init_service_image_tag
+  vnet_id                      = module.trial_vnet.id
+  subnet_id                    = module.trial_vnet.endpointsubnet
+  dns_zone_name                = module.trial_vnet.webapp_dns_zone_name
+  dns_zone_id                  = module.trial_vnet.webapp_dns_zone_id
   storage_account_name         = azurerm_storage_account.initstorageaccount.name
   storage_account_type         = "AzureFiles"
   storage_account_account_name = azurerm_storage_account.initstorageaccount.name
