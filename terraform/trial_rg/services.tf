@@ -177,7 +177,7 @@ module "trial_app_service_init" {
       "AZURE_USERNAME"                   = var.init_username
       "AZURE_PASSWORD"                   = var.init_password
       "AZURE_CLIENT_ID"                  = var.init_client_id
-      "LOG_MOUNT_PATH"                   = var.init_log_path
+      "INIT_PROGRESS_LOG_PATH"           = "${var.init_log_path}/log.txt"
     },
   )
 
