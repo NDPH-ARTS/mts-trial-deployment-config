@@ -279,7 +279,7 @@ jobs:
           set -o nounset
           # set -o xtrace
 
-          az storage file download --path /mnt/init --share_name ${init_storage_share_name} --connection-string ${init_storage_conn_string}
+          az storage file download --path /log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string}
           cat log.txt
 
   deployall:
