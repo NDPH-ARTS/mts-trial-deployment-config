@@ -17,7 +17,7 @@ output "init_storage_conn_string" {
 }
 
 output "init_storage_share_name" {
-  value       = azurerm_storage_share.initstorageshare.name,
+  value       = azurerm_storage_share.initstorageshare.name
   description = "The init service storage share name"
   sensitive   = true
 }
