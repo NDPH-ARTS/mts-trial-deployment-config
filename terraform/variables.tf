@@ -1,7 +1,11 @@
 variable "trial_name" {
   type        = string
-  description = "Application name. Use only lowercase letters and numbers"
-  default     = "starterterraform"
+  description = "Trial name. Use only lowercase letters and numbers"
+
+  validation {
+    condition     = length(var.trial_name) >= 3 && length(var.trial_name) < 12 && can(regex("[a-z,0-9]", var.trial_name))
+    error_message = "The trial_name must consist of lowercase letters and numbers only."
+  }
 }
 
 variable "environment" {
@@ -51,12 +55,12 @@ variable "role_image_tag" {
 
 variable "init_service_image_name" {
   type        = string
-  description = "trial configuration service image name (fqdn)."
+  description = "configuration server image name (fqdn)."
 }
 
 variable "init_service_image_tag" {
   type        = string
-  description = "trial configuration service image tag."
+  description = "configuration server image tag."
   default     = "latest"
 }
 
@@ -143,5 +147,4 @@ variable "init_client_id" {
 variable "github_ref" {
   type        = string
   description = "The ref that triggered this run. usually a branch name."
-  default     = ""
 }
