@@ -151,7 +151,7 @@ resource "azurerm_storage_share" "initstorageshare" {
 
 # init service
 module "trial_app_service_init" {
-  source                       = "./modules/initservice"
+  source                       = "./modules/genericervice"
   app_name                     = local.init_name
   rg_name                      = azurerm_resource_group.trial_rg.name
   app_service_plan_id          = azurerm_app_service_plan.apps_service_plan.id
@@ -163,6 +163,7 @@ module "trial_app_service_init" {
   subnet_id                    = module.trial_vnet.endpointsubnet
   dns_zone_name                = module.trial_vnet.webapp_dns_zone_name
   dns_zone_id                  = module.trial_vnet.webapp_dns_zone_id
+  enable_storage_account       = true
   storage_account_name         = azurerm_storage_account.initstorageaccount.name
   storage_account_type         = "AzureFiles"
   storage_account_account_name = azurerm_storage_account.initstorageaccount.name

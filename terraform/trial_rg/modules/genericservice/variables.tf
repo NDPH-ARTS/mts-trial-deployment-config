@@ -78,3 +78,27 @@ variable "enable_private_endpoint" {
   description = "if 'false' then for this web app, private endpoint will NOT be created."
   default     = true
 }
+
+variable "enable_storage_account" {
+  type    = bool
+  default = true
+}
+
+variable "storage_account_name" {
+  type = string
+}
+variable "storage_account_type" {
+  type = string
+}
+variable "storage_account_account_name" {
+  type = string
+}
+variable "storage_account_share_name" {
+  type = string
+}
+variable "storage_account_access_key" {
+  type = string
+}
+variable "storage_account_mount_path" {
+  type = string
+}
