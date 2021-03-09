@@ -1,7 +1,7 @@
 
-# Service application generic module that loads a docker image
+# Service application generic module that loads a docker image with mounting
 # UNIQUE
-resource "azurerm_app_service" "generic_service" {
+resource "azurerm_app_service" "generic_service_with_storage_mount" {
   name                = var.app_name
   location            = var.location
   resource_group_name = var.rg_name
@@ -29,6 +29,15 @@ resource "azurerm_app_service" "generic_service" {
   }
 
   app_settings = var.settings
+
+  storage_account {
+    name         = var.storage_account_name
+    type         = var.storage_account_type
+    account_name = var.storage_account_account_name
+    share_name   = var.storage_account_share_name
+    access_key   = var.storage_account_access_key
+    mount_path   = var.storage_account_mount_path
+  }
 }
 
 # count = 0, if this is the gateway and no private endpoint is needed
@@ -37,7 +46,7 @@ module "private_endpoint" {
   source           = "../privateendpoint"
   trial_name       = var.trial_name
   rg_name          = var.rg_name
-  resource_id      = azurerm_app_service.generic_service.id
+  resource_id      = azurerm_app_service.generic_service_with_storage_mount.id
   vnet_id          = var.vnet_id
   subnet_id        = var.subnet_id
   subresource_name = "sites"
@@ -46,6 +55,6 @@ module "private_endpoint" {
   dns_zone_id      = var.dns_zone_id
 
   depends_on = [
-    azurerm_app_service.generic_service,
+    azurerm_app_service.generic_service_with_storage_mount,
   ]
 }
