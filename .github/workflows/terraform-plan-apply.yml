@@ -203,6 +203,9 @@ jobs:
 
           # '-raw' is important so no other characters will be added
           ui_storage_conn_string=$(terraform output -raw ui_conn_string)
+          init_storage_conn_string=$(terraform output -raw init_storage_conn_string)
+          init_storage_share_name=$(terraform output -raw init_share_name)
+
           gateway_host_string=$(terraform output -raw gateway_host)
           # create an env var from the connection string, so will be available for the later steps
           echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
@@ -266,6 +269,18 @@ jobs:
           # first clean up the container, then upload the new assets
           az storage blob delete-batch --connection-string ${ui_storage_conn_string} --source "\$web" --pattern "*"
           az storage blob upload-batch --connection-string ${ui_storage_conn_string} --source mts-trial-ui --destination '$web'
+
+      # Download init service progress log file from azure file share and validate success
+      - name: Validate Init service progress
+        # if: github.ref == 'refs/heads/main'
+        run: |
+          set -o errexit
+          set -o pipefail
+          set -o nounset
+          # set -o xtrace
+
+          az storage file download --path /mnt/init --share_name ${init_storage_share_name} --connection-string ${init_storage_conn_string}
+          cat log.txt
 
   deployall:
     runs-on: ubuntu-latest

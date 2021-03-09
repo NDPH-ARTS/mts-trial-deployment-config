@@ -16,3 +16,9 @@ output "init_storage_conn_string" {
   sensitive   = true
 }
 
+output "init_storage_share_name" {
+  value       = module.trial_rg.init_storage_share_name
+  description = "The init service storage account share name."
+  sensitive   = true
+}
+
