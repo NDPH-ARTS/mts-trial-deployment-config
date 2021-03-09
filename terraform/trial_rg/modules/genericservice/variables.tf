@@ -81,24 +81,31 @@ variable "enable_private_endpoint" {
 
 variable "enable_storage_account" {
   type    = bool
+  description = "if 'false' then for this web app, storage mounting will NOT be done" 
   default = true
 }
 
 variable "storage_account_name" {
   type = string
+  default = ""
 }
 variable "storage_account_type" {
   type = string
+  default = ""
 }
 variable "storage_account_account_name" {
   type = string
+  default = ""
 }
 variable "storage_account_share_name" {
   type = string
+  default = ""
 }
 variable "storage_account_access_key" {
   type = string
+  default = ""
 }
 variable "storage_account_mount_path" {
   type = string
+  default = ""
 }
