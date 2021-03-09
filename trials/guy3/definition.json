@@ -15,7 +15,7 @@
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "main-latest"
+        "image_tag": "bf98eb59fa1a78d082ac78052b8fba86552713b3"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
