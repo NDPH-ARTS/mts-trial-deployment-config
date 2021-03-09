@@ -73,8 +73,8 @@ variable "dns_zone_id" {
   description = "The id of the given dns zone."
 }
 
-variable "no_private_endpoint" {
+variable "enable_private_endpoint" {
   type        = bool
-  description = "if 'true' then for this web app, private endpoint will not be created."
-  default     = false
+  description = "if 'false' then for this web app, private endpoint will NOT be created."
+  default     = true
 }

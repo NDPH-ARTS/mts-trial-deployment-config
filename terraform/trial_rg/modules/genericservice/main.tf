@@ -33,7 +33,7 @@ resource "azurerm_app_service" "generic_service" {
 
 # count = 0, if this is the gateway and no private endpoint is needed
 module "private_endpoint" {
-  count            = var.no_private_endpoint == true ? 0 : 1
+  count            = var.enable_private_endpoint == true ? 1 : 0
   source           = "../privateendpoint"
   trial_name       = var.trial_name
   rg_name          = var.rg_name

@@ -5,7 +5,7 @@ resource "azurerm_private_endpoint" "private_endpoint" {
   subnet_id           = var.subnet_id
 
   private_dns_zone_group {
-    name                 = "${var.application}privatednszonegroup"
+    name                 = "${var.application}-private-dns-zone-group"
     private_dns_zone_ids = [var.dns_zone_id]
   }
 
@@ -22,13 +22,4 @@ data "azurerm_private_endpoint_connection" "endpoint-connection" {
   depends_on          = [azurerm_private_endpoint.private_endpoint]
   name                = azurerm_private_endpoint.private_endpoint.name
   resource_group_name = var.rg_name
-}
-
-# Create a Resource's Private DNS A Record
-resource "azurerm_private_dns_a_record" "endpoint-dns-a-record" {
-  name                = lower("${var.application}-dns-record")
-  zone_name           = var.dns_zone_name
-  resource_group_name = var.rg_name
-  ttl                 = 300
-  records             = [data.azurerm_private_endpoint_connection.endpoint-connection.private_service_connection.0.private_ip_address]
 }

@@ -173,15 +173,15 @@ module "trial_app_service_init" {
 
 # config server service
 module "trial_sc_gateway" {
-  source              = "./modules/genericservice"
-  app_name            = local.gateway_name
-  rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
-  trial_name          = var.trial_name
-  environment         = var.environment
-  docker_image        = var.sc_gateway_image_name
-  docker_image_tag    = var.sc_gateway_image_tag
-  no_private_endpoint = true
+  source                  = "./modules/genericservice"
+  app_name                = local.gateway_name
+  rg_name                 = azurerm_resource_group.trial_rg.name
+  app_service_plan_id     = azurerm_app_service_plan.apps_service_plan.id
+  trial_name              = var.trial_name
+  environment             = var.environment
+  docker_image            = var.sc_gateway_image_name
+  docker_image_tag        = var.sc_gateway_image_tag
+  enable_private_endpoint = false
 
   # These variables are not used due to the fact we don't create a private endpoint
   # for the gateway, but are required by tf
