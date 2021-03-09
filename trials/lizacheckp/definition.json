@@ -1,10 +1,10 @@
 {
-    "name": "lizachecks",
+    "name": "lizacheckp",
     "version": 1,
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
     "ui_client_id": "f352ce15-0142-4dfa-8e18-801ee6391557",
     "spring_profile": "dev",
-    "spring_config_label": "lizachecks",
+    "spring_config_label": "lizacheckp",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
         "image_tag": "4cc966952462a9dbd228e9d1cdcfe0dec30b6d76"
@@ -34,7 +34,7 @@
             "image_name": "ghcr.io/ndph-arts/config-server",
             "image_tag": "4cc966952462a9dbd228e9d1cdcfe0dec30b6d76",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": "trials/lizachecks/services, trials/lizachecks/services/*"
+            "search_paths": "trials/lizacheckp/services, trials/lizacheckp/services/*"
         }
     }
 }
