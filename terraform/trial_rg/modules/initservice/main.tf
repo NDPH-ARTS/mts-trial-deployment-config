@@ -34,9 +34,9 @@ resource "azurerm_app_service" "init_service" {
     name         = var.storage_account_name
     type         = var.storage_account_type
     account_name = var.storage_account_account_name
-    share_name   = var.share_name
-    access_key   = var.access_key
-    mount_path   = var.mount_path
+    share_name   = var.storage_account_share_name
+    access_key   = var.storage_account_access_key
+    mount_path   = var.storage_account_mount_path
   }
 
 }
