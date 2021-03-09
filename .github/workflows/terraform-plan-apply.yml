@@ -4,7 +4,12 @@ on:
   push:
     paths-ignore:
     - 'terraform/shared_rg/**'
-
+  workflow_dispatch:
+    inputs:
+      trialDefinitionPath:
+        description: Path to definition file of trial environment to deploy
+        required: false
+        
 jobs:
   prepare-run-matrix:
     name: Detect changed definitions and prepare matrix
@@ -24,11 +29,15 @@ jobs:
           set -o nounset
           # set -o xtrace
 
-          git fetch origin main:localmain
+          if [[ -z "${{github.event.inputs.trialDefinitionPath}}}" ]]; then
+            git fetch origin main:localmain
 
-          # Gets changed json files excluding the json schema
-          export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "configuration")
-
+            # Gets changed json files excluding the json schema
+            export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "configuration")
+          else
+            export FILES=${{github.event.inputs.trialDefinitionPath}}
+          fi
+          
           echo "Files changed since last commit..."
           echo "$FILES"
 
