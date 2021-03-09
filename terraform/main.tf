@@ -59,7 +59,6 @@ module "fhir_server" {
   vnet_id             = module.trial_vnet.id
   endpointsubnet      = module.trial_vnet.endpointsubnet
   app_insights_key    = azurerm_application_insights.app_insights.instrumentation_key
-  sql_dns_zone_name   = module.trial_vnet.sql_dns_zone_name
   sql_dns_zone_id     = module.trial_vnet.sql_dns_zone_id
 
   # needs an app service plan and an existing vnet
@@ -152,6 +151,7 @@ resource "azurerm_storage_account" "uistorageaccount" {
   account_replication_type  = "LRS"
   enable_https_traffic_only = true
   allow_blob_public_access  = true
+  min_tls_version           = "TLS1_2"
 
   static_website {
     index_document = "index.html"

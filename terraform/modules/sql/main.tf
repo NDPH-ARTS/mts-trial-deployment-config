@@ -9,7 +9,6 @@ resource "azurerm_mssql_server" "sql_server" {
   administrator_login_password = var.sql_pass
   # Block external communication
   public_network_access_enabled = false
-
 }
 
 # DB
