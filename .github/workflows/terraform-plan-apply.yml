@@ -204,7 +204,9 @@ jobs:
           # '-raw' is important so no other characters will be added
           ui_storage_conn_string=$(terraform output -raw ui_conn_string)
           init_storage_conn_string=$(terraform output -raw init_storage_conn_string)
+          echo "init_storage_conn_string=$init_storage_conn_string" >> $GITHUB_ENV
           init_storage_share_name=$(terraform output -raw init_storage_share_name)
+          echo "init_storage_share_name=$init_storage_share_name" >> $GITHUB_ENV
 
           gateway_host_string=$(terraform output -raw gateway_host)
           # create an env var from the connection string, so will be available for the later steps
