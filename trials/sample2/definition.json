@@ -23,7 +23,7 @@
     },
     "spring_cloud": {
         "gateway_service": {
-            "image_name": "ghcr.io/ndph-arts/gateway-server"
+            "image_name1": "ghcr.io/ndph-arts/gateway-server"
         },
         "discovery_service": {
             "image_name": "ghcr.io/ndph-arts/discovery-server",
