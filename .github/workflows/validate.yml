@@ -31,12 +31,12 @@ jobs:
       #     # INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
       #     INPUT_JSONS: sample_trial/definition.json
 
-       - name: Validate YML2
-         if: always()
-         run: |
-           sudo npm install -g ajv-cli
-           sudo npm install -g betterAjvErrors
-           ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
+      - name: Validate YML2
+        if: always()
+        run: |
+          sudo npm install -g ajv-cli
+          sudo npm install -g betterAjvErrors
+          ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
 
       - name: Validate YML
         uses: satackey/action-js-inline@release-master
@@ -77,4 +77,3 @@ jobs:
             catch(err) {
               core.setFailed(`Action failed with error ${err}`);
             }
-            
