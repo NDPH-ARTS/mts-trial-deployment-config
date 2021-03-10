@@ -35,7 +35,6 @@ jobs:
         if: always()
         run: |
           sudo npm install -g ajv-cli
-          sudo npm install -g betterAjvErrors
           ajv validate -s .ci/trial-json-schema.json -d sample_trial/definition.yml
 
       - name: Validate YML
