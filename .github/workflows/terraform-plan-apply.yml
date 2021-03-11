@@ -276,10 +276,10 @@ jobs:
       - name: Validate Init service progress
         # if: github.ref == 'refs/heads/main'
         run: |
-          #set -o errexit
-          #set -o pipefail
+          set -o errexit
+          set -o pipefail
           set -o nounset
-          set -o xtrace
+          #set -o xtrace
 
           for i in {1..5}; do
             echo "Try $i"
@@ -297,6 +297,9 @@ jobs:
                 break
             fi
           done
+
+          # if we got here we need to fail with timeout
+          echo "quiting with timeout"
 
   deployall:
     runs-on: ubuntu-latest
