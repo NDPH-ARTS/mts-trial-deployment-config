@@ -72,7 +72,7 @@ module "private_endpoint" {
   subnet_id        = var.endpointsubnet
   subresource_name = "sites"
   application      = "fhir"
-  dns_zone_name    = var.webapp_dns_zone_name
+  dns_zone_id      = var.webapp_dns_zone_id
 
   depends_on = [
     azurerm_app_service.fhir_server,
