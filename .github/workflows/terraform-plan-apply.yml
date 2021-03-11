@@ -284,9 +284,9 @@ jobs:
 
           for i in {1..5}; do
             echo "Try $i"
-            
-            sleep 60
-            az storage file download --path log-fail1.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} &&             cat log.txt
+
+            sleep 120
+            az storage file download --path log-fail.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} &&             cat log.txt
             result_failure=$(tail log.txt --lines 1 | grep "***FAILURE***" | wc -w)
             result_success=$(tail log.txt --lines 1 | grep "***SUCCESS***" | wc -w)
             echo $result_failure
