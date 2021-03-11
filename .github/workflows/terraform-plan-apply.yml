@@ -277,7 +277,7 @@ jobs:
         # if: github.ref == 'refs/heads/main'
         run: |
           #set -o errexit
-          set -o pipefail
+          #set -o pipefail
           set -o nounset
           set -o xtrace
 
