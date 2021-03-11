@@ -7,32 +7,32 @@
     "spring_config_label": "kate622e",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
-        "image_tag": "821979d706f94f51ca58c80399782598a1829f73"
+        "image_tag": "main-latest"
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "821979d706f94f51ca58c80399782598a1829f73"
+        "image_tag": "main-latest"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "821979d706f94f51ca58c80399782598a1829f73"
+        "image_tag": "main-latest"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
-        "image_tag": "821979d706f94f51ca58c80399782598a1829f73"
+        "image_tag": "main-latest"
     },
     "spring_cloud": {
         "gateway_service": {
             "image_name": "ghcr.io/ndph-arts/gateway-server",
-            "image_tag": "821979d706f94f51ca58c80399782598a1829f73"
+            "image_tag": "main-latest"
         },
         "discovery_service": {
             "image_name": "ghcr.io/ndph-arts/discovery-server",
-            "image_tag": "821979d706f94f51ca58c80399782598a1829f73"
+            "image_tag": "main-latest"
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "821979d706f94f51ca58c80399782598a1829f73",
+            "image_tag": "main-latest",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
             "search_paths": "trials/kate622e/services, trials/kate622e/services/*"
         }
