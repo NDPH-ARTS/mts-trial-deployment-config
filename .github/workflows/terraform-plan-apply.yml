@@ -276,13 +276,15 @@ jobs:
       - name: Validate Init service progress
         # if: github.ref == 'refs/heads/main'
         run: |
-          set -o errexit
-          set -o pipefail
+          #can't use errexit and pipefail flags here becasue tail will fail if the file doesn't exists
+          #set -o errexit
+          #set -o pipefail
           set -o nounset
           #set -o xtrace
 
           for i in {1..5}; do
             echo "Try $i"
+            
             sleep 60
             az storage file download --path log-fail1.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} &&             cat log.txt
             result_failure=$(tail log.txt --lines 1 | grep "***FAILURE***" | wc -w)
