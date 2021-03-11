@@ -11,7 +11,7 @@
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "cc132106e56dfeb3011f997886d3236d1a4d5f68"
+        "image_tag": "main-latest"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
