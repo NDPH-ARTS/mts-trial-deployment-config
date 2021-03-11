@@ -1,10 +1,10 @@
 {
-    "name": "liza482",
+    "name": "liza48a",
     "version": 1,
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
     "ui_client_id": "f352ce15-0142-4dfa-8e18-801ee6391557",
     "spring_profile": "dev",
-    "spring_config_label": "liza482",
+    "spring_config_label": "liza48a",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
         "image_tag": "51546b1256ea81f64b7ef6dba1a69c5c4a27eaba"
@@ -34,7 +34,7 @@
             "image_name": "ghcr.io/ndph-arts/config-server",
             "image_tag": "main-latest",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": "trials/liza482/services, trials/liza482/services/*"
+            "search_paths": "trials/liza48a/services, trials/liza48a/services/*"
         }
     }
 }
