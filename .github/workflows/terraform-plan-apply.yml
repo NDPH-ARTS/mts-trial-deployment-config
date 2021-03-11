@@ -276,10 +276,10 @@ jobs:
       - name: Validate Init service progress
         # if: github.ref == 'refs/heads/main'
         run: |
-          set -o errexit
+          #set -o errexit
           set -o pipefail
           set -o nounset
-          # set -o xtrace
+          set -o xtrace
 
           for i in {1..5}; do
             echo "Try $i"
