@@ -16,11 +16,7 @@ logging:
             function:
               client:
                 ExchangeFunctions: TRACE
-delay-start: 120
-
-http:
-  readTimeOutMs: 30000
-  connectTimeOutMs: 3000
+delay-start: 30
 ---
 trial:
   trialName: "My Dev Sample Trial"
@@ -52,7 +48,6 @@ trial:
       permissions:
         - id: create-person
         - id: view-person
-        - id: link-user
         - id: assign-role
     - id: admin
       permissions:
