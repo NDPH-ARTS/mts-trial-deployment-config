@@ -1,5 +1,5 @@
 {
-    "name": "ds8",
+    "name": "ds9",
     "version": 1,
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
     "ui_client_id": "f352ce15-0142-4dfa-8e18-801ee6391557",
@@ -7,34 +7,34 @@
     "spring_config_label": "1dsmar12",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
-        "image_tag": "1ee3f675e85095f81b96e3a977a08850c96052d9"
+        "image_tag": "68140f63771ae09a8fb4dbd8c7996bfe4804f79d"
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "1ee3f675e85095f81b96e3a977a08850c96052d9"
+        "image_tag": "68140f63771ae09a8fb4dbd8c7996bfe4804f79d"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "1ee3f675e85095f81b96e3a977a08850c96052d9"
+        "image_tag": "68140f63771ae09a8fb4dbd8c7996bfe4804f79d"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
-        "image_tag": "1ee3f675e85095f81b96e3a977a08850c96052d9"
+        "image_tag": "68140f63771ae09a8fb4dbd8c7996bfe4804f79d"
     },
     "spring_cloud": {
         "gateway_service": {
             "image_name": "ghcr.io/ndph-arts/gateway-server",
-            "image_tag": "1ee3f675e85095f81b96e3a977a08850c96052d9"
+            "image_tag": "68140f63771ae09a8fb4dbd8c7996bfe4804f79d"
         },
         "discovery_service": {
             "image_name": "ghcr.io/ndph-arts/discovery-server",
-            "image_tag": "1ee3f675e85095f81b96e3a977a08850c96052d9"
+            "image_tag": "68140f63771ae09a8fb4dbd8c7996bfe4804f79d"
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "1ee3f675e85095f81b96e3a977a08850c96052d9",
+            "image_tag": "68140f63771ae09a8fb4dbd8c7996bfe4804f79d",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": "trials/ds8/services, trials/ds8/services/*"
+            "search_paths": "trials/ds9/services, trials/ds9/services/*"
         }
     }
 }
