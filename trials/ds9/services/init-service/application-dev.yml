@@ -37,7 +37,7 @@ trial:
       roles:
         - superuser
       userAccount: dc32d94e-1ade-4968-b83e-bab949b7e90c
-    - givenName: qacreate
+    - givenName: qaadmin
       familyName: qaadmin
       prefix: Mr
       roles:
