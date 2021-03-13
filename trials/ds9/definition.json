@@ -7,34 +7,34 @@
     "spring_config_label": "1dsmar12",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
-        "image_tag": "da508f5cc5694fccb80581137a5be074aa5becc1"
+        "image_tag": "8df3aba673765f8cae5b152ac259a5f81dc7daf5"
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "da508f5cc5694fccb80581137a5be074aa5becc1"
+        "image_tag": "8df3aba673765f8cae5b152ac259a5f81dc7daf5"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "da508f5cc5694fccb80581137a5be074aa5becc1"
+        "image_tag": "8df3aba673765f8cae5b152ac259a5f81dc7daf5"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
-        "image_tag": "da508f5cc5694fccb80581137a5be074aa5becc1"
+        "image_tag": "8df3aba673765f8cae5b152ac259a5f81dc7daf5"
     },
     "spring_cloud": {
         "gateway_service": {
             "image_name": "ghcr.io/ndph-arts/gateway-server",
-            "image_tag": "da508f5cc5694fccb80581137a5be074aa5becc1"
+            "image_tag": "8df3aba673765f8cae5b152ac259a5f81dc7daf5"
         },
         "discovery_service": {
             "image_name": "ghcr.io/ndph-arts/discovery-server",
-            "image_tag": "da508f5cc5694fccb80581137a5be074aa5becc1"
+            "image_tag": "8df3aba673765f8cae5b152ac259a5f81dc7daf5"
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "da508f5cc5694fccb80581137a5be074aa5becc1",
+            "image_tag": "8df3aba673765f8cae5b152ac259a5f81dc7daf5",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": "trials/ds2/services, trials/ds2/services/*"
+            "search_paths": "trials/ds9/services, trials/ds9/services/*"
         }
     }
 }
