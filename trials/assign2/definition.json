@@ -1,5 +1,5 @@
 {
-    "name": "assign1",
+    "name": "assign2",
     "version": 1,
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
     "ui_client_id": "f352ce15-0142-4dfa-8e18-801ee6391557",
@@ -34,7 +34,7 @@
             "image_name": "ghcr.io/ndph-arts/config-server",
             "image_tag": "8df3aba673765f8cae5b152ac259a5f81dc7daf5",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": "trials/ds9/services, trials/ds9/services/*"
+            "search_paths": "trials/assign2/services, trials/assign2/services/*"
         }
     }
 }
