@@ -1,5 +1,5 @@
 {
-    "name": "assign3",
+    "name": "link1",
     "version": 1,
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
     "ui_client_id": "f352ce15-0142-4dfa-8e18-801ee6391557",
@@ -7,34 +7,34 @@
     "spring_config_label": "1dsmar12",
     "site_service": {
         "image_name": "ghcr.io/ndph-arts/site-service",
-        "image_tag": "7847f47fae0e1e8cdd188ba9cbaa720df76f22fe"
+        "image_tag": "561f7febfd70c7ff4c34fd8e6f7d579e553f9041"
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "7847f47fae0e1e8cdd188ba9cbaa720df76f22fe"
+        "image_tag": "561f7febfd70c7ff4c34fd8e6f7d579e553f9041"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "7847f47fae0e1e8cdd188ba9cbaa720df76f22fe"
+        "image_tag": "561f7febfd70c7ff4c34fd8e6f7d579e553f9041"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
-        "image_tag": "7847f47fae0e1e8cdd188ba9cbaa720df76f22fe"
+        "image_tag": "561f7febfd70c7ff4c34fd8e6f7d579e553f9041"
     },
     "spring_cloud": {
         "gateway_service": {
             "image_name": "ghcr.io/ndph-arts/gateway-server",
-            "image_tag": "7847f47fae0e1e8cdd188ba9cbaa720df76f22fe"
+            "image_tag": "561f7febfd70c7ff4c34fd8e6f7d579e553f9041"
         },
         "discovery_service": {
             "image_name": "ghcr.io/ndph-arts/discovery-server",
-            "image_tag": "7847f47fae0e1e8cdd188ba9cbaa720df76f22fe"
+            "image_tag": "561f7febfd70c7ff4c34fd8e6f7d579e553f9041"
         },
         "config_server": {
             "image_name": "ghcr.io/ndph-arts/config-server",
-            "image_tag": "7847f47fae0e1e8cdd188ba9cbaa720df76f22fe",
+            "image_tag": "561f7febfd70c7ff4c34fd8e6f7d579e553f9041",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": "trials/assign3/services, trials/assign3/services/*"
+            "search_paths": "trials/link1/services, trials/link1/services/*"
         }
     }
 }
