@@ -61,13 +61,6 @@ jobs:
             echo "current definition file path: $path"
 
             # Extract values for the trial
-<<<<<<< HEAD
-            trialName=`echo $(jq -r '.name' ./$path)`
-            trialId=`echo $(jq -r '.id' ./$path)`
-            real_path=$(realpath $path)
-            MatrixItem="{\"trial_id\": \"$trialId\", \"path\": \"$path\", \"trial_name\": \"$trialName\", \"real_path\": \"$real_path\",},"
-
-=======
             trial_name=$(jq -r '.name' ./$path)
             definition_path=$(realpath $path)
             trial_dir=$(dirname $definition_path)
@@ -83,7 +76,6 @@ jobs:
             # Prepare the matrix item
             MatrixItem="{\"trial_name\": \"$trial_name\", \"trial_dir\": \"$trial_dir\", \"definition_path\": \"$definition_path\",},"
 
->>>>>>> 7f74fb8380327e592a2ec9500e5d5377c60c9b43
             JSON="$JSON$MatrixItem"
           done <<< "$FILES"
 
@@ -97,13 +89,8 @@ jobs:
           # Set output
           echo "::set-output name=matrix::$( echo "$JSON" )"
 
-<<<<<<< HEAD
-  tfplan:
-    name: "Execute TF on ${{ matrix.trial_name }}: ${{ matrix.path }}"
-=======
   deploy:
     name: "Execute Terraform"
->>>>>>> 7f74fb8380327e592a2ec9500e5d5377c60c9b43
     needs: prepare-run-matrix
     if: ${{ needs.prepare-run-matrix.outputs.is_empty_matrix == 'false' }}
     strategy:
@@ -181,9 +168,6 @@ jobs:
           set -o nounset
           # set -o xtrace
 
-<<<<<<< HEAD
-          cat tfvars.template | while read line
-=======
           # Return 0 if file $1 exists and ending by end of line character, else return 1
           check_ending_eol() {
             [[ -s "$1" && -z "$(tail -c 1 "$1")" ]]
@@ -196,7 +180,6 @@ jobs:
           fi
 
           cat ${TFVARS_TEMPLATE} | while read line
->>>>>>> 7f74fb8380327e592a2ec9500e5d5377c60c9b43
           do
               # no need to process comment lines that start with "#", or empty ones.
               if [[ $line == \#* ]] || [[ -z "$line" ]]; then continue; fi
@@ -206,15 +189,9 @@ jobs:
 
               var_name=${line_array[0]}
               json_path=${line_array[1]}
-<<<<<<< HEAD
-              json_value=$(jq -r ${json_path} ${{ matrix.real_path }})
-              echo "${var_name}=\"${json_value}\"" >> ${{ matrix.trial_name }}.tfvars
-          done 
-=======
               json_value=$(jq -r ${json_path} ${{ matrix.definition_path }})
               echo "${var_name}=\"${json_value}\"" >> ${{ matrix.trial_name }}.tfvars
           done
->>>>>>> 7f74fb8380327e592a2ec9500e5d5377c60c9b43
 
           cat ${{ matrix.trial_name }}.tfvars
 
