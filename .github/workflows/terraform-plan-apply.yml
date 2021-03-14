@@ -12,6 +12,7 @@ jobs:
       is_empty_matrix: ${{ steps.set-matrix.outputs.is_empty_matrix }}
     steps:
       - uses: actions/checkout@v2
+      - uses: chrisdickinson/setup-yq@latest
 
       # Get a list of changed .json files
       - name: Check changed files
@@ -25,7 +26,7 @@ jobs:
           git fetch origin main:localmain
 
           # Gets changed json files excluding the json schema
-          export FILES=$(git diff --name-only localmain | grep .json | grep -v "trial-json-schema" | grep -v "configuration")
+          export FILES=$(git diff --name-only localmain | grep .yml | grep -v "trial-json-schema" | grep -v "configuration" | grep -v ".github")
 
           echo "Files changed since last commit..."
           echo "$FILES"
@@ -61,7 +62,7 @@ jobs:
             echo "current definition file path: $path"
 
             # Extract values for the trial
-            trial_name=$(jq -r '.name' ./$path)
+            trial_name=$(yq r ./$path name)
             definition_path=$(realpath $path)
             trial_dir=$(dirname $definition_path)
 
@@ -107,6 +108,7 @@ jobs:
       ARM_ACCESS_KEY: ${{secrets.TF_ARM_ACCESS_KEY}}
     steps:
       - uses: actions/checkout@v2
+      - uses: chrisdickinson/setup-yq@latest
 
       - name: Validate Config Server settings
         run: |
@@ -116,8 +118,8 @@ jobs:
           # set -o xtrace
 
           # Validate that the config server properties are set correctly
-          config_label=$(jq -r ".spring_config_label" ${{ matrix.definition_path }})
-          config_search_path=$(jq -r '.spring_cloud.config_server.search_paths | split(",") | .[0]' ${{ matrix.definition_path }})
+          config_label=$(yq r ${{ matrix.definition_path }} "spring_config_label" )
+          config_search_path=$(yq r ${{ matrix.definition_path }} spring_cloud.config_server.search_paths | cut -d "," -f 1)
 
           echo "fetching the config branch..."
           git fetch origin ${config_label}
@@ -188,16 +190,16 @@ jobs:
               line_array=(${line//=/ })
 
               var_name=${line_array[0]}
-              json_path=${line_array[1]}
-              json_value=$(jq -r ${json_path} ${{ matrix.definition_path }})
-              echo "${var_name}=\"${json_value}\"" >> ${{ matrix.trial_name }}.tfvars
+              yml_path=${line_array[1]}
+              yml_value=$(yq r ${{ matrix.definition_path }} ${yml_path})
+              echo "${var_name}=\"${yml_value}\"" >> ${{ matrix.trial_name }}.tfvars
           done
 
           cat ${{ matrix.trial_name }}.tfvars
 
           # extract more values from the definition file
-          echo "tenant_id=$(jq -r '.tenant_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
-          echo "ui_client_id=$(jq -r '.ui_client_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
+          echo "tenant_id=$(yq r ${{ matrix.definition_path }} tenant_id)" >> $GITHUB_ENV
+          echo "ui_client_id=$(yq r ${{ matrix.definition_path }} ui_client_id)" >> $GITHUB_ENV
 
       # Plan TF
       - name: Terraform plan
