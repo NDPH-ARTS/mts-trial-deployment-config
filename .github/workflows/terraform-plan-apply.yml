@@ -320,7 +320,7 @@ jobs:
                 echo "Init service - Completed with failure"
                 exit 1
             elif [ $result_success -gt 0 ]; then
-                echo "quiting early success"
+                echo "Init service - Completed Successfully"
                 exit 0
             fi
           done
