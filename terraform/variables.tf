@@ -1,7 +1,11 @@
 variable "trial_name" {
   type        = string
-  description = "Application name. Use only lowercase letters and numbers"
-  default     = "starterterraform"
+  description = "Trial name. Use only lowercase letters and numbers"
+
+  validation {
+    condition     = length(var.trial_name) >= 3 && length(var.trial_name) < 12 && can(regex("[a-z,0-9]", var.trial_name))
+    error_message = "The trial_name must consist of lowercase letters and numbers only."
+  }
 }
 
 variable "environment" {
@@ -15,6 +19,60 @@ variable "location" {
   description = "Azure region where to create resources."
   default     = "uksouth"
 }
+
+
+variable "sc_config_git_uri" {
+  type        = string
+  description = "Git configuration uri, from which to pull all the applications configuration"
+}
+
+variable "sc_config_search_paths" {
+  type        = string
+  description = "Search path within the git uri, to find different configs for the different apps."
+}
+
+variable "spring_profile" {
+  type        = string
+  description = "Spring cloud profile (dev, prod, etc)."
+}
+
+variable "spring_config_label" {
+  type        = string
+  description = "Spring cloud label (branch)."
+}
+
+variable "owner" {
+  type        = string
+  description = "The owner of the trial environment."
+  default     = "unknown"
+}
+
+variable "init_username" {
+  type        = string
+  description = "The init user name."
+  default     = "unknown"
+  sensitive   = true
+}
+
+variable "init_password" {
+  type        = string
+  description = "The init user password."
+  sensitive   = true
+}
+
+variable "init_client_id" {
+  type        = string
+  description = "The init client id."
+  default     = "unknown"
+  sensitive   = true
+}
+
+variable "github_ref" {
+  type        = string
+  description = "The ref that triggered this run. usually a branch name."
+}
+
+## Images and Tags
 
 variable "site_image_name" {
   type        = string
@@ -51,12 +109,12 @@ variable "role_image_tag" {
 
 variable "init_service_image_name" {
   type        = string
-  description = "trial configuration service image name (fqdn)."
+  description = "Init service image name"
 }
 
 variable "init_service_image_tag" {
   type        = string
-  description = "trial configuration service image tag."
+  description = "Init service image tag."
   default     = "latest"
 }
 
@@ -93,22 +151,4 @@ variable "sc_config_image_tag" {
   default     = "latest"
 }
 
-variable "sc_config_git_uri" {
-  type        = string
-  description = "Git configuration uri, from which to pull all the applications configuration"
-}
-
-variable "sc_config_search_paths" {
-  type        = string
-  description = "Search path within the git uri, to find different configs for the different apps."
-}
-
-variable "spring_profile" {
-  type        = string
-  description = "Spring cloud profile (dev, prod, etc)."
-}
-
-variable "spring_config_label" {
-  type        = string
-  description = "Spring cloud label (branch)."
-}
+# End 'Images and Tags'
