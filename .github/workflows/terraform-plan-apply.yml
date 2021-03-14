@@ -282,26 +282,27 @@ jobs:
           set -o nounset
           #set -o xtrace
 
-          for i in {1..5}; do
-            echo "Try $i"
-
-            sleep 120
+          for i in {1..6}; do
+            seconds=$(expr 30 \* $i)
+            echo "try #$i fetching init service log with a delay of $seconds seconds."
+            sleep $seconds
             az storage file download --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} &&             cat log.txt
             result_failure=$(tail log.txt --lines 1 | grep "***FAILURE***" | wc -w)
             result_success=$(tail log.txt --lines 1 | grep "***SUCCESS***" | wc -w)
-            echo $result_failure
-            echo $result_success
+            echo result_failure=$result_failure
+            echo result_success=$result_success
             if [ $result_failure -gt 0 ]; then
                 echo "quiting early failed"
-                break
+                exit 1
             elif [ $result_success -gt 0 ]; then
                 echo "quiting early success"
-                break
+                exit 0
             fi
           done
 
           # if we got here we need to fail with timeout
           echo "quiting with timeout"
+          exit 1
 
   deployall:
     runs-on: ubuntu-latest
