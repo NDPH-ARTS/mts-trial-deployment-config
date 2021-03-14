@@ -238,9 +238,6 @@ jobs:
           echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
           echo "gateway_host_string=$gateway_host_string" >> $GITHUB_ENV
 
-          init_storage_conn_string=$(terraform output -raw init_storage_conn_string)
-          echo "init_storage_conn_string=$init_storage_conn_string" >> $GITHUB_ENV
-
           ## DO NOT DELETE ##
           # mask this value so this sensitive data won't be logged.
           echo "::add-mask::$ui_storage_conn_string"
@@ -302,8 +299,6 @@ jobs:
         # if: github.ref == 'refs/heads/main'
         run: |
           #can't use errexit and pipefail flags here becasue tail will fail if the file doesn't exists
-          #set -o errexit
-          #set -o pipefail
           set -o nounset
           #set -o xtrace
 
@@ -317,10 +312,10 @@ jobs:
             echo result_failure=$result_failure
             echo result_success=$result_success
             if [ $result_failure -gt 0 ]; then
-                echo "quiting early failed"
+                echo "Init service - Completed with failure"
                 exit 1
             elif [ $result_success -gt 0 ]; then
-                echo "quiting early success"
+                echo "Init service - Completed Successfully"
                 exit 0
             fi
           done
