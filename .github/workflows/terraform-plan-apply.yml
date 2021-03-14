@@ -318,11 +318,9 @@ jobs:
             echo result_success=$result_success
             if [ $result_failure -gt 0 ]; then
                 echo "quiting early failed"
-                cat log.txt
                 exit 1
             elif [ $result_success -gt 0 ]; then
                 echo "quiting early success"
-                cat log.txt
                 exit 0
             fi
           done
