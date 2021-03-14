@@ -317,7 +317,7 @@ jobs:
             echo result_failure=$result_failure
             echo result_success=$result_success
             if [ $result_failure -gt 0 ]; then
-                echo "quiting early failed"
+                echo "Init service - Completed with failure"
                 exit 1
             elif [ $result_success -gt 0 ]; then
                 echo "quiting early success"
