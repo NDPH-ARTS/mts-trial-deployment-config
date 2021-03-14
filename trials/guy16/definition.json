@@ -1,6 +1,6 @@
 {
     "name": "guy16",
-    "version": 1,
+    "version": 2,
     "tenant_id": "5d23383f-2acb-448e-8353-4b4573b82276",
     "ui_client_id": "f352ce15-0142-4dfa-8e18-801ee6391557",
     "spring_profile": "dev",
@@ -15,7 +15,7 @@
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
-        "image_tag": "78316ee7e61264e321f344bad8b920e746ac46ff"
+        "image_tag": "df73dd3f7397a3c2a09e738d77c518890d531d21"
     },
     "role_service": {
         "image_name": "ghcr.io/ndph-arts/role-service",
