@@ -47,7 +47,6 @@ module "private_endpoint" {
   trial_name       = var.trial_name
   rg_name          = var.rg_name
   resource_id      = azurerm_app_service.generic_service_with_storage_mount.id
-  vnet_id          = var.vnet_id
   subnet_id        = var.subnet_id
   subresource_name = "sites"
   application      = var.app_name
