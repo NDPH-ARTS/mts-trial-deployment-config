@@ -12,30 +12,46 @@ jobs:
         id: calc_files_diff
         run: |
           git fetch origin main:localmain
-
           # Gets changed definition files
           # TODO: validate all config files and not just trial's definition.yml
           export FILES=$(git diff --name-only localmain | grep definition.yml)
-
           echo "Files changed since last commit..."
           echo "$FILES"
-
           echo "::set-output name=diff::$( echo "$FILES" | tr '\n' ',' | sed '$s/,$/\n/' )"
 
-      - name: Validate JSON
-        # if: ${{ steps.calc_files_diff.outputs.diff != '' }}
+
+      - name: Validate YML
+        uses: satackey/action-js-inline@release-master
         if: always()
-        uses: docker://orrosenblatt/validate-json-action:latest
         env:
           INPUT_SCHEMA: .ci/trial-json-schema.json
           # INPUT_JSONS: ${{ steps.calc_files_diff.outputs.diff }}
-          INPUT_JSONS: sample_trial/definition.json
-      
-      - name: Validate YML
-        if: always()
-        uses: nrkno/yaml-schema-validator-github-action@master
+          INPUT_YML:  ${{ steps.calc_files_diff.outputs.diff }}
+
         with:
-          schema: '.ci/trial-json-schema.json'
-          target: 'sample_trial/definition.yml'
-          # Uncomment to enable strict checks
-          # strict: '1'
+          # Edit the following line to install packages required to run your script.
+          required-packages: fs better-ajv-errors ajv js-yaml
+          script: |
+            const core = require('@actions/core')
+            const Ajv = require('ajv');
+            const betterAjvErrors = require('better-ajv-errors');
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            const ajv = new Ajv.default({ jsonPointers: true });
+            try { 
+              // Load schema and data
+              const schemaContent = fs.readFileSync(process.env.INPUT_SCHEMA,'utf8');
+              const schemaJson = JSON.parse(schemaContent);
+              const dataContent = fs.readFileSync(process.env.INPUT_YML,'utf8');
+              const dataObj = yaml.load(dataContent);
+              const validate = ajv.compile(schemaJson);
+              const valid = validate(dataObj);
+              if (!valid) {
+                const output = betterAjvErrors(schemaJson, dataObj, validate.errors, { format: 'cli', indent: 4 });
+                console.log(output);
+                core.setFailed(`Validation failed`);
+              }
+            }
+            catch(err) {
+              core.setFailed(`Action failed with error ${err}`);
+            }
