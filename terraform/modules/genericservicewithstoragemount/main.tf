@@ -50,7 +50,6 @@ module "private_endpoint" {
   subnet_id        = var.subnet_id
   subresource_name = "sites"
   application      = var.app_name
-  dns_zone_name    = var.dns_zone_name
   dns_zone_id      = var.dns_zone_id
 
   depends_on = [
