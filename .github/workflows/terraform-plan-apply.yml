@@ -57,11 +57,7 @@ jobs:
           INPUT_SCHEMA: .ci/trial-json-schema.json
         run: |
           sudo npm install -g ajv-cli
-          export FILES=$(find . -name 'definition.yml')
-          for FILE in $(echo "$FILES" | sed "s/,/ /g")
-          do
-               ajv validate -s $INPUT_SCHEMA -d "$FILE"
-          done
+          find . -name definition.yml -exec ajv validate -s $INPUT_SCHEMA -d {} \;
         
       # Create an execution plan, which includes each found file
       - name: Set matrix for TF plan and apply
