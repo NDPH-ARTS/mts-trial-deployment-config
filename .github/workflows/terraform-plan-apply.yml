@@ -18,7 +18,7 @@ jobs:
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
 
-      # Get a list of changed .json files
+      # Get a list of changed .yaml files
       - name: Check changed files
         id: calc_files_diff
         run: |
@@ -29,7 +29,7 @@ jobs:
 
           git fetch origin main:localmain
 
-          # Gets changed json files excluding the json schema
+          # Gets changed yaml files excluding the json schema
           export FILES=$(git diff --name-only localmain | grep definition.yml)
 
           # if this branch was not marked as a deploy branch, we do not allow
@@ -219,9 +219,9 @@ jobs:
               line_array=(${line//=/ })
 
               var_name=${line_array[0]}
-              json_path=${line_array[1]}
-              json_value=$(yq eval ${json_path} ${{ matrix.definition_path }})
-              echo "${var_name}=\"${json_value}\"" >> ${{ matrix.trial_name }}.tfvars
+              property_path=${line_array[1]}
+              property_value=$(yq eval ${property_path} ${{ matrix.definition_path }})
+              echo "${var_name}=\"${property_value}\"" >> ${{ matrix.trial_name }}.tfvars
           done
 
           cat ${{ matrix.trial_name }}.tfvars
