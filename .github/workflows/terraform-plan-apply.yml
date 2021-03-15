@@ -12,7 +12,11 @@ jobs:
       is_empty_matrix: ${{ steps.set-matrix.outputs.is_empty_matrix }}
     steps:
       - uses: actions/checkout@v2
-      - uses: chrisdickinson/setup-yq@latest
+
+      - name: Install yq
+        run: |
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
 
       # Get a list of changed .json files
       - name: Check changed files
@@ -22,12 +26,9 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           git fetch origin main:localmain
-
           # Gets changed json files excluding the json schema
-          export FILES=$(git diff --name-only localmain | grep definition.json)
-
+          export FILES=$(git diff --name-only localmain | grep definition.yml)
           # if this branch was not marked as a deploy branch, we do not allow
           # changing any of the 'protected' envs
           if [[ ${{ github.ref }} == *"deploy"* ]]
@@ -40,13 +41,23 @@ jobs:
               exit 1
             fi
           fi
-
           echo "Files changed since last commit..."
           echo "$FILES"
-
           # Escape newlines (replace \n with %0A)
           echo "::set-output name=diff::$( echo "$FILES" | sed ':a;N;$!ba;s/\n/%0A/g' )"
 
+      - name: Validate YML
+        id: validate_definiton_yml
+        env:
+          INPUT_SCHEMA: .ci/trial-json-schema.json
+        run: |
+          sudo npm install -g ajv-cli
+          export FILES=$(find . -name 'definition.yml')
+          for FILE in $(echo "$FILES" | sed "s/,/ /g")
+          do
+               ajv validate -s $INPUT_SCHEMA -d "$FILE"
+          done
+        
       # Create an execution plan, which includes each found file
       - name: Set matrix for TF plan and apply
         id: set-matrix
@@ -55,13 +66,10 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           FILES="${{ steps.calc_files_diff.outputs.diff }}"
           JSON="{\"include\":["
-
           # Iterate diff files and add each for the run matrix
           while read path; do
-
             # if no file was changed. all values are empty, and the matrix should be empty
             if [ -z "$path" ]
             then
@@ -71,14 +79,11 @@ jobs:
             else
               echo "::set-output name=is_empty_matrix::false"
             fi
-
             echo "current definition file path: $path"
-
             # Extract values for the trial
-            trial_name=$(yq r ./$path name)
+            trial_name=$(yq eval '.name' ./$path)
             definition_path=$(realpath $path)
             trial_dir=$(dirname $definition_path)
-
             # Check that trial name in the json equals to its folder name.
             last_dir_name=$(basename $trial_dir)
             if [[ "$last_dir_name" != "$trial_name" ]]
@@ -86,23 +91,18 @@ jobs:
               echo "ERROR: trial name (${trial_name}) is not equal to its folder (${last_dir_name})." >&2
               exit 1
             fi
-
             # Prepare the matrix item
             MatrixItem="{\"trial_name\": \"$trial_name\", \"trial_dir\": \"$trial_dir\", \"definition_path\": \"$definition_path\",},"
-
             JSON="$JSON$MatrixItem"
           done <<< "$FILES"
-
           # Remove last "," and add closing brackets
           if [[ $JSON == *, ]]; then
             JSON="${JSON%?}"
           fi
           JSON="$JSON]}"
           echo $JSON
-
           # Set output
           echo "::set-output name=matrix::$( echo "$JSON" )"
-
   deploy:
     name: "Execute Terraform"
     needs: prepare-run-matrix
@@ -121,7 +121,11 @@ jobs:
       ARM_ACCESS_KEY: ${{secrets.TF_ARM_ACCESS_KEY}}
     steps:
       - uses: actions/checkout@v2
-      - uses: chrisdickinson/setup-yq@latest
+
+      - name: Install yq
+        run: |
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
 
       - name: Validate Config Server settings
         run: |
@@ -129,20 +133,16 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           # Validate that the config server properties are set correctly
-          config_label=$(yq r ${{ matrix.definition_path }} "spring_config_label" )
-          config_search_path=$(yq r ${{ matrix.definition_path }} spring_cloud.config_server.search_paths | cut -d "," -f 1)
-
+          config_label=$(yq eval ".spring_config_label" ${{ matrix.definition_path }})
+          config_search_path=$(yq eval '.spring_cloud.config_server.search_paths | split(",") | .[0]' ${{ matrix.definition_path }})
           echo "fetching the config branch..."
           git fetch origin ${config_label}
-
           echo "Try to get a file the config server will need..."
           set +o errexit
           git cat-file -e "origin/${config_label}:${config_search_path}/application.yml"
           return_value=$?
           set -o errexit
-
           if [ ${return_value} -eq 0 ]
           then
             echo "Folder defined in the search path (${config_search_path}) was found on the label/branch (${config_label})."
@@ -150,7 +150,6 @@ jobs:
             echo "ERROR: Spring Cloud Config is likely to fail! Folder defined in the search path (${config_search_path}) does not exist on the label/branch (${config_label})." >&2
             exit 1
           fi
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -165,12 +164,10 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           # github ref comes with "/" which is not valid for workspace names
           ref_for_workspace="${GITHUB_REF//\//_}"
           workspace_name="${{ matrix.trial_name }}-${ref_for_workspace}"
           terraform workspace select ${workspace_name} || terraform workspace new ${workspace_name}
-
       - name: Terraform Format
         run: terraform fmt -check
 
@@ -182,38 +179,30 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           # Return 0 if file $1 exists and ending by end of line character, else return 1
           check_ending_eol() {
             [[ -s "$1" && -z "$(tail -c 1 "$1")" ]]
           }
-
           if ! check_ending_eol ${TFVARS_TEMPLATE}
           then
             echo "ERROR: ${TFVARS_TEMPLATE} doesn't exist or doesn't end with new line." >&2
             exit 1
           fi
-
           cat ${TFVARS_TEMPLATE} | while read line
           do
               # no need to process comment lines that start with "#", or empty ones.
               if [[ $line == \#* ]] || [[ -z "$line" ]]; then continue; fi
-
               # split the line text with the = char as a separator
               line_array=(${line//=/ })
-
               var_name=${line_array[0]}
-              yml_path=${line_array[1]}
-              yml_value=$(yq r ${{ matrix.definition_path }} ${yml_path})
-              echo "${var_name}=\"${yml_value}\"" >> ${{ matrix.trial_name }}.tfvars
+              json_path=${line_array[1]}
+              json_value=$(yq eval ${json_path} ${{ matrix.definition_path }})
+              echo "${var_name}=\"${json_value}\"" >> ${{ matrix.trial_name }}.tfvars
           done
-
           cat ${{ matrix.trial_name }}.tfvars
-
           # extract more values from the definition file
-          echo "tenant_id=$(yq r ${{ matrix.definition_path }} tenant_id)" >> $GITHUB_ENV
-          echo "ui_client_id=$(yq r ${{ matrix.definition_path }} ui_client_id)" >> $GITHUB_ENV
-
+          echo "tenant_id=$(yq eval '.tenant_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
+          echo "ui_client_id=$(yq eval '.ui_client_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
       # Plan TF
       - name: Terraform plan
         run: |
@@ -221,14 +210,12 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           terraform plan -out=tfplan -var-file=${{ matrix.trial_name }}.tfvars \
             -var="owner=${{ github.actor }}" \
             -var="github_ref=${{ github.ref }}" \
             -var="init_username=${{secrets.INIT_USERNAME}}" \
             -var="init_password=${{secrets.INIT_PASSWORD}}" \
             -var="init_client_id=${{secrets.INIT_CLIENT_ID}}"
-
       # Apply, only on merge to main
       - name: Terraform apply
         # if: github.ref == 'refs/heads/main'
@@ -237,29 +224,23 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           echo "Merged to main. applying trial's RG"
           terraform apply -auto-approve tfplan
-
           # '-raw' is important so no other characters will be added
           ui_storage_conn_string=$(terraform output -raw ui_conn_string)
           gateway_host_string=$(terraform output -raw gateway_host)
           # create an env var from the connection string, so will be available for the later steps
           echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
           echo "gateway_host_string=$gateway_host_string" >> $GITHUB_ENV
-
           ## DO NOT DELETE ##
           # mask this value so this sensitive data won't be logged.
           echo "::add-mask::$ui_storage_conn_string"
-
       # Get release zip file
       - name: UI component - Get assets zip
         run: |
           set -o errexit
           set -o nounset
-
           wget https://github.com/NDPH-ARTS/mts-trial-ui/releases/latest/download/mts-trial-ui.zip
-
       # Unzip & Customize (replace values)
       - name: UI component - Unzip and modify
         run: |
@@ -267,18 +248,14 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           unzip mts-trial-ui.zip
-
           index_file="mts-trial-ui/index.html"
           # sed doesn't like the github {{ }} vars, so dropping the value to a regular var
           trial_name=${{ matrix.trial_name }}
-
           sed -i "s/{{clientId}}/${ui_client_id}/" ${index_file}
           sed -i "s/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${tenant_id}\/v2.0/" ${index_file}
           sed -i "s/{{trialName}}/${trial_name}/" ${index_file}
           sed -i "s^{{gatewayUrl}}^${gateway_host_string}/api^" ${index_file}
-
       # Add Branding Assets
       - name: UI component - copy assets
         run: |
@@ -286,12 +263,10 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           echo "using trial path ${{ matrix.trial_dir }}"
           # copy everything in the assets folder
           cp -fr ${{ matrix.trial_dir }}/assets/* mts-trial-ui/assets/
-
-      # Upload to storage account (to $web container), only on merge to main
+      # Upload to storage account (to $web container)
       - name: UI component - Upload to storage
         # if: github.ref == 'refs/heads/main'
         run: |
@@ -299,11 +274,9 @@ jobs:
           set -o pipefail
           set -o nounset
           # set -o xtrace
-
           # first clean up the container, then upload the new assets
           az storage blob delete-batch --connection-string ${ui_storage_conn_string} --source "\$web" --pattern "*"
           az storage blob upload-batch --connection-string ${ui_storage_conn_string} --source mts-trial-ui --destination '$web'
-
   deployall:
     runs-on: ubuntu-latest
     name: Terraform plan/apply (matrix)
