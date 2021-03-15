@@ -11,7 +11,7 @@
     },
     "practitioner_service": {
         "image_name": "ghcr.io/ndph-arts/practitioner-service",
-        "image_tag": "main-latest"
+        "image_tag": "main-latest-fail"
     },
     "init_service": {
         "image_name": "ghcr.io/ndph-arts/init-service",
@@ -34,7 +34,7 @@
             "image_name": "ghcr.io/ndph-arts/config-server",
             "image_tag": "main-latest",
             "git_uri": "https://github.com/NDPH-ARTS/mts-trial-deployment-config.git",
-            "search_paths": "trials/guy19/services, trials/guy19/services/*"
+            "search_paths": "trials/guy20/services, trials/guy20/services/*"
         }
     }
 }
