@@ -70,7 +70,7 @@ variable "enable_private_endpoint" {
 }
 
 variable "storage_account" {
-  type = list(object({
+  type = map(object({
     name         = string
     type         = string
     account_name = string
