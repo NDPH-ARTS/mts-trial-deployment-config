@@ -70,11 +70,11 @@ variable "enable_private_endpoint" {
 }
 
 
-variable "storage_account" {
-  type        = map(string)
+variable "storage_accounts" {
+  type        = list(map(any))
   sensitive   = true
   description = "(Optional) a list of Storage Accounts blob or file share to mount"
-  default     = {}
+  default     = null
 }
 
 # variable "storage_account" {
