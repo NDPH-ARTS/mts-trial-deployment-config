@@ -80,4 +80,5 @@ variable "storage_account" {
   }))
   sensitive   = true
   description = "a list of Storage Accounts blob or file share to mount"
+  default = [{}]
 }
