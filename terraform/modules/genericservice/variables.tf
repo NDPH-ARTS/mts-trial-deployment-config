@@ -69,16 +69,24 @@ variable "enable_private_endpoint" {
   default     = true
 }
 
+
 variable "storage_account" {
-  type = map(object({
-    name         = string
-    type         = string
-    account_name = string
-    share_name   = string
-    access_key   = string
-    mount_path   = string
-  }))
+  type        = list(map(string))
   sensitive   = true
   description = "a list of Storage Accounts blob or file share to mount"
-  default     = null
+  default     = []
 }
+
+# variable "storage_account" {
+#   type = map(object({
+#     name         = string
+#     type         = string
+#     account_name = string
+#     share_name   = string
+#     access_key   = string
+#     mount_path   = string
+#   }))
+#   sensitive   = true
+#   description = "a list of Storage Accounts blob or file share to mount"
+#   default     = null
+# }
