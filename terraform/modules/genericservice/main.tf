@@ -31,6 +31,7 @@ resource "azurerm_app_service" "generic_service" {
   app_settings = var.settings
 
   dynamic "storage_account" {
+    #count    = var.storage_account == true ? 1 : 0
     for_each = var.storage_account
     content {
       name         = storage_account.value["name"]
