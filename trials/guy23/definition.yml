@@ -12,7 +12,7 @@ practitioner_service:
   image_tag: main-latest
 init_service:
   image_name: ghcr.io/ndph-arts/init-service
-  image_tag: main-latest
+  image_tag: 68de7405e341182a6411267916b1a4f8e4e5a854
 role_service:
   image_name: ghcr.io/ndph-arts/role-service
   image_tag: main-latest
