@@ -328,7 +328,7 @@ jobs:
 
       # Download init service progress log file from azure file share and validate success
       - name: Validate Init service progress
-        timeout-minutes: 30
+        timeout-minutes: 2
         # if: github.ref == 'refs/heads/main'
         run: |
           set -o nounset
