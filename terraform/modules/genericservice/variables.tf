@@ -70,15 +70,15 @@ variable "enable_private_endpoint" {
 }
 
 variable "storage_account" {
-  type = optional(list(object({
+  type = list(object({
     name         = string
     type         = string
     account_name = string
     share_name   = string
     access_key   = string
     mount_path   = string
-  })))
+  }))
   sensitive   = true
   description = "a list of Storage Accounts blob or file share to mount"
-  default     = []
+  default     = null
 }
