@@ -30,7 +30,17 @@ resource "azurerm_app_service" "generic_service_with_storage_mount" {
 
   app_settings = var.settings
 
-  storage_account = [var.storage_account]
+  dynamic "storage_account" {
+    for_each = var.storage_account
+    content {
+      name         = setting.value["name"]
+      type         = setting.value["type"]
+      account_name = setting.value["account_name"]
+      share_name   = setting.value["share_name"]
+      access_key   = setting.value["access_key"]
+      mount_path   = setting.value["mount_path"]
+    }
+  }
 }
 
 # count = 0, if this is the gateway and no private endpoint is needed
