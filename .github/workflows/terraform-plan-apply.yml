@@ -334,7 +334,7 @@ jobs:
           set -o nounset
           #set -o xtrace
 
-          #exponential interval
+          # exponential interval
           for i in {1..10}; do
             seconds=$(expr 30 \* $i)
             echo "try #$i fetching init service log with a delay of $seconds seconds."
