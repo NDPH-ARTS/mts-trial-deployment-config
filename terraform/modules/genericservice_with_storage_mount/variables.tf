@@ -69,34 +69,13 @@ variable "enable_private_endpoint" {
   default     = true
 }
 
-variable "storage_account_name" {
-  type        = string
-  description = "The name of the storage account identifier."
-}
-
-variable "storage_account_type" {
-  type        = string
-  description = "The type of storage. Possible values are AzureBlob and AzureFiles."
-}
-
-variable "storage_account_account_name" {
-  type        = string
-  description = "The name of the storage account."
-}
-
-variable "storage_account_share_name" {
-  type        = string
-  description = "The name of the file share (container name, for Blob storage)."
-  sensitive   = true
-}
-
-variable "storage_account_access_key" {
-  type        = string
-  description = "The access key for the storage account."
-  sensitive   = true
-}
-
-variable "storage_account_mount_path" {
-  type        = string
-  description = "The path to mount the storage within the site's runtime environment."
+variable "storage_account" {
+  type = object({
+    name         = string
+    type         = string
+    account_name = string
+    share_name   = string
+    access_key   = string
+    mount_path   = string
+  })
 }
