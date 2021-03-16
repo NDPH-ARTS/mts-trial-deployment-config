@@ -71,7 +71,7 @@ variable "enable_private_endpoint" {
 
 
 variable "storage_accounts" {
-  type        = list(map(any))
+  type        = list(any)
   sensitive   = true
   description = "(Optional) a list of Storage Accounts blob or file share to mount"
   default     = null
