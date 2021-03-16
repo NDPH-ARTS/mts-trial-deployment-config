@@ -309,22 +309,20 @@ jobs:
 
       # Download init service progress log file from azure file share and validate success
       - name: Validate Init service progress
+        timeout-minutes: 30
         # if: github.ref == 'refs/heads/main'
         run: |
-          #can't use errexit and pipefail flags here becasue tail will fail if the file doesn't exists
           set -o nounset
           #set -o xtrace
+          # can't use errexit and pipefail flags here becasue tail will fail if the file doesn't exists
 
-          #exponential interval
-          for i in {1..10}; do
-            seconds=$(expr 30 \* $i)
-            echo "try #$i fetching init service log with a delay of $seconds seconds."
-            sleep $seconds
-            az storage file download --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} &&             cat log.txt
+          echo "trying to fetch init service log in loop, timeout set to 30 min."
+          while [ true ]
+          do
+            sleep 10
+            az storage file download --no-progress --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} && cat log.txt
             result_failure=$(tail log.txt --lines 1 | grep "***FAILURE***" | wc -w)
             result_success=$(tail log.txt --lines 1 | grep "***SUCCESS***" | wc -w)
-            echo result_failure=$result_failure
-            echo result_success=$result_success
             if [ $result_failure -gt 0 ]; then
                 echo "Init service - Completed with failure"
                 exit 1
@@ -333,11 +331,6 @@ jobs:
                 exit 0
             fi
           done
-
-          # if we got here we need to fail with timeout
-          echo "quiting with timeout"
-          exit 1
-
   deployall:
     runs-on: ubuntu-latest
     name: Terraform plan/apply (matrix)
