@@ -69,19 +69,19 @@ variable "enable_private_endpoint" {
   default     = true
 }
 
-# variable "storage_account" {
-#   type = object({
-#     name         = string
-#     type         = string
-#     account_name = string
-#     share_name   = string
-#     access_key   = string
-#     mount_path   = string
-#   })
-# }
-
 variable "storage_account" {
-  type      = map(any)
-  default   = {}
-  sensitive = true
+  type = [object({
+    name         = string
+    type         = string
+    account_name = string
+    share_name   = string
+    access_key   = string
+    mount_path   = string
+  })]
 }
+
+# variable "storage_account" {
+#   type      = map(any)
+#   default   = {}
+#   sensitive = true
+# }
