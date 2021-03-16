@@ -70,14 +70,14 @@ variable "enable_private_endpoint" {
 }
 
 variable "storage_account" {
-  type = [object({
+  type = object([{
     name         = string
     type         = string
     account_name = string
     share_name   = string
     access_key   = string
     mount_path   = string
-  })]
+  }])
 }
 
 # variable "storage_account" {
