@@ -68,3 +68,17 @@ variable "enable_private_endpoint" {
   description = "if 'false' then for this web app, private endpoint will NOT be created."
   default     = true
 }
+
+variable "storage_account" {
+  type = list(object({
+    name         = string
+    type         = string
+    account_name = string
+    share_name   = string
+    access_key   = string
+    mount_path   = string
+  }))
+  sensitive   = true
+  description = "a list of Storage Accounts blob or file share to mount"
+  default     = []
+}
