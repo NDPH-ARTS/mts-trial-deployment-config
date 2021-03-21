@@ -1,5 +1,5 @@
-name: guy29
-version: 26
+name: guy30
+version: 1
 tenant_id: 5d23383f-2acb-448e-8353-4b4573b82276
 ui_client_id: f352ce15-0142-4dfa-8e18-801ee6391557
 spring_profile: dev
@@ -12,7 +12,7 @@ practitioner_service:
   image_tag: main-latest
 init_service:
   image_name: ghcr.io/ndph-arts/init-service
-  image_tag: 68de7405e341182a6411267916b1a4f8e4e5a854
+  image_tag: 9b29f7016721a18e11a56180e3f2bf6422e29e3b
 role_service:
   image_name: ghcr.io/ndph-arts/role-service
   image_tag: main-latest
@@ -27,4 +27,4 @@ spring_cloud:
     image_name: ghcr.io/ndph-arts/config-server
     image_tag: main-latest
     git_uri: https://github.com/NDPH-ARTS/mts-trial-deployment-config.git
-    search_paths: trials/guy29/services, trials/guy29/services/*
+    search_paths: trials/guy30/services, trials/guy30/services/*
