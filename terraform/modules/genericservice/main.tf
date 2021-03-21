@@ -1,4 +1,8 @@
 
+locals {
+  storage_account_as_list = [var.storage_account]
+}
+
 # Service application generic module that loads a docker image
 # UNIQUE
 resource "azurerm_app_service" "generic_service" {
@@ -31,7 +35,7 @@ resource "azurerm_app_service" "generic_service" {
   app_settings = var.settings
 
   dynamic "storage_account" {
-    for_each = var.storage_accounts
+    for_each = local.storage_account_as_list
     iterator = storage_account
     content {
       name         = storage_account.value["name"]
