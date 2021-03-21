@@ -28,7 +28,7 @@ variable "environment" {
 variable "location" {
   type        = string
   description = "Azure region where to create resources."
-  default     = "eastus2"
+  default     = "uksouth"
 }
 
 variable "subnet_id" {
