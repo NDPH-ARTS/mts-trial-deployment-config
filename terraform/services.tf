@@ -155,7 +155,7 @@ module "trial_app_service_init" {
   docker_image_tag    = var.init_service_image_tag
   subnet_id           = module.trial_vnet.endpointsubnet
   dns_zone_id         = module.trial_vnet.webapp_dns_zone_id
-  storage_accounts = ({
+  storage_account = ({
     "name"         = azurerm_storage_account.initstorageaccount.name
     "type"         = "AzureFiles"
     "account_name" = azurerm_storage_account.initstorageaccount.name
