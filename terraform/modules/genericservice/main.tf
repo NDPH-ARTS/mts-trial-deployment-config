@@ -1,6 +1,6 @@
 
 locals {
-  storage_account_as_list = [var.storage_account]
+  storage_account_as_list = var.storage_account == null ? [] : [var.storage_account]
 }
 
 # Service application generic module that loads a docker image
