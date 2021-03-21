@@ -32,8 +32,8 @@ module "trial_app_service_site" {
   environment          = var.environment
   docker_image         = var.site_image_name
   docker_image_tag     = var.site_image_tag
-  subnet_id            = module.trial_vnet.endpointsubnet
-  dns_zone_id          = module.trial_vnet.webapp_dns_zone_id
+  subnet_id            = azurerm_subnet.endpointsubnet.id
+  dns_zone_id          = azurerm_private_dns_zone.web-app-endpoint-dns-private-zone.id
   monitor_workspace_id = azurerm_log_analytics_workspace.monitor_workspace.id
 
   settings = merge(
@@ -51,7 +51,6 @@ module "trial_app_service_site" {
     module.trial_sc_discovery,
     module.fhir_server,
     module.trial_app_service_init,
-    module.trial_vnet,
   ]
 }
 
@@ -65,8 +64,8 @@ module "trial_app_service_practitioner" {
   environment          = var.environment
   docker_image         = var.practitioner_image_name
   docker_image_tag     = var.practitioner_image_tag
-  subnet_id            = module.trial_vnet.endpointsubnet
-  dns_zone_id          = module.trial_vnet.webapp_dns_zone_id
+  subnet_id            = azurerm_subnet.endpointsubnet.id
+  dns_zone_id          = azurerm_private_dns_zone.web-app-endpoint-dns-private-zone.id
   monitor_workspace_id = azurerm_log_analytics_workspace.monitor_workspace.id
 
   # todo use private endpoint
@@ -89,7 +88,6 @@ module "trial_app_service_practitioner" {
     module.trial_app_service_role,
     module.fhir_server,
     module.trial_app_service_init,
-    module.trial_vnet,
   ]
 }
 
@@ -103,8 +101,8 @@ module "trial_app_service_role" {
   environment          = var.environment
   docker_image         = var.role_image_name
   docker_image_tag     = var.role_image_tag
-  subnet_id            = module.trial_vnet.endpointsubnet
-  dns_zone_id          = module.trial_vnet.webapp_dns_zone_id
+  subnet_id            = azurerm_subnet.endpointsubnet.id
+  dns_zone_id          = azurerm_private_dns_zone.web-app-endpoint-dns-private-zone.id
   monitor_workspace_id = azurerm_log_analytics_workspace.monitor_workspace.id
 
   settings = merge(
@@ -125,7 +123,6 @@ module "trial_app_service_role" {
     module.trial_sc_config,
     module.trial_sc_discovery,
     module.trial_app_service_init,
-    module.trial_vnet,
   ]
 }
 
@@ -140,8 +137,8 @@ module "trial_app_service_init" {
   environment          = var.environment
   docker_image         = var.init_service_image_name
   docker_image_tag     = var.init_service_image_tag
-  subnet_id            = module.trial_vnet.endpointsubnet
-  dns_zone_id          = module.trial_vnet.webapp_dns_zone_id
+  subnet_id            = azurerm_subnet.endpointsubnet.id
+  dns_zone_id          = azurerm_private_dns_zone.web-app-endpoint-dns-private-zone.id
   monitor_workspace_id = azurerm_log_analytics_workspace.monitor_workspace.id
 
   settings = merge(
@@ -159,7 +156,6 @@ module "trial_app_service_init" {
     azurerm_application_insights.app_insights,
     module.trial_sc_config,
     module.trial_sc_discovery,
-    module.trial_vnet,
   ]
 }
 
@@ -182,8 +178,8 @@ module "trial_sc_gateway" {
 
   # These variables are not used due to the fact we don't create a private endpoint
   # for the gateway, but are required by tf
-  subnet_id   = module.trial_vnet.endpointsubnet
-  dns_zone_id = module.trial_vnet.webapp_dns_zone_id
+  subnet_id   = azurerm_subnet.endpointsubnet.id
+  dns_zone_id = azurerm_private_dns_zone.web-app-endpoint-dns-private-zone.id
 
   settings = merge(
     local.common_settings,
@@ -197,7 +193,6 @@ module "trial_sc_gateway" {
     azurerm_application_insights.app_insights,
     module.trial_sc_config,
     module.trial_sc_discovery,
-    module.trial_vnet,
   ]
 }
 
@@ -210,8 +205,8 @@ module "trial_sc_discovery" {
   environment          = var.environment
   docker_image         = var.sc_discovery_image_name
   docker_image_tag     = var.sc_discovery_image_tag
-  subnet_id            = module.trial_vnet.endpointsubnet
-  dns_zone_id          = module.trial_vnet.webapp_dns_zone_id
+  subnet_id            = azurerm_subnet.endpointsubnet.id
+  dns_zone_id          = azurerm_private_dns_zone.web-app-endpoint-dns-private-zone.id
   monitor_workspace_id = azurerm_log_analytics_workspace.monitor_workspace.id
 
   settings = {
@@ -225,7 +220,6 @@ module "trial_sc_discovery" {
   depends_on = [
     azurerm_app_service_plan.apps_service_plan,
     azurerm_application_insights.app_insights,
-    module.trial_vnet,
   ]
 }
 
@@ -238,8 +232,8 @@ module "trial_sc_config" {
   environment          = var.environment
   docker_image         = var.sc_config_image_name
   docker_image_tag     = var.sc_config_image_tag
-  subnet_id            = module.trial_vnet.endpointsubnet
-  dns_zone_id          = module.trial_vnet.webapp_dns_zone_id
+  subnet_id            = azurerm_subnet.endpointsubnet.id
+  dns_zone_id          = azurerm_private_dns_zone.web-app-endpoint-dns-private-zone.id
   monitor_workspace_id = azurerm_log_analytics_workspace.monitor_workspace.id
 
   # optted not to use the common settings since it includes a config label that might casue problems here.
@@ -260,7 +254,6 @@ module "trial_sc_config" {
     azurerm_app_service_plan.apps_service_plan,
     azurerm_application_insights.app_insights,
     module.trial_sc_discovery,
-    module.trial_vnet,
   ]
 }
 
