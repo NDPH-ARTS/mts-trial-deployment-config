@@ -21,10 +21,6 @@ resource "azurerm_app_service_plan" "apps_service_plan" {
     tier = "PremiumV2"
     size = "P1v2"
   }
-
-  depends_on = [
-    azurerm_resource_group.trial_rg,
-  ]
 }
 
 # Application insights
@@ -33,10 +29,6 @@ resource "azurerm_application_insights" "app_insights" {
   location            = azurerm_resource_group.trial_rg.location
   resource_group_name = azurerm_resource_group.trial_rg.name
   application_type    = "web"
-
-  depends_on = [
-    azurerm_resource_group.trial_rg,
-  ]
 }
 
 resource "azurerm_log_analytics_workspace" "monitor_workspace" {
@@ -59,12 +51,6 @@ module "fhir_server" {
   sql_dns_zone_id      = azurerm_private_dns_zone.sql-endpoint-dns-private-zone.id
   webapp_dns_zone_id   = azurerm_private_dns_zone.web-app-endpoint-dns-private-zone.id
   monitor_workspace_id = azurerm_log_analytics_workspace.monitor_workspace.id
-
-  # needs an app service plan and an existing vnet
-  depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
-    azurerm_application_insights.app_insights,
-  ]
 }
 
 # Prepare an array of service ids so we can iterate on those and add them to the vnet

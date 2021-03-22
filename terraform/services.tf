@@ -45,12 +45,8 @@ module "trial_app_service_site" {
   )
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
-    azurerm_application_insights.app_insights,
     module.trial_sc_config,
     module.trial_sc_discovery,
-    module.fhir_server,
-    module.trial_app_service_init,
   ]
 }
 
@@ -80,14 +76,8 @@ module "trial_app_service_practitioner" {
   )
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
-    azurerm_application_insights.app_insights,
     module.trial_sc_config,
     module.trial_sc_discovery,
-    module.trial_app_service_site,
-    module.trial_app_service_role,
-    module.fhir_server,
-    module.trial_app_service_init,
   ]
 }
 
@@ -117,12 +107,8 @@ module "trial_app_service_role" {
   )
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
-    azurerm_application_insights.app_insights,
-    module.roles_sql_server,
     module.trial_sc_config,
     module.trial_sc_discovery,
-    module.trial_app_service_init,
   ]
 }
 
@@ -152,8 +138,6 @@ module "trial_app_service_init" {
   )
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
-    azurerm_application_insights.app_insights,
     module.trial_sc_config,
     module.trial_sc_discovery,
   ]
@@ -189,8 +173,6 @@ module "trial_sc_gateway" {
   )
 
   depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
-    azurerm_application_insights.app_insights,
     module.trial_sc_config,
     module.trial_sc_discovery,
   ]
@@ -216,11 +198,6 @@ module "trial_sc_discovery" {
     "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.app_insights.connection_string
     "EUREKA_ENVIRONMENT"                    = var.environment # for a label in the eureka status screen
   }
-
-  depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
-    azurerm_application_insights.app_insights,
-  ]
 }
 
 module "trial_sc_config" {
@@ -249,12 +226,6 @@ module "trial_sc_config" {
     "WEBSITE_DNS_SERVER"                         = "168.63.129.16"
     "WEBSITE_VNET_ROUTE_ALL"                     = 1
   }
-
-  depends_on = [
-    azurerm_app_service_plan.apps_service_plan,
-    azurerm_application_insights.app_insights,
-    module.trial_sc_discovery,
-  ]
 }
 
 ## End - Spring cloud application
