@@ -57,7 +57,6 @@ trial:
       permissions:
         - id: create-person
         - id: view-person
-        - id: assign-role
     - id: country-admin
       permissions:
         - id: create-person
