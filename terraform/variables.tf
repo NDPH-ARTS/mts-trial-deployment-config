@@ -74,7 +74,7 @@ variable "github_ref" {
 
 variable "init_log_path" {
   type        = string
-  description = "Path of the init service log in Azure file storage"
+  description = "Path of the init service log in Azure file storage."
   default     = "/mnt/init"
 }
 
