@@ -115,7 +115,7 @@ variable "role_image_tag" {
 
 variable "init_service_image_name" {
   type        = string
-  description = "Init service image name"
+  description = "Init service image name."
 }
 
 variable "init_service_image_tag" {
