@@ -1,4 +1,5 @@
-
+# Convert storage_account object to a list if not null or an empty list if null to be able to iterate it inside
+# the dynamic block with for_each statement
 locals {
   storage_account_as_list = var.storage_account == null ? [] : [var.storage_account]
 }
