@@ -82,3 +82,8 @@ variable "storage_account" {
   description = "(Optional) a list of Storage Accounts blob or file share to mount"
   default     = null
 }
+
+variable "monitor_workspace_id" {
+  type        = string
+  description = "A LogAnalytics workspace id"
+}

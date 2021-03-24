@@ -58,10 +58,6 @@ resource "azurerm_app_service" "fhir_server" {
     WEBSITE_VNET_ROUTE_ALL                            = 1
     ApplicationInsights__InstrumentationKey           = var.app_insights_key
   }
-
-  depends_on = [
-    module.fhir_sql_server,
-  ]
 }
 
 module "private_endpoint" {
@@ -73,8 +69,43 @@ module "private_endpoint" {
   subresource_name = "sites"
   application      = "fhir"
   dns_zone_id      = var.webapp_dns_zone_id
+}
 
-  depends_on = [
-    azurerm_app_service.fhir_server,
-  ]
+resource "azurerm_monitor_diagnostic_setting" "fhir_diag" {
+  name                       = "${azurerm_app_service.fhir_server.name}-diagnostic"
+  target_resource_id         = azurerm_app_service.fhir_server.id
+  log_analytics_workspace_id = var.monitor_workspace_id
+
+  log {
+    category = "AppServiceConsoleLogs"
+    enabled  = false # Logs are sent to AppInsights which is better than this
+  }
+  log {
+    category = "AppServiceHTTPLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceAuditLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceFileAuditLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceAppLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceIPSecAuditLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServicePlatformLogs"
+    enabled  = true
+  }
+
+  metric {
+    category = "AllMetrics"
+  }
 }

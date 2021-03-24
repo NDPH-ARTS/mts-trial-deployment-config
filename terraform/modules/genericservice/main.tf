@@ -59,8 +59,43 @@ module "private_endpoint" {
   subresource_name = "sites"
   application      = var.app_name
   dns_zone_id      = var.dns_zone_id
+}
 
-  depends_on = [
-    azurerm_app_service.generic_service,
-  ]
+resource "azurerm_monitor_diagnostic_setting" "app_diag" {
+  name                       = "${var.app_name}-diagnostic"
+  target_resource_id         = azurerm_app_service.generic_service.id
+  log_analytics_workspace_id = var.monitor_workspace_id
+
+  log {
+    category = "AppServiceConsoleLogs"
+    enabled  = false # Logs are sent to AppInsights which is better than this
+  }
+  log {
+    category = "AppServiceHTTPLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceAuditLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceFileAuditLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceAppLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceIPSecAuditLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServicePlatformLogs"
+    enabled  = true
+  }
+
+  metric {
+    category = "AllMetrics"
+  }
 }
