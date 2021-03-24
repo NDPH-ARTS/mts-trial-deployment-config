@@ -15,13 +15,44 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Validate YML
+      - name: Validate Trial Definition (YML)
         id: validate_definiton_yml
         env:
-          INPUT_SCHEMA: .ci/trial-json-schema.json
+          INPUT_SCHEMA: .ci/definition-schema.json
         run: |
+          set -o errexit
+          set -o pipefail
+          set -o nounset
+
           sudo npm install -g ajv-cli
-          find . -name definition.yml -exec ajv validate -s $INPUT_SCHEMA -d {} \;
+          if [ $(find . -name definition.yml -exec ajv validate -s $INPUT_SCHEMA -d {} \;) ]
+          then
+            exit 1;
+          else
+            exit 0;
+          fi
+
+      - name: Validate micro-services config files
+        id: validate_config_files_yml
+        env:
+          INIT_SCHEMA: .ci/init-service-trial-schema.json
+          PRACTITIONER_SCHEMA: .ci/practitioner-service-configuration-schema.json
+          SITE_SCHEMA: .ci/site-service-configuration-schema.json
+        run: |
+          set -o errexit
+          set -o pipefail
+          set -o nounset
+
+          f1=$(find . -name init-service-dev.yml -exec ajv validate -s $INIT_SCHEMA -d {} \;)
+          f2=$(find . -name practitioner-service-dev.yml -exec ajv validate -s $PRACTITIONER_SCHEMA -d {} \;)
+          f3=$(find . -name site-service-dev.yml -exec ajv validate -s $SITE_SCHEMA -d {} \;)
+
+          if $f1 || $f2 || $f3
+          then
+            exit 1;
+          else
+            exit 0;
+          fi
 
       - name: Terraform Format
         working-directory: './terraform'

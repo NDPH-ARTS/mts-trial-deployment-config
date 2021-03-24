@@ -1,0 +1,93 @@
+{
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "title" : "Trial Definition File",
+  "type" : "object",
+  "additionalProperties" : false,
+  "properties" : {
+    "name" : {
+      "type" : "string"
+    },
+    "version" : {
+      "type" : "integer",
+      "default" : 1
+    },
+    "tenant_id" : {
+      "type" : "string"
+    },
+    "ui_client_id" : {
+      "type" : "string"
+    },
+    "site_service" : {
+      "$ref" : "#/definitions/Service"
+    },
+    "role_service" : {
+      "$ref" : "#/definitions/Service"
+    },
+    "practitioner_service" : {
+      "$ref" : "#/definitions/Service"
+    },
+    "init_service" : {
+      "$ref" : "#/definitions/Service"
+    },
+    "spring_cloud" : {
+      "$ref" : "#/definitions/SpringCloud"
+    },
+    "spring_profile" : {
+      "type" : "string"
+    },
+    "spring_config_label" : {
+      "type" : "string"
+    }
+  },
+  "required" : [ "name", "version", "tenant_id", "ui_client_id", "site_service", "role_service", "practitioner_service", "init_service", "spring_cloud", "spring_profile", "spring_config_label" ],
+  "definitions" : {
+    "Service" : {
+      "type" : "object",
+      "additionalProperties" : false,
+      "properties" : {
+        "image_name" : {
+          "type" : "string"
+        },
+        "image_tag" : {
+          "type" : "string"
+        }
+      },
+      "required" : [ "image_name", "image_tag" ]
+    },
+    "SpringCloud" : {
+      "type" : "object",
+      "additionalProperties" : false,
+      "properties" : {
+        "gateway_service" : {
+          "$ref" : "#/definitions/Service"
+        },
+        "discovery_service" : {
+          "$ref" : "#/definitions/Service"
+        },
+        "config_server" : {
+          "$ref" : "#/definitions/ConfigServer"
+        }
+      },
+      "required" : [ "gateway_service", "discovery_service", "config_server" ]
+    },
+    "ConfigServer" : {
+      "type" : "object",
+      "additionalProperties" : false,
+      "properties" : {
+        "image_name" : {
+          "type" : "string"
+        },
+        "image_tag" : {
+          "type" : "string"
+        },
+        "git_uri" : {
+          "type" : "string"
+        },
+        "search_paths" : {
+          "type" : "string"
+        }
+      },
+      "required" : [ "image_name", "image_tag", "git_uri", "search_paths" ]
+    }
+  }
+}
