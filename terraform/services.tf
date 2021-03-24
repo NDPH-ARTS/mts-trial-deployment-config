@@ -131,14 +131,14 @@ resource "azurerm_storage_share" "initstorageshare" {
 
 # init service
 module "trial_app_service_init" {
-  source              = "./modules/genericservice"
-  app_name            = local.init_name
-  rg_name             = azurerm_resource_group.trial_rg.name
-  app_service_plan_id = azurerm_app_service_plan.apps_service_plan.id
-  trial_name          = var.trial_name
-  environment         = var.environment
-  docker_image        = var.init_service_image_name
-  docker_image_tag    = var.init_service_image_tag
+  source               = "./modules/genericservice"
+  app_name             = local.init_name
+  rg_name              = azurerm_resource_group.trial_rg.name
+  app_service_plan_id  = azurerm_app_service_plan.apps_service_plan.id
+  trial_name           = var.trial_name
+  environment          = var.environment
+  docker_image         = var.init_service_image_name
+  docker_image_tag     = var.init_service_image_tag
   subnet_id            = azurerm_subnet.endpointsubnet.id
   dns_zone_id          = azurerm_private_dns_zone.web-app-endpoint-dns-private-zone.id
   monitor_workspace_id = azurerm_log_analytics_workspace.monitor_workspace.id
