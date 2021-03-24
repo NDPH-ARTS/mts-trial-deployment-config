@@ -25,12 +25,12 @@ jobs:
           set -o nounset
 
           sudo npm install -g ajv-cli
-          if [ $(find . -name definition.yml -exec ajv validate -s $INPUT_SCHEMA -d {} \;) ]
-          then
-            exit 1;
-          else
-            exit 0;
-          fi
+
+          export FILES=$(find . -name 'definition.yml')
+          for FILE in $(echo "$FILES" | sed "s/,/ /g")
+          do
+               ajv validate -s $INPUT_SCHEMA -d "$FILE"
+          done
 
       - name: Validate micro-services config files
         id: validate_config_files_yml
@@ -43,16 +43,23 @@ jobs:
           set -o pipefail
           set -o nounset
 
-          f1=$(find . -name init-service-dev.yml -exec ajv validate -s $INIT_SCHEMA -d {} \;)
-          f2=$(find . -name practitioner-service-dev.yml -exec ajv validate -s $PRACTITIONER_SCHEMA -d {} \;)
-          f3=$(find . -name site-service-dev.yml -exec ajv validate -s $SITE_SCHEMA -d {} \;)
+          export FILES=$(find . -name 'init-service-dev.yml')
+          for FILE in $(echo "$FILES" | sed "s/,/ /g")
+          do
+               ajv validate -s $INIT_SCHEMA -d "$FILE"
+          done
 
-          if $f1 || $f2 || $f3
-          then
-            exit 1;
-          else
-            exit 0;
-          fi
+          export FILES=$(find . -name 'practitioner-service-dev.yml')
+          for FILE in $(echo "$FILES" | sed "s/,/ /g")
+          do
+               ajv validate -s $PRACTITIONER_SCHEMA -d "$FILE"
+          done
+
+          export FILES=$(find . -name 'site-service-dev.yml')
+          for FILE in $(echo "$FILES" | sed "s/,/ /g")
+          do
+               ajv validate -s $SITE_SCHEMA -d "$FILE"
+          done
 
       - name: Terraform Format
         working-directory: './terraform'
