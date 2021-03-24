@@ -343,14 +343,14 @@ jobs:
             az storage file download --no-progress --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} && cat log.txt
 
             # chainging result with no-op command so git workflow won't fail and seperating command and condition to avoid "unary operator expected" error
-            tail /mnt/c/temp/log.txt --lines 1 | grep -q "FAILURE" && :
+            tail log.txt --lines 1 | grep -q "FAILURE" && :
             if [ $? -eq 0 ]
             then
                 echo "Init service - Completed with failure"
                 exit 1
             fi
 
-            tail /mnt/c/temp/log.txt --lines 1 | grep -q "SUCCESS" && :
+            tail log.txt --lines 1 | grep -q "SUCCESS" && :
             if [ $? -eq 0 ]
             then
                 echo "Init service - Completed Successfully"
