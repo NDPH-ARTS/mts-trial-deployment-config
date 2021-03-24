@@ -341,10 +341,17 @@ jobs:
           do
             sleep 10
             az storage file download --no-progress --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} && cat log.txt
-            if [ $(tail log.txt --lines 1 | grep -q "***FAILURE***") -eq 0 ]; then
+
+            tail /mnt/c/temp/log.txt --lines 1 | grep -q "FAILURE"
+            if [ $? -eq 0 ]
+            then
                 echo "Init service - Completed with failure"
                 exit 1
-            elif [ $(tail log.txt --lines 1 | grep -q "***SUCCESS***") -eq 0 ]; then
+            fi
+
+            tail /mnt/c/temp/log.txt --lines 1 | grep -q "SUCCESS"
+            if [ $? -eq 0 ]
+            then
                 echo "Init service - Completed Successfully"
                 exit 0
             fi
