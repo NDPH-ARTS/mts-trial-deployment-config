@@ -1,3 +1,8 @@
+# Convert storage_account object to a list if not null or an empty list if null to be able to iterate it inside
+# the dynamic block with for_each statement
+locals {
+  storage_account_as_list = var.storage_account == null ? [] : [var.storage_account]
+}
 
 # Service application generic module that loads a docker image
 # UNIQUE
@@ -29,6 +34,19 @@ resource "azurerm_app_service" "generic_service" {
   }
 
   app_settings = var.settings
+
+  dynamic "storage_account" {
+    for_each = local.storage_account_as_list
+    iterator = storage_account
+    content {
+      name         = storage_account.value["name"]
+      type         = storage_account.value["type"]
+      account_name = storage_account.value["account_name"]
+      share_name   = storage_account.value["share_name"]
+      access_key   = storage_account.value["access_key"]
+      mount_path   = storage_account.value["mount_path"]
+    }
+  }
 }
 
 # count = 0, if this is the gateway and no private endpoint is needed
@@ -42,8 +60,43 @@ module "private_endpoint" {
   subresource_name = "sites"
   application      = var.app_name
   dns_zone_id      = var.dns_zone_id
+}
 
-  depends_on = [
-    azurerm_app_service.generic_service,
-  ]
+resource "azurerm_monitor_diagnostic_setting" "app_diag" {
+  name                       = "${var.app_name}-diagnostic"
+  target_resource_id         = azurerm_app_service.generic_service.id
+  log_analytics_workspace_id = var.monitor_workspace_id
+
+  log {
+    category = "AppServiceConsoleLogs"
+    enabled  = false # Logs are sent to AppInsights which is better than this
+  }
+  log {
+    category = "AppServiceHTTPLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceAuditLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceFileAuditLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceAppLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServiceIPSecAuditLogs"
+    enabled  = true
+  }
+  log {
+    category = "AppServicePlatformLogs"
+    enabled  = true
+  }
+
+  metric {
+    category = "AllMetrics"
+  }
 }

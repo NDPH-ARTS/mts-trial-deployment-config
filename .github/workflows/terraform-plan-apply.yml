@@ -2,8 +2,31 @@ name: Terraform Plan and Apply for Trials
 
 on:
   push:
+  workflow_dispatch:
+    inputs:
+      trialDefinitionPath:
+        description: Path to definition file of trial environment to deploy
+        required: false
 
 jobs:
+  check-files-correctness:
+    name: "Verify files are in expected format"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Validate YML
+        id: validate_definiton_yml
+        env:
+          INPUT_SCHEMA: .ci/trial-json-schema.json
+        run: |
+          sudo npm install -g ajv-cli
+          find . -name definition.yml -exec ajv validate -s $INPUT_SCHEMA -d {} \;
+
+      - name: Terraform Format
+        working-directory: './terraform'
+        run: terraform fmt --recursive -check
+
   prepare-run-matrix:
     name: Detect changed definitions and prepare matrix
     runs-on: ubuntu-latest
@@ -12,11 +35,6 @@ jobs:
       is_empty_matrix: ${{ steps.set-matrix.outputs.is_empty_matrix }}
     steps:
       - uses: actions/checkout@v2
-
-      - name: Install yq
-        run: |
-          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
-          sudo chmod +x /usr/local/bin/yq
 
       # Get a list of changed .yaml files
       - name: Check changed files
@@ -27,23 +45,30 @@ jobs:
           set -o nounset
           # set -o xtrace
 
-          git fetch origin main:localmain
+          # We may be passed the path of a specific trial definition if the deployment
+          # was manually triggered via workflow_dispatch, rather than by PR.
+          # If not passed, calculate changed files as normal.
+          if [[ -z "${{github.event.inputs.trialDefinitionPath}}" ]]; then
+            git fetch origin main:localmain
 
-          # Gets changed yaml files excluding the json schema
-          export FILES=$(git diff --name-only localmain | grep definition.yml)
+            # Gets changed yaml files excluding the json schema
+            export FILES=$(git diff --name-only localmain | grep definition.yml)
 
-          # if this branch was not marked as a deploy branch, we do not allow
-          # changing any of the 'protected' envs
-          if [[ ${{ github.ref }} == *"/deploy/"* ]]
-          then
-            echo "Allowed to deploy to protected branches"
-          else
-            echo $FILES >> filesLst
-            if grep -q qa1 filesLst || grep -q sample2 filesLst
+            # if this branch was not marked as a deploy branch, we do not allow
+            # changing any of the 'protected' envs
+            if [[ ${{ github.ref }} == *"/deploy/"* ]]
             then
-              echo "Either you changed a trial by mistake or the branch name is incorrect. use deploy/xxx"
-              exit 1
+              echo "Allowed to deploy to protected branches"
+            else
+              echo $FILES >> filesLst
+              if grep -q qa1 filesLst || grep -q sample2 filesLst
+              then
+                echo "Either you changed a trial by mistake or the branch name is incorrect. use deploy/xxx"
+                exit 1
+              fi
             fi
+          else
+            export FILES=${{github.event.inputs.trialDefinitionPath}}
           fi
 
           echo "Files changed since last commit..."
@@ -52,14 +77,11 @@ jobs:
           # Escape newlines (replace \n with %0A)
           echo "::set-output name=diff::$( echo "$FILES" | sed ':a;N;$!ba;s/\n/%0A/g' )"
 
-      - name: Validate YML
-        id: validate_definiton_yml
-        env:
-          INPUT_SCHEMA: .ci/trial-json-schema.json
+      - name: Install yq
         run: |
-          sudo npm install -g ajv-cli
-          find . -name definition.yml -exec ajv validate -s $INPUT_SCHEMA -d {} \;
-        
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
       # Create an execution plan, which includes each found file
       - name: Set matrix for TF plan and apply
         id: set-matrix
@@ -118,7 +140,7 @@ jobs:
 
   deploy:
     name: "Execute Terraform"
-    needs: prepare-run-matrix
+    needs: [prepare-run-matrix, check-files-correctness]
     if: ${{ needs.prepare-run-matrix.outputs.is_empty_matrix == 'false' }}
     strategy:
       matrix: ${{fromJson(needs.prepare-run-matrix.outputs.matrix)}}
@@ -131,7 +153,6 @@ jobs:
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
       ARM_SUBSCRIPTION_ID: f3fba52d-c7db-46f8-9e7a-766ca869972e
       ARM_TENANT_ID: 99804659-431f-48fa-84c1-65c9609de05b
-      ARM_ACCESS_KEY: ${{secrets.TF_ARM_ACCESS_KEY}}
     steps:
       - uses: actions/checkout@v2
 
@@ -187,47 +208,26 @@ jobs:
           ref_for_workspace="${GITHUB_REF//\//_}"
           workspace_name="${{ matrix.trial_name }}-${ref_for_workspace}"
           terraform workspace select ${workspace_name} || terraform workspace new ${workspace_name}
-
-      - name: Terraform Format
-        run: terraform fmt -check
-
       - name: Prepare deployment variables
         env:
-          TFVARS_TEMPLATE: 'tfvars.template'
+          TFVARS_TEMPLATE: 'tfvars.template.yml'
         run: |
           set -o errexit
           set -o pipefail
           set -o nounset
           # set -o xtrace
 
-          # Return 0 if file $1 exists and ending by end of line character, else return 1
-          check_ending_eol() {
-            [[ -s "$1" && -z "$(tail -c 1 "$1")" ]]
-          }
-
-          if ! check_ending_eol ${TFVARS_TEMPLATE}
-          then
-            echo "ERROR: ${TFVARS_TEMPLATE} doesn't exist or doesn't end with new line." >&2
-            exit 1
-          fi
-
-          cat ${TFVARS_TEMPLATE} | while read line
+          # yq doesn't support functions so we convert to json and use jq
+          yq eval -j ${TFVARS_TEMPLATE} | jq -r 'to_entries[] | [.key, .value] | @tsv' |
+          while IFS=$'\t' read -r var_name property_path
           do
-              # no need to process comment lines that start with "#", or empty ones.
-              if [[ $line == \#* ]] || [[ -z "$line" ]]; then continue; fi
-
-              # split the line text with the = char as a separator
-              line_array=(${line//=/ })
-
-              var_name=${line_array[0]}
-              property_path=${line_array[1]}
-              property_value=$(yq eval ${property_path} ${{ matrix.definition_path }})
-              echo "${var_name}=\"${property_value}\"" >> ${{ matrix.trial_name }}.tfvars
+            property_value=$(yq eval ${property_path} ${{ matrix.definition_path }})
+            echo "${var_name}=\"${property_value}\"" >> ${{ matrix.trial_name }}.tfvars
           done
 
           cat ${{ matrix.trial_name }}.tfvars
 
-          # extract more values from the definition file
+          # extract more values from the definition file to inject to the ui resources
           echo "tenant_id=$(yq eval '.tenant_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
           echo "ui_client_id=$(yq eval '.ui_client_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
 
@@ -260,6 +260,11 @@ jobs:
 
           # '-raw' is important so no other characters will be added
           ui_storage_conn_string=$(terraform output -raw ui_conn_string)
+          init_storage_conn_string=$(terraform output -raw init_storage_conn_string)
+          echo "init_storage_conn_string=$init_storage_conn_string" >> $GITHUB_ENV
+          init_storage_share_name=$(terraform output -raw init_storage_share_name)
+          echo "init_storage_share_name=$init_storage_share_name" >> $GITHUB_ENV
+
           gateway_host_string=$(terraform output -raw gateway_host)
           # create an env var from the connection string, so will be available for the later steps
           echo "ui_storage_conn_string=$ui_storage_conn_string" >> $GITHUB_ENV
@@ -321,6 +326,36 @@ jobs:
           az storage blob delete-batch --connection-string ${ui_storage_conn_string} --source "\$web" --pattern "*"
           az storage blob upload-batch --connection-string ${ui_storage_conn_string} --source mts-trial-ui --destination '$web'
 
+      # Download init service progress log file from azure file share and validate success
+      - name: Validate Init service progress
+        timeout-minutes: 30
+        # if: github.ref == 'refs/heads/main'
+        run: |
+          set -o nounset
+          #set -o xtrace
+          # can't use errexit and pipefail flags here becasue tail will fail if the file doesn't exists
+
+          echo "trying to fetch init service log in loop, timeout set to 30 min."
+          while [ true ]
+          do
+            sleep 10
+            az storage file download --no-progress --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} && cat log.txt
+
+            # chainging result with no-op command so git workflow won't fail and seperating command and condition to avoid "unary operator expected" error
+            tail log.txt --lines 1 | grep -q "FAILURE" && :
+            if [ $? -eq 0 ]
+            then
+                echo "Init service - Completed with failure"
+                exit 1
+            fi
+
+            tail log.txt --lines 1 | grep -q "SUCCESS" && :
+            if [ $? -eq 0 ]
+            then
+                echo "Init service - Completed Successfully"
+                exit 0
+            fi
+          done
   deployall:
     runs-on: ubuntu-latest
     name: Terraform plan/apply (matrix)
