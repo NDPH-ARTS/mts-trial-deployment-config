@@ -16,6 +16,9 @@
       "properties" : {
         "site" : {
           "$ref" : "#/definitions/SiteConfiguration"
+        },
+        "address" : {
+          "$ref" : "#/definitions/AddressConfiguration"
         }
       },
       "required" : [ "site" ]
@@ -68,6 +71,18 @@
         },
         "validationRegex" : {
           "type" : "string"
+        }
+      }
+    },
+    "AddressConfiguration" : {
+      "type" : "object",
+      "additionalProperties" : false,
+      "properties" : {
+        "addressType" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SiteAttributeConfiguration"
+          }
         }
       }
     }
