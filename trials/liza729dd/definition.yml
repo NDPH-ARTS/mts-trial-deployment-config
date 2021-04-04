@@ -1,0 +1,30 @@
+name: liza729dd
+version: 1
+tenant_id: 99804659-431f-48fa-84c1-65c9609de05b
+ui_client_id: 59a2b30f-844b-4a69-b034-19e3d2d4d805
+spring_profile: dev
+spring_config_label: liza729dd
+site_service:
+  image_name: ghcr.io/ndph-arts/site-service
+  image_tag: ff0d9405902656747569a3520f02fd90e922be1e
+practitioner_service:
+  image_name: ghcr.io/ndph-arts/practitioner-service
+  image_tag: ff0d9405902656747569a3520f02fd90e922be1e
+init_service:
+  image_name: ghcr.io/ndph-arts/init-service
+  image_tag: ff0d9405902656747569a3520f02fd90e922be1e
+role_service:
+  image_name: ghcr.io/ndph-arts/role-service
+  image_tag: ff0d9405902656747569a3520f02fd90e922be1e
+spring_cloud:
+  gateway_service:
+    image_name: ghcr.io/ndph-arts/gateway-server
+    image_tag: ff0d9405902656747569a3520f02fd90e922be1e
+  discovery_service:
+    image_name: ghcr.io/ndph-arts/discovery-server
+    image_tag: ff0d9405902656747569a3520f02fd90e922be1e
+  config_server:
+    image_name: ghcr.io/ndph-arts/config-server
+    image_tag: ff0d9405902656747569a3520f02fd90e922be1e
+    git_uri: https://github.com/NDPH-ARTS/mts-trial-deployment-config.git
+    search_paths: trials/liza729dd/services, trials/liza729dd/services/*
