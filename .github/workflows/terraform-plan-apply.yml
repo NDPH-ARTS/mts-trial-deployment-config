@@ -43,19 +43,19 @@ jobs:
           set -o pipefail
           set -o nounset
 
-          export FILES=$(find . -name 'init-service-dev.yml')
+          export FILES=$(find . -name 'init-service-*.yml')
           for FILE in $(echo "$FILES" | sed "s/,/ /g")
           do
                ajv validate -s $INIT_SCHEMA -d "$FILE"
           done
 
-          export FILES=$(find . -name 'practitioner-service-dev.yml')
+          export FILES=$(find . -name 'practitioner-service-*.yml')
           for FILE in $(echo "$FILES" | sed "s/,/ /g")
           do
                ajv validate -s $PRACTITIONER_SCHEMA -d "$FILE"
           done
 
-          export FILES=$(find . -name 'site-service-dev.yml')
+          export FILES=$(find . -name 'site-service-*.yml')
           for FILE in $(echo "$FILES" | sed "s/,/ /g")
           do
                ajv validate -s $SITE_SCHEMA -d "$FILE"
