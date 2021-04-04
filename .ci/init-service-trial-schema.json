@@ -39,7 +39,7 @@
         "roles" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/Role"
+            "$ref" : "#/definitions/RoleDTO"
           }
         },
         "trialName" : {
@@ -119,7 +119,7 @@
         }
       }
     },
-    "Role" : {
+    "RoleDTO" : {
       "type" : "object",
       "additionalProperties" : false,
       "properties" : {
@@ -129,12 +129,12 @@
         "permissions" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/Permission"
+            "$ref" : "#/definitions/PermissionDTO"
           }
         }
       }
     },
-    "Permission" : {
+    "PermissionDTO" : {
       "type" : "object",
       "additionalProperties" : false,
       "properties" : {
