@@ -374,28 +374,27 @@ jobs:
           # can't use errexit and pipefail flags here becasue tail will fail if the file doesn't exists
 
           echo "Trying to download init service log in loop, timeout set to 30 min."
-          until [ az storage file download --no-progress --output none --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} > /dev/null 2>&1 ]
+          while :
           do
-            echo "Log file isn't there yet. Sleeping..."
+            until [ az storage file download --no-progress --output none --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} > /dev/null 2>&1 ]
+            do
+              echo "Log file isn't there yet. Sleeping..."
+              sleep 10
+            done
+
+            echo "Log file contains:"
+            cat log.txt
+
+            if (tail log.txt --lines 1 | grep -q "SUCCESS")
+            then
+
+                echo "Init service - Completed Successfully"
+                exit 0
+            fi
+
+            echo "Didn't find SUCCESS message, Sleeping..."
             sleep 10
           done
-
-          # chainging result with no-op command so git workflow won't fail and seperating command and condition to avoid "unary operator expected" error
-          tail log.txt --lines 1 | grep -q "FAILURE" && :
-          if [ $? -eq 0 ]
-          then
-              cat log.txt
-              echo "Init service - Completed with failure"
-              exit 1
-          fi
-
-          tail log.txt --lines 1 | grep -q "SUCCESS" && :
-          if [ $? -eq 0 ]
-          then
-              cat log.txt
-              echo "Init service - Completed Successfully"
-              exit 0
-          fi
   deployall:
     runs-on: ubuntu-latest
     name: Terraform plan/apply (matrix)
