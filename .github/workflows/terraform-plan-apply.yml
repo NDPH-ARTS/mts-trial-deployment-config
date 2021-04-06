@@ -377,7 +377,7 @@ jobs:
           echo "Trying to download init service log in loop, timeout set to 40 min."
           while :
           do
-            until [ az storage file download --no-progress --output none --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} > /dev/null 2>&1 ]
+            until az storage file download --no-progress --output none --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} > /dev/null 2>&1
             do
               echo "Log file isn't there yet. Sleeping..."
               sleep 10
