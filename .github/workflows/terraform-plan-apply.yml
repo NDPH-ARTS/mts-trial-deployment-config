@@ -321,15 +321,13 @@ jobs:
           set -o nounset
           # set -o xtrace
           # '-raw' is important so no other characters will be added
-          init_service_name=$(terraform output -raw init_service_name)
+          init_service_identity=$(terraform output -raw init_service_identity)
 
           backend_object_id=$(az ad sp list --display-name 'mts-backend' --query "[0] .objectId")
           app_role_id=$(az ad sp list --display-name 'mts-backend' --query "[0] .appRoles [?value=='internal.service'].id | [0]")
-          sp_object_id=$(az ad sp list --display-name $init_service_name --query "[0] .objectId")
-          json="{\"id\":$app_role_id,\"principalId\":$sp_object_id,\"resourceId\":$backend_object_id}"
-          parsed_sp_object_id=$(echo $sp_object_id| sed 's/"//g')
-          echo "Applying appRoleId=$app_role_id to $init_service_name"
-          az rest -m post -u "https://graph.windows.net/99804659-431f-48fa-84c1-65c9609de05b/servicePrincipals/$parsed_sp_object_id/appRoleAssignments?api-version=1.6" -b $json
+          json="{\"id\":$app_role_id,\"principalId\":\"$init_service_identity\",\"resourceId\":$backend_object_id}"
+          echo "Applying appRoleId=$app_role_id to $init_service_identity"
+          az rest -m post -u "https://graph.windows.net/99804659-431f-48fa-84c1-65c9609de05b/servicePrincipals/$init_service_identity/appRoleAssignments?api-version=1.6" -b $json
 
       # Get release zip file
       - name: UI component - Get assets zip
