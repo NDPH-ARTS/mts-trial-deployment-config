@@ -1,30 +1,30 @@
-name: 729liza
+name: lisa729
 version: 1
 tenant_id: 99804659-431f-48fa-84c1-65c9609de05b
 ui_client_id: 59a2b30f-844b-4a69-b034-19e3d2d4d805
 spring_profile: dev
-spring_config_label: 729liza
+spring_config_label: lisa729
 site_service:
   image_name: ghcr.io/ndph-arts/site-service
-  image_tag: 19de82ff90bcb59ad88b453f257ea70ee493520d
+  image_tag: ac5bef7694c02c16e182d7b583d228d6caedc1f8
 practitioner_service:
   image_name: ghcr.io/ndph-arts/practitioner-service
-  image_tag: 19de82ff90bcb59ad88b453f257ea70ee493520d
+  image_tag: ac5bef7694c02c16e182d7b583d228d6caedc1f8
 init_service:
   image_name: ghcr.io/ndph-arts/init-service
-  image_tag: 19de82ff90bcb59ad88b453f257ea70ee493520d
+  image_tag: ac5bef7694c02c16e182d7b583d228d6caedc1f8
 role_service:
   image_name: ghcr.io/ndph-arts/role-service
-  image_tag: 19de82ff90bcb59ad88b453f257ea70ee493520d
+  image_tag: ac5bef7694c02c16e182d7b583d228d6caedc1f8
 spring_cloud:
   gateway_service:
     image_name: ghcr.io/ndph-arts/gateway-server
-    image_tag: 19de82ff90bcb59ad88b453f257ea70ee493520d
+    image_tag: ac5bef7694c02c16e182d7b583d228d6caedc1f8
   discovery_service:
     image_name: ghcr.io/ndph-arts/discovery-server
-    image_tag: 19de82ff90bcb59ad88b453f257ea70ee493520d
+    image_tag: ac5bef7694c02c16e182d7b583d228d6caedc1f8
   config_server:
     image_name: ghcr.io/ndph-arts/config-server
-    image_tag: 19de82ff90bcb59ad88b453f257ea70ee493520d
+    image_tag: ac5bef7694c02c16e182d7b583d228d6caedc1f8
     git_uri: https://github.com/NDPH-ARTS/mts-trial-deployment-config.git
-    search_paths: trials/729liza/services, trials/729liza/services/*
+    search_paths: trials/lisa729/services, trials/lisa729/services/*
