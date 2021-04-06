@@ -266,7 +266,7 @@ jobs:
           cat ${{ matrix.trial_name }}.tfvars
 
           # extract more values from the definition file to inject to the ui resources
-          echo "tenant_id=$(yq eval '.tenant_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
+          echo "ui_tenant_id=$(yq eval '.tenant_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
           echo "ui_client_id=$(yq eval '.ui_client_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
 
       # Plan TF
@@ -353,7 +353,7 @@ jobs:
           trial_name=${{ matrix.trial_name }}
 
           sed -i "s/{{clientId}}/${ui_client_id}/" ${index_file}
-          sed -i "s/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${tenant_id}\/v2.0/" ${index_file}
+          sed -i "s/{{issuerUrl}}/https:\/\/login.microsoftonline.com\/${ui_tenant_id}\/v2.0/" ${index_file}
           sed -i "s/{{trialName}}/${trial_name}/" ${index_file}
           sed -i "s^{{gatewayUrl}}^${gateway_host_string}/api^" ${index_file}
 
