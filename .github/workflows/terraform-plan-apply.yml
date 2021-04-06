@@ -266,7 +266,7 @@ jobs:
           cat ${{ matrix.trial_name }}.tfvars
 
           # extract more values from the definition file to inject to the ui resources
-          echo "ui_tenant_id=$(yq eval '.tenant_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
+          echo "ui_tenant_id=$(yq eval '.ui_tenant_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
           echo "ui_client_id=$(yq eval '.ui_client_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
 
       # Plan TF
