@@ -1,9 +1,9 @@
-name: liza729ddd
+name: 729liza
 version: 1
-tenant_id: 5d23383f-2acb-448e-8353-4b4573b82276
-ui_client_id: f352ce15-0142-4dfa-8e18-801ee6391557
+tenant_id: 99804659-431f-48fa-84c1-65c9609de05b
+ui_client_id: 59a2b30f-844b-4a69-b034-19e3d2d4d805
 spring_profile: dev
-spring_config_label: liza729dd
+spring_config_label: 729liza
 site_service:
   image_name: ghcr.io/ndph-arts/site-service
   image_tag: 19de82ff90bcb59ad88b453f257ea70ee493520d
@@ -27,4 +27,4 @@ spring_cloud:
     image_name: ghcr.io/ndph-arts/config-server
     image_tag: 19de82ff90bcb59ad88b453f257ea70ee493520d
     git_uri: https://github.com/NDPH-ARTS/mts-trial-deployment-config.git
-    search_paths: trials/liza729ddd/services, trials/liza729ddd/services/*
+    search_paths: trials/729liza/services, trials/729liza/services/*
