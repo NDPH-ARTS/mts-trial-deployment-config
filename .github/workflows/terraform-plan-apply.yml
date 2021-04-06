@@ -375,6 +375,7 @@ jobs:
           # can't use errexit and pipefail flags here becasue tail will fail if the file doesn't exists
 
           echo "Trying to download init service log in loop, timeout set to 40 min."
+          lines_in_previous_file=0
           while :
           do
             until az storage file download --no-progress --output none --path log.txt --share-name ${init_storage_share_name} --connection-string ${init_storage_conn_string} > /dev/null 2>&1
@@ -383,8 +384,10 @@ jobs:
               sleep 10
             done
 
+            # check how many lines in the new file and print only the new lines from previous iteration
+            lines_in_new_file=$(grep -c ^ log.txt)
             echo "Log file contains:"
-            cat log.txt
+            tail log.txt -n $(expr "$lines_in_new_file" - "$lines_in_previous_file")
 
             if (tail log.txt --lines 1 | grep -q "SUCCESS")
             then
