@@ -404,7 +404,7 @@ jobs:
 
             # check how many lines in the new file and print only the new lines from previous iteration
             lines_in_new_file=$(cat log.txt | wc -l)
-            delta=$(expr "$lines_in_new_file" - "$lines_in_previous_file") > /dev/null 2>&1
+            delta=$(("$lines_in_new_file" - "$lines_in_previous_file"))
             if [[ $delta -gt 0 ]]; then
               tail log.txt -n $delta
               lines_in_previous_file=$lines_in_new_file
