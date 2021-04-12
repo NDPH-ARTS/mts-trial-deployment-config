@@ -246,6 +246,7 @@ jobs:
           ref_for_workspace="${GITHUB_REF//\//_}"
           workspace_name="${{ matrix.trial_name }}-${ref_for_workspace}"
           terraform workspace select ${workspace_name} || terraform workspace new ${workspace_name}
+
       - name: Prepare deployment variables
         env:
           TFVARS_TEMPLATE: 'tfvars.template.yml'
@@ -268,6 +269,25 @@ jobs:
           # extract more values from the definition file to inject to the ui resources
           echo "tenant_id=$(yq eval '.tenant_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
           echo "ui_client_id=$(yq eval '.ui_client_id' ${{ matrix.definition_path }})" >> $GITHUB_ENV
+
+      # Prepare versions json
+      - name: Prepare versions json
+        run: |
+          set -o errexit
+          set -o pipefail
+          set -o nounset
+
+          echo "Preparing versions json for injection into UI - read ${{ matrix.definition_path }} write ${{ matrix.trial_name }}_versions.json "
+
+
+          # NB UI_VERSION is a static placeholder for now - will become dynamic in future story
+          echo "UI_VERSION=https://github.com/NDPH-ARTS/mts-trial-ui/releases/latest/download/mts-trial-ui.zip" >> $GITHUB_ENV
+
+          # Use YQ to convert definition.yml to json, use JQ to recurse through the json finding image_tag nodes and their keys, write to a file
+          yq eval -j ${{ matrix.definition_path }} | jq '[ ..  | objects | to_entries  | .[] | select(.value | has("image_tag"))? | {service:.key, version:.value.image_tag, timestamp:now} ] | .+ [{service:"UI", version:env.UI_VERSION, timestamp:now} ] ' >> ${{ matrix.trial_name }}_versions.json
+
+          cat ${{ matrix.trial_name }}_versions.json
+
 
       # Plan TF
       - name: Terraform plan
@@ -335,7 +355,8 @@ jobs:
           set -o errexit
           set -o nounset
 
-          wget https://github.com/NDPH-ARTS/mts-trial-ui/releases/latest/download/mts-trial-ui.zip
+          wget ${UI_VERSION}
+
 
       # Unzip & Customize (replace values)
       - name: UI component - Unzip and modify
@@ -356,6 +377,7 @@ jobs:
           sed -i "s/{{trialName}}/${trial_name}/" ${index_file}
           sed -i "s^{{gatewayUrl}}^${gateway_host_string}/api^" ${index_file}
 
+
       # Add Branding Assets
       - name: UI component - copy assets
         run: |
@@ -367,6 +389,17 @@ jobs:
           echo "using trial path ${{ matrix.trial_dir }}"
           # copy everything in the assets folder
           cp -fr ${{ matrix.trial_dir }}/assets/* mts-trial-ui/assets/
+
+
+      # Inject versions json
+      - name: UI component - inject versions info into UI
+        run: |
+          set -o errexit
+          set -o pipefail
+          set -o nounset
+
+          # copy the versions file into the UI
+          cp -f ${{ matrix.trial_name }}_versions.json mts-trial-ui/assets/versions.json
 
       # Upload to storage account (to $web container)
       - name: UI component - Upload to storage
