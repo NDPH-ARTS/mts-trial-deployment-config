@@ -191,7 +191,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
       ARM_SUBSCRIPTION_ID: f3fba52d-c7db-46f8-9e7a-766ca869972e
       ARM_TENANT_ID: 99804659-431f-48fa-84c1-65c9609de05b
-      UI_VERSION : https://github.com/NDPH-ARTS/mts-trial-ui/releases/latest/download/mts-trial-ui.zip
+      UI_BUNDLE : https://github.com/NDPH-ARTS/mts-trial-ui/releases/latest/download/mts-trial-ui.zip
     steps:
       - uses: actions/checkout@v2
 
@@ -281,7 +281,7 @@ jobs:
           echo "Preparing versions json for injection into UI - read ${{ matrix.definition_path }} write ${{ matrix.trial_name }}_versions.json "
 
           # Use YQ to convert definition.yml to json, use JQ to recurse through the json finding image_tag nodes and their keys, write to a file
-          yq eval -j ${{ matrix.definition_path }} | jq '[ ..  | objects | to_entries  | .[] | select(.value | has("image_tag"))? | {service:.key, version:.value.image_tag, timestamp:now} ] | .+ [{service:"UI", version:env.UI_VERSION, timestamp:now} ] ' >> ${{ matrix.trial_name }}_versions.json
+          yq eval -j ${{ matrix.definition_path }} | jq '[ ..  | objects | to_entries  | .[] | select(.value | has("image_tag"))? | {service:.key, version:.value.image_tag, timestamp:now} ] | .+ [{service:"UI", version:env.UI_BUNDLE, timestamp:now} ] ' >> ${{ matrix.trial_name }}_versions.json
 
           # NB UI_VERSION is a static placeholder for now - will become dynamic in future story
           
@@ -354,7 +354,7 @@ jobs:
           set -o errexit
           set -o nounset
 
-          wget ${UI_VERSION}
+          wget ${UI_BUNDLE}
 
 
       # Unzip & Customize (replace values)
