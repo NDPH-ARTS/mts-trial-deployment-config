@@ -89,7 +89,7 @@ mts:
                     type: string
                     displayName: Has Participants
                     validationRegex: ''
-                  - name: recruitentMethod
+                  - name: recruitmentMethod
                     type: string
                     displayName: Recruitment Method
                     validationRegex: ''
