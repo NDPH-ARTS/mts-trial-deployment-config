@@ -1,0 +1,30 @@
+name: arts935
+version: 1
+tenant_id: 5d23383f-2acb-448e-8353-4b4573b82276
+ui_client_id: 59a2b30f-844b-4a69-b034-19e3d2d4d805
+spring_profile: dev
+spring_config_label: arts935
+site_service:
+  image_name: ghcr.io/ndph-arts/site-service
+  image_tag: 459ece9d1dd30ff3e7dc6e1df9d8d93883ce1295
+practitioner_service:
+  image_name: ghcr.io/ndph-arts/practitioner-service
+  image_tag: 459ece9d1dd30ff3e7dc6e1df9d8d93883ce1295
+init_service:
+  image_name: ghcr.io/ndph-arts/init-service
+  image_tag: 459ece9d1dd30ff3e7dc6e1df9d8d93883ce1295
+role_service:
+  image_name: ghcr.io/ndph-arts/role-service
+  image_tag: 459ece9d1dd30ff3e7dc6e1df9d8d93883ce1295
+spring_cloud:
+  gateway_service:
+    image_name: ghcr.io/ndph-arts/gateway-server
+    image_tag: 459ece9d1dd30ff3e7dc6e1df9d8d93883ce1295
+  discovery_service:
+    image_name: ghcr.io/ndph-arts/discovery-server
+    image_tag: 459ece9d1dd30ff3e7dc6e1df9d8d93883ce1295
+  config_server:
+    image_name: ghcr.io/ndph-arts/config-server
+    image_tag: 459ece9d1dd30ff3e7dc6e1df9d8d93883ce1295
+    git_uri: https://github.com/NDPH-ARTS/mts-trial-deployment-config.git
+    search_paths: trials/arts935/services, trials/arts935/services/*
